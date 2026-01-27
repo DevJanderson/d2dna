@@ -246,6 +246,7 @@ JWT_SECRET=sua-chave-secreta
 ## Documentação
 
 - [PRD - Product Requirements Document](docs/PRD.md)
+- [Git Flow - Estratégia de Branches](docs/GIT_FLOW.md)
 - [Instruções para Claude Code](CLAUDE.md)
 
 ## Licença
