@@ -4,6 +4,45 @@ Este documento define o padrão oficial para integração com APIs externas no p
 
 ---
 
+## TL;DR - Uso Recomendado
+
+| Do Kubb          | Usar?  | Onde                        | Exemplo                                                        |
+| ---------------- | ------ | --------------------------- | -------------------------------------------------------------- |
+| **Tipos**        | ✅ Sim | Composables, stores, server | `import type { Token } from '~/generated/sinapse/types/Token'` |
+| **Schemas Zod**  | ✅ Sim | Endpoints BFF (validação)   | `tokenSchema.parse(response)`                                  |
+| **Cliente HTTP** | ❌ Não | -                           | Usar `$fetch` do Nuxt com BFF                                  |
+
+```typescript
+// ✅ CORRETO - Tipos + Validação Zod no BFF
+import type { Token } from '~/generated/sinapse/types/Token'
+import { tokenSchema } from '~/generated/sinapse/zod/tokenSchema'
+
+const rawResponse = await $fetch('/auth/login', { ... })
+const validated = tokenSchema.parse(rawResponse) // Valida em runtime
+
+// ❌ EVITAR - Cliente Kubb direto (não integra com BFF/cookies)
+import { loginApiV1AuthLoginPost } from '~/generated/sinapse/client/...'
+```
+
+### Impacto no Build (Tree-Shaking)
+
+O Kubb gera **muitos arquivos** (~1.000+), mas **apenas o que você importa vai para o build final**:
+
+| Componente | No código gerado | No build final |
+|------------|------------------|----------------|
+| `generated/sinapse/` | 5.8 MB | - |
+| Tipos TypeScript | ~200 arquivos | **0 KB** (removidos no build) |
+| Schemas Zod não usados | ~200 arquivos | **0 KB** (tree-shaking) |
+| Schemas Zod usados | 2-3 arquivos | **~2 KB** |
+| Cliente HTTP | ~100 arquivos | **0 KB** (não importamos) |
+
+**Por que isso funciona:**
+- **Tipos** (`import type`) são removidos no build (existem apenas em compile-time)
+- **Tree-shaking** do bundler (Vite/Rollup) remove código não importado
+- **Apenas schemas Zod** que você usa são incluídos no bundle final
+
+---
+
 ## Sumário
 
 1. [Visão Geral](#visão-geral)
@@ -41,10 +80,10 @@ Browser  →  server/api/*  →  API Externa
 
 ### Por que usar os dois juntos?
 
-| Componente | Responsabilidade |
-|------------|------------------|
-| **Kubb** | Gera código type-safe para chamar APIs |
-| **BFF** | Usa esse código no servidor de forma segura |
+| Componente | Responsabilidade                            |
+| ---------- | ------------------------------------------- |
+| **Kubb**   | Gera código type-safe para chamar APIs      |
+| **BFF**    | Usa esse código no servidor de forma segura |
 
 ---
 
@@ -57,6 +96,7 @@ Browser  →  API Externa
 ```
 
 **Problemas:**
+
 - Token JWT exposto no browser (DevTools → Network)
 - API Keys visíveis no código cliente
 - Sem controle de rate limiting
@@ -69,6 +109,7 @@ Browser  →  server/api/*  →  API Externa
 ```
 
 **Benefícios:**
+
 - Token em cookie httpOnly (invisível para JavaScript)
 - API Keys ficam apenas no servidor
 - Cache, logs, rate limiting no seu controle
@@ -77,15 +118,15 @@ Browser  →  server/api/*  →  API Externa
 
 ### Tabela de Decisão
 
-| Cenário | Abordagem |
-|---------|-----------|
-| API pública sem autenticação | Kubb direto (OK) |
-| API com JWT/OAuth | **BFF obrigatório** |
-| API com API Key/Secret | **BFF obrigatório** |
-| Dados sensíveis (PII, financeiro) | **BFF obrigatório** |
-| Precisa cache server-side | **BFF** |
-| Precisa combinar APIs | **BFF** |
-| Protótipo/teste rápido | Kubb direto (temporário) |
+| Cenário                           | Abordagem                |
+| --------------------------------- | ------------------------ |
+| API pública sem autenticação      | Kubb direto (OK)         |
+| API com JWT/OAuth                 | **BFF obrigatório**      |
+| API com API Key/Secret            | **BFF obrigatório**      |
+| Dados sensíveis (PII, financeiro) | **BFF obrigatório**      |
+| Precisa cache server-side         | **BFF**                  |
+| Precisa combinar APIs             | **BFF**                  |
+| Protótipo/teste rápido            | Kubb direto (temporário) |
 
 ---
 
@@ -133,13 +174,13 @@ Browser  →  server/api/*  →  API Externa
 
 ### Separação de Responsabilidades
 
-| Camada | Localização | Responsabilidade |
-|--------|-------------|------------------|
-| **UI** | `layers/{N}-{feature}/app/pages/` | Interface do usuário |
-| **Estado** | `layers/{N}-{feature}/app/composables/` | Gerencia estado, chama BFF |
-| **BFF** | `layers/{N}-{feature}/server/api/` | Intermedia chamadas, gerencia tokens |
-| **Gerado** | `generated/<api>/` | Tipos e cliente HTTP (usado pelo BFF) |
-| **Externo** | API terceiros | Fonte de dados real |
+| Camada      | Localização                             | Responsabilidade                      |
+| ----------- | --------------------------------------- | ------------------------------------- |
+| **UI**      | `layers/{N}-{feature}/app/pages/`       | Interface do usuário                  |
+| **Estado**  | `layers/{N}-{feature}/app/composables/` | Gerencia estado, chama BFF            |
+| **BFF**     | `layers/{N}-{feature}/server/api/`      | Intermedia chamadas, gerencia tokens  |
+| **Gerado**  | `generated/<api>/`                      | Tipos e cliente HTTP (usado pelo BFF) |
+| **Externo** | API terceiros                           | Fonte de dados real                   |
 
 ---
 
@@ -160,17 +201,27 @@ import { pluginTs } from '@kubb/plugin-ts'
 import { pluginZod } from '@kubb/plugin-zod'
 import { pluginClient } from '@kubb/plugin-client'
 
-/**
- * Plugins compartilhados para todas as APIs
- */
-function createPlugins() {
-  return [
+export default defineConfig({
+  name: 'minha-api',
+  root: '.',
+  input: {
+    path: './openapi/minha-api.json'
+  },
+  output: {
+    path: './generated/minha-api',
+    clean: true,
+    // OBRIGATÓRIO: Remove extensão .ts dos imports
+    // Compatibilidade com bundlers e verbatimModuleSyntax
+    extension: {
+      '.ts': ''
+    }
+  },
+  plugins: [
     pluginOas(),
     pluginTs({
       output: {
         path: './types',
-        barrelType: 'named',
-        extName: ''
+        barrelType: 'named'
       },
       group: {
         type: 'tag',
@@ -182,23 +233,20 @@ function createPlugins() {
     pluginZod({
       output: {
         path: './zod',
-        barrelType: 'named',
-        extName: ''
+        barrelType: 'named'
       },
       group: {
         type: 'tag',
         name: ({ group }) => `${group}Schemas`
       },
-      typed: true,
-      dateType: 'string',
-      inferred: true,
-      importType: true
+      // IMPORTANTE: NÃO usar typed, inferred ou importType
+      // Essas opções geram imports incompatíveis com verbatimModuleSyntax
+      dateType: 'string'
     }),
     pluginClient({
       output: {
         path: './client',
-        barrelType: 'named',
-        extName: ''
+        barrelType: 'named'
       },
       group: {
         type: 'tag',
@@ -209,22 +257,19 @@ function createPlugins() {
       pathParamsType: 'object'
     })
   ]
-}
-
-export default defineConfig({
-  name: 'minha-api',
-  root: '.',
-  input: {
-    path: './openapi/minha-api.json'
-  },
-  output: {
-    path: './generated/minha-api',
-    clean: true,
-    extension: {}
-  },
-  plugins: createPlugins()
 })
 ```
+
+### Compatibilidade com TypeScript do Projeto
+
+Este projeto usa `verbatimModuleSyntax: true` no TypeScript. Isso exige:
+
+| Configuração           | Valor           | Motivo                                                                 |
+| ---------------------- | --------------- | ---------------------------------------------------------------------- |
+| `output.extension`     | `{ '.ts': '' }` | Remove extensões dos imports (evita erro `allowImportingTsExtensions`) |
+| `pluginZod.typed`      | **NÃO USAR**    | Gera `import { ToZod }` que conflita com `verbatimModuleSyntax`        |
+| `pluginZod.inferred`   | **NÃO USAR**    | Mesmo problema acima                                                   |
+| `pluginZod.importType` | **NÃO USAR**    | Mesmo problema acima                                                   |
 
 ### 3. Adicionar scripts ao `package.json`
 
@@ -341,9 +386,9 @@ export async function apiFetch<T>(
  */
 export function setApiToken(event: H3Event, token: string, expiresIn = 3600) {
   setCookie(event, 'api_token', token, {
-    httpOnly: true,                              // Não acessível via JavaScript
+    httpOnly: true, // Não acessível via JavaScript
     secure: process.env.NODE_ENV === 'production', // HTTPS em produção
-    sameSite: 'strict',                          // Previne CSRF
+    sameSite: 'strict', // Previne CSRF
     maxAge: expiresIn,
     path: '/'
   })
@@ -390,7 +435,7 @@ export function getApiRefreshToken(event: H3Event): string | undefined {
 #### Login (`server/api/{feature}/auth/login.post.ts`)
 
 ```typescript
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const body = await readBody(event)
 
   if (!body.email || !body.password) {
@@ -442,7 +487,7 @@ export default defineEventHandler(async (event) => {
 #### Me (`server/api/{feature}/auth/me.get.ts`)
 
 ```typescript
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const token = getApiToken(event)
 
   if (!token) {
@@ -465,7 +510,7 @@ export default defineEventHandler(async (event) => {
 #### Logout (`server/api/{feature}/auth/logout.post.ts`)
 
 ```typescript
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   clearApiTokens(event)
   return { success: true }
 })
@@ -474,7 +519,7 @@ export default defineEventHandler(async (event) => {
 #### Refresh (`server/api/{feature}/auth/refresh.post.ts`)
 
 ```typescript
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const refreshToken = getApiRefreshToken(event)
 
   if (!refreshToken) {
@@ -507,7 +552,7 @@ export default defineEventHandler(async (event) => {
 
 ```typescript
 // layers/{N}-{feature}/server/api/{feature}/clientes/index.get.ts
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const token = getApiToken(event)
 
   if (!token) {
@@ -527,12 +572,12 @@ export default defineEventHandler(async (event) => {
 
 ### Por que cookie httpOnly?
 
-| Armazenamento | JavaScript acessa? | XSS pode roubar? |
-|---------------|-------------------|------------------|
-| localStorage | Sim | **SIM** |
-| sessionStorage | Sim | **SIM** |
-| Cookie normal | Sim | **SIM** |
-| **Cookie httpOnly** | **NÃO** | **NÃO** |
+| Armazenamento       | JavaScript acessa? | XSS pode roubar? |
+| ------------------- | ------------------ | ---------------- |
+| localStorage        | Sim                | **SIM**          |
+| sessionStorage      | Sim                | **SIM**          |
+| Cookie normal       | Sim                | **SIM**          |
+| **Cookie httpOnly** | **NÃO**            | **NÃO**          |
 
 ### Fluxo de Autenticação
 
@@ -564,17 +609,10 @@ export default defineEventHandler(async (event) => {
 // layers/{N}-{feature}/app/composables/types.ts
 
 // Re-exporta tipos gerados pelo Kubb para uso na layer
-export type {
-  User,
-  Cliente,
-  Produto
-} from '~/generated/minha-api/types'
+export type { User, Cliente, Produto } from '~/generated/minha-api/types'
 
 // Re-exporta schemas Zod para validação
-export {
-  userSchema,
-  clienteSchema
-} from '~/generated/minha-api/zod'
+export { userSchema, clienteSchema } from '~/generated/minha-api/zod'
 ```
 
 ### Store de Autenticação
@@ -792,6 +830,34 @@ export default defineNuxtConfig({
 ```
 
 > **Nota sobre caminhos:** Use `~/layers/...` para referenciar arquivos no `nuxt.config.ts` de layers. Caminhos relativos não funcionam.
+
+---
+
+## Troubleshooting
+
+### Erros Comuns
+
+| Erro                                   | Causa                            | Solução                                                              |
+| -------------------------------------- | -------------------------------- | -------------------------------------------------------------------- |
+| `allowImportingTsExtensions`           | Imports com `.ts` no final       | Adicionar `extension: { '.ts': '' }` no output global                |
+| `verbatimModuleSyntax` + `ToZod`       | pluginZod com `typed`/`inferred` | Remover essas opções do pluginZod                                    |
+| `Cannot find module '~/generated/...'` | Arquivos não gerados             | Executar `npm run api:generate`                                      |
+| Tipos não reconhecidos no IDE          | Cache do TypeScript              | Reiniciar o servidor TS (VS Code: Cmd+Shift+P → "Restart TS Server") |
+
+### Regenerar após Mudanças
+
+Se a spec OpenAPI mudar:
+
+```bash
+npm run api:generate
+```
+
+Se houver problemas de cache:
+
+```bash
+rm -rf generated/
+npm run api:generate
+```
 
 ---
 

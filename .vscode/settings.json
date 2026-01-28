@@ -18,11 +18,7 @@
   "typescript.tsdk": "node_modules/typescript/lib",
   "typescript.enablePromptUseWorkspaceTsdk": true,
 
-  "eslint.validate": [
-    "javascript",
-    "typescript",
-    "vue"
-  ],
+  "eslint.validate": ["javascript", "typescript", "vue"],
 
   "files.associations": {
     "*.css": "tailwindcss"
@@ -31,5 +27,14 @@
   "tailwindCSS.experimental.classRegex": [
     ["cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"],
     ["cn\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
-  ]
+  ],
+  "workbench.colorCustomizations": {
+    "sash.hoverBorder": "#5796be",
+    "statusBar.background": "#3f7ca3",
+    "statusBar.foreground": "#e7e7e7",
+    "statusBarItem.hoverBackground": "#5796be",
+    "statusBarItem.remoteBackground": "#3f7ca3",
+    "statusBarItem.remoteForeground": "#e7e7e7"
+  },
+  "peacock.color": "#3F7CA3"
 }
