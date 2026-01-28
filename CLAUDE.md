@@ -48,12 +48,13 @@ Nuxt 4 + shadcn-vue + Tailwind CSS v4 + **Nuxt Layers**.
 ### Estrutura Principal
 
 ```
-layers/                 # TUDO fica aqui
-  0-core/               # Fundação: app.vue, error.vue, CSS global
+layers/                 # TUDO fica aqui (inclusive server/)
+  0-core/               # Fundação: app.vue, error.vue, CSS global, API base
+    server/api/         # Endpoints globais (health, etc.)
   1-base/               # UI: shadcn-vue, utils, tipos globais
   2-example/            # Feature layer de exemplo (copiar para novas)
+    server/api/         # Endpoints específicos da feature
   4-landing/            # Landing page
-server/                 # API routes (Nitro)
 tests/                  # unit/, integration/, e2e/
 ```
 
@@ -150,7 +151,10 @@ Cada diretório principal tem seu próprio `CLAUDE.md` com instruções específ
 | Documento | Conteúdo |
 |-----------|----------|
 | [layers/0-core/CLAUDE.md](layers/0-core/CLAUDE.md) | app.vue, error.vue, CSS global |
+| [layers/0-core/server/CLAUDE.md](layers/0-core/server/CLAUDE.md) | API routes, Nitro, segurança server-side |
+| [layers/1-base/CLAUDE.md](layers/1-base/CLAUDE.md) | UI, shadcn-vue, utils, tipos globais |
 | [layers/1-base/app/components/CLAUDE.md](layers/1-base/app/components/CLAUDE.md) | shadcn-vue, componentes |
 | [layers/1-base/app/composables/CLAUDE.md](layers/1-base/app/composables/CLAUDE.md) | Padrões de composables |
 | [layers/2-example/CLAUDE.md](layers/2-example/CLAUDE.md) | Template para criar features |
+| [layers/4-landing/CLAUDE.md](layers/4-landing/CLAUDE.md) | Landing page |
 | [tests/CLAUDE.md](tests/CLAUDE.md) | Vitest, Playwright, mocking |

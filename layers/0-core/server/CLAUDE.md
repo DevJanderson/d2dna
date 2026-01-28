@@ -4,21 +4,29 @@ Instruções específicas para o servidor Nitro (API routes).
 
 ## Estrutura
 
-API global fica em `server/`. API específica de feature fica em `layers/*/server/`.
+**Não existe pasta `server/` na raiz.** Cada layer contém seu próprio `server/` com endpoints específicos.
 
 ```
-server/                         # API global
-├── api/
-│   └── health.get.ts           # GET /api/health
-├── middleware/                 # Middleware do servidor
-└── utils/                      # Utilitários do servidor
-
-layers/2-example/server/        # API da feature layer
-└── api/
-    └── examples/
-        ├── index.get.ts        # GET /api/examples
-        └── [id].get.ts         # GET /api/examples/:id
+layers/
+├── 0-core/server/              # Endpoints globais (fundação)
+│   ├── api/
+│   │   └── health.get.ts       # GET /api/health
+│   ├── middleware/             # Middleware do servidor
+│   └── utils/                  # Utilitários do servidor
+│
+└── 2-example/server/           # Endpoints da feature layer
+    └── api/
+        └── examples/
+            ├── index.get.ts    # GET /api/examples
+            └── [id].get.ts     # GET /api/examples/:id
 ```
+
+### Onde colocar endpoints?
+
+| Tipo de endpoint | Local |
+|------------------|-------|
+| Globais (health, version, etc.) | `layers/0-core/server/api/` |
+| Específicos de feature | `layers/{N}-{feature}/server/api/` |
 
 ## Convenção de Nomenclatura
 
@@ -37,7 +45,7 @@ O Nitro usa o nome do arquivo para definir o método HTTP:
 ### GET simples
 
 ```typescript
-// server/api/users.get.ts
+// layers/{N}-{feature}/server/api/users.get.ts
 export default defineEventHandler(async (event) => {
   return [
     { id: '1', name: 'João' },
@@ -49,7 +57,7 @@ export default defineEventHandler(async (event) => {
 ### GET com parâmetro
 
 ```typescript
-// server/api/users/[id].get.ts
+// layers/{N}-{feature}/server/api/users/[id].get.ts
 export default defineEventHandler(async (event) => {
   const id = getRouterParam(event, 'id')
 
@@ -61,7 +69,7 @@ export default defineEventHandler(async (event) => {
 ### POST com body
 
 ```typescript
-// server/api/users.post.ts
+// layers/{N}-{feature}/server/api/users.post.ts
 export default defineEventHandler(async (event) => {
   const body = await readBody(event)
 
@@ -73,7 +81,7 @@ export default defineEventHandler(async (event) => {
 ### Com query params
 
 ```typescript
-// server/api/users.get.ts
+// layers/{N}-{feature}/server/api/users.get.ts
 export default defineEventHandler(async (event) => {
   const query = getQuery(event)
   const page = Number(query.page) || 1

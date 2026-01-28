@@ -39,7 +39,7 @@ export default defineNuxtConfig({
   },
 
   // Nuxt Layers - auto-scan de ~/layers (Nuxt 4+)
-  // Ordem de prioridade: 4-landing > 2-example > 1-base
+  // Ordem de prioridade: 4-landing > 2-example > 1-base > 0-core
 
   modules: [
     '@nuxt/eslint',
