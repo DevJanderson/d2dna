@@ -2,17 +2,12 @@
 /**
  * Layout Desktop
  * Layout para área autenticada com dock sidebar
- * Wallpaper aplicado no nível do layout para cobrir toda a tela
  */
-const { wallpaperStyle } = useWallpaper()
 </script>
 
 <template>
-  <div class="relative h-screen">
-    <!-- Wallpaper de fundo (cobre toda a tela) -->
-    <div class="absolute inset-0 transition-all duration-500" :style="wallpaperStyle" />
-
-    <!-- Container flexbox sobre o wallpaper -->
+  <div class="relative h-screen bg-muted">
+    <!-- Container flexbox -->
     <div class="relative z-10 flex h-full">
       <!-- Dock Sidebar -->
       <AppDock />

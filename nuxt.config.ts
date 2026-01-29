@@ -17,8 +17,9 @@ export default defineNuxtConfig({
 
   // Route Rules - configurações por rota
   routeRules: {
-    '/__nuxt_content/**': { csurf: false },
-    '/api/_content/**': { csurf: false }
+    // Rotas do @nuxt/content não precisam de CSRF
+    '/__nuxt_content/**': { security: { rateLimiter: false } },
+    '/api/_content/**': { security: { rateLimiter: false } }
   },
 
   // SEO - Meta tags globais
@@ -83,13 +84,6 @@ export default defineNuxtConfig({
       maxRequestSizeInBytes: 2000000,
       maxUploadFileRequestInBytes: 8000000
     }
-  },
-
-  // CSRF Protection
-  csurf: {
-    https: process.env.NODE_ENV === 'production',
-    cookieKey: 'csrf',
-    methodsToProtect: ['POST', 'PUT', 'PATCH', 'DELETE']
   },
 
   // VeeValidate - validação de formulários

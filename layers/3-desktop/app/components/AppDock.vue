@@ -15,7 +15,10 @@ import {
   ExternalLink,
   Pin,
   Trash2,
-  Power
+  Power,
+  GitCompare,
+  Upload,
+  Home
 } from 'lucide-vue-next'
 
 interface NavItem {
@@ -30,35 +33,40 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    id: 'dashboard',
-    label: 'Dashboard',
-    icon: LayoutDashboard,
-    href: '/dashboard',
-    color: 'bg-chart-1',
-    windowIds: ['welcome', 'dashboard-stats']
+    id: 'home',
+    label: 'Início',
+    icon: Home,
+    href: '/',
+    color: 'bg-chart-5'
   },
   {
-    id: 'users',
-    label: 'Usuários',
+    id: 'review',
+    label: 'Revisão de Matches',
+    icon: GitCompare,
+    href: '/app',
+    color: 'bg-chart-1',
+    windowIds: ['review-queue', 'match-viewer']
+  },
+  {
+    id: 'search',
+    label: 'Buscar Paciente',
     icon: Users,
-    href: '/users',
+    href: '/app',
     color: 'bg-chart-2'
   },
   {
-    id: 'reports',
-    label: 'Relatórios',
-    icon: FileText,
-    href: '/reports',
-    color: 'bg-chart-4',
-    windowIds: ['getting-started', 'configuration']
+    id: 'batch',
+    label: 'Importação em Lote',
+    icon: Upload,
+    href: '/app',
+    color: 'bg-chart-4'
   },
   {
-    id: 'settings',
-    label: 'Configurações',
-    icon: Settings,
-    href: '/settings',
-    color: 'bg-chart-3',
-    windowIds: ['settings', 'wallpaper']
+    id: 'dashboard',
+    label: 'Dashboard',
+    icon: LayoutDashboard,
+    href: '/app',
+    color: 'bg-chart-3'
   }
 ]
 

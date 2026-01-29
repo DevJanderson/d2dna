@@ -15,14 +15,12 @@ layers/3-desktop/
     │   ├── AppWindowResizeHandles.vue
     │   ├── AppWindowSnapPreview.vue
     │   ├── Desktop.vue             # Container de janelas
-    │   ├── AppDock.vue             # Dock lateral
-    │   └── WallpaperSelector.vue   # Seletor de wallpaper
+    │   └── AppDock.vue             # Dock lateral
     ├── composables/
     │   ├── useWindowManager.ts     # Gerencia janelas
     │   ├── useWindowDrag.ts        # Arrastar
     │   ├── useWindowResize.ts      # Redimensionar
     │   ├── useWindowSnap.ts        # Snap nas bordas
-    │   ├── useWallpaper.ts         # Wallpaper
     │   └── useContentFiles.ts      # Lista markdown
     ├── layouts/
     │   └── desktop.vue             # Layout com dock
@@ -77,18 +75,6 @@ windowManager.open({
     </template>
   </Desktop>
 </template>
-```
-
-### Wallpaper
-
-```typescript
-const { wallpaperStyle, setWallpaperById } = useWallpaper()
-
-// Aplicar no container
-<div :style="wallpaperStyle" />
-
-// Mudar wallpaper
-setWallpaperById('gradient-ocean')
 ```
 
 ## Dependências
