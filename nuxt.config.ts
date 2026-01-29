@@ -15,15 +15,21 @@ export default defineNuxtConfig({
     compressPublicAssets: true
   },
 
+  // Route Rules - configurações por rota
+  routeRules: {
+    '/__nuxt_content/**': { csurf: false },
+    '/api/_content/**': { csurf: false }
+  },
+
   // SEO - Meta tags globais
   app: {
     head: {
       htmlAttrs: { lang: 'pt-BR' },
-      title: 'Nuxt 4 Layers Template',
+      title: 'Tucuxi-Blast',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Template profissional para Nuxt 4 com shadcn-vue, Tailwind CSS v4 e arquitetura de Layers.' },
+        { name: 'description', content: 'Sistema de Record Linkage e Gestão de Dados' },
         { name: 'theme-color', content: '#000000' }
       ],
       link: [
@@ -39,7 +45,7 @@ export default defineNuxtConfig({
   },
 
   // Nuxt Layers - auto-scan de ~/layers (Nuxt 4+)
-  // Ordem de prioridade: 4-landing > 2-example > 1-base > 0-core
+  // Ordem de prioridade: 2-example > 1-base > 0-core
 
   modules: [
     '@nuxt/eslint',
@@ -49,7 +55,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/color-mode',
     'nuxt-security',
-    'nuxt-csurf'
+    '@nuxt/content'
   ],
 
   // Security - Headers e proteções
