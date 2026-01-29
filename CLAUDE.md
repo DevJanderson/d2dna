@@ -9,7 +9,10 @@ Sempre responda em Português Brasileiro (pt-BR).
 ## Git
 
 - Não incluir `Co-Authored-By` nos commits
-- Mensagens de commit em português ou inglês (consistente com o projeto)
+- Mensagens de commit em português (Conventional Commits)
+- Branch principal de trabalho: `develop`
+- Fluxo: `feature/*` → `develop` → `staging` → `main`
+- Ver [docs/GIT_FLOW.md](docs/GIT_FLOW.md) para detalhes
 
 ## Comandos
 
@@ -49,14 +52,16 @@ Nuxt 4 + shadcn-vue + Tailwind CSS v4 + **Nuxt Layers**.
 
 ```
 layers/                 # TUDO fica aqui (inclusive server/)
-  0-core/               # Fundação: app.vue, error.vue, CSS global, API base
+  0-core/               # Fundação: app.vue, error.vue, index.vue, CSS global
     server/api/         # Endpoints globais (health, etc.)
   1-base/               # UI: shadcn-vue, utils, tipos globais
   2-example/            # Feature layer de exemplo (copiar para novas)
     server/api/         # Endpoints específicos da feature
-  4-landing/            # Landing page
+generated/              # Código gerado pelo Kubb (tipos, schemas)
 tests/                  # unit/, integration/, e2e/
 ```
+
+> **Server dentro das layers:** Não existe `server/` na raiz. Cada layer contém seu próprio `server/` com endpoints específicos.
 
 > Use hífen (`-`) no nome das layers, não ponto. Layers em `~/layers` são auto-registradas.
 
@@ -65,7 +70,7 @@ tests/                  # unit/, integration/, e2e/
 ### Ordem de Prioridade (Layers)
 
 ```
-4-landing > 2-example > 1-base > 0-core
+2-example > 1-base > 0-core
 ```
 
 Número maior = maior prioridade = sobrescreve layers anteriores.
@@ -144,6 +149,20 @@ const result = schema.safeParse(body)
 if (!result.success) throw createError({ statusCode: 400 })
 ```
 
+## Integração com APIs Externas (Kubb)
+
+Para integrar com APIs externas, usar o padrão **Kubb + BFF**:
+
+```bash
+npm run api:generate    # Gera tipos e schemas do OpenAPI
+```
+
+- **Tipos Kubb**: usar em composables e server
+- **Schemas Zod**: usar para validação no BFF
+- **Cliente HTTP**: NÃO usar (usar $fetch via BFF)
+
+Ver [docs/KUBB.md](docs/KUBB.md) para implementação completa.
+
 ## Documentação por Diretório
 
 Cada diretório principal tem seu próprio `CLAUDE.md` com instruções específicas:
@@ -153,8 +172,5 @@ Cada diretório principal tem seu próprio `CLAUDE.md` com instruções específ
 | [layers/0-core/CLAUDE.md](layers/0-core/CLAUDE.md) | app.vue, error.vue, CSS global |
 | [layers/0-core/server/CLAUDE.md](layers/0-core/server/CLAUDE.md) | API routes, Nitro, segurança server-side |
 | [layers/1-base/CLAUDE.md](layers/1-base/CLAUDE.md) | UI, shadcn-vue, utils, tipos globais |
-| [layers/1-base/app/components/CLAUDE.md](layers/1-base/app/components/CLAUDE.md) | shadcn-vue, componentes |
-| [layers/1-base/app/composables/CLAUDE.md](layers/1-base/app/composables/CLAUDE.md) | Padrões de composables |
 | [layers/2-example/CLAUDE.md](layers/2-example/CLAUDE.md) | Template para criar features |
-| [layers/4-landing/CLAUDE.md](layers/4-landing/CLAUDE.md) | Landing page |
 | [tests/CLAUDE.md](tests/CLAUDE.md) | Vitest, Playwright, mocking |

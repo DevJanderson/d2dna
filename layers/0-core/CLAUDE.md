@@ -10,6 +10,8 @@ layers/0-core/
 └── app/
     ├── app.vue             # Root component
     ├── error.vue           # Página de erro (404, 500)
+    ├── pages/
+    │   └── index.vue       # Página inicial (/)
     └── assets/css/
         └── main.css        # Tailwind CSS + variáveis de tema
 ```
@@ -20,6 +22,7 @@ layers/0-core/
 |---------|--------|
 | `app.vue` | Root component com `<NuxtLayout>` e `<NuxtPage>` |
 | `error.vue` | Página de erro global com tratamento de 404 e outros erros |
+| `pages/index.vue` | Página inicial do projeto |
 | `main.css` | Configuração Tailwind v4, variáveis CSS (dark/light mode) |
 
 ## Configuração do CSS
@@ -40,7 +43,7 @@ export default defineNuxtConfig({
 Esta é a layer com **menor prioridade** (0). Todas as outras layers podem sobrescrever seus arquivos.
 
 ```
-0-core < 1-base < 2-example < 4-landing
+0-core < 1-base < 2-example
 ```
 
 ## Customização
