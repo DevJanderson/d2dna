@@ -42,7 +42,10 @@ export default defineNuxtConfig({
         { name: 'theme-color', content: '#000000' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap' }
       ]
     }
   },
@@ -74,9 +77,9 @@ export default defineNuxtConfig({
       contentSecurityPolicy: {
         'default-src': ["'self'"],
         'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-        'style-src': ["'self'", "'unsafe-inline'"],
-        'img-src': ["'self'", 'data:', 'https:'],
-        'font-src': ["'self'"],
+        'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+        'img-src': ["'self'", 'data:', 'https:', 'https://d2dna.com'],
+        'font-src': ["'self'", 'https://fonts.gstatic.com'],
         'connect-src': ["'self'"],
         'frame-ancestors': ["'none'"],
         'base-uri': ["'self'"],

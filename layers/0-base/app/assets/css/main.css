@@ -7,6 +7,12 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* Fontes - Space Grotesk (sans) + Space Mono (mono) */
+@theme {
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Space Mono", ui-monospace, SFMono-Regular, "Roboto Mono", monospace;
+}
+
 @theme inline {
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
