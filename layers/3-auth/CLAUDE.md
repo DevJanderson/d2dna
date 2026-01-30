@@ -18,13 +18,15 @@ layers/3-auth/
 │   ├── middleware/
 │   │   └── auth.ts              # Guard de rotas autenticadas
 │   └── pages/
-│       └── login.vue            # Página de login
+│       ├── login.vue            # Página de login
+│       └── forgot-password.vue  # Esqueci minha senha
 └── server/
     ├── api/auth/
     │   ├── login.post.ts        # POST /api/auth/login
     │   ├── logout.post.ts       # POST /api/auth/logout
     │   ├── refresh.post.ts      # POST /api/auth/refresh
-    │   └── me.get.ts            # GET /api/auth/me
+    │   ├── me.get.ts            # GET /api/auth/me
+    │   └── forgot-password.post.ts  # POST /api/auth/forgot-password
     └── utils/
         └── auth-api.ts          # Helpers de token (cookies httpOnly)
 ```
@@ -37,6 +39,14 @@ layers/3-auth/
 | `/api/auth/logout` | POST | Logout (limpa cookies) |
 | `/api/auth/refresh` | POST | Renova access token |
 | `/api/auth/me` | GET | Dados do usuário logado |
+| `/api/auth/forgot-password` | POST | Solicitar reset de senha |
+
+## Páginas
+
+| Rota | Protegida | Descrição |
+|------|-----------|-----------|
+| `/login` | Não | Formulário de login |
+| `/forgot-password` | Não | Solicitar reset de senha |
 
 ## Fluxo de Autenticação
 

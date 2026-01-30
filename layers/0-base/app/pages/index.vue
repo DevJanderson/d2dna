@@ -2,6 +2,11 @@
 /**
  * Página inicial - Tucuxi-Blast
  */
+const auth = useAuthStore()
+
+onMounted(() => {
+  auth.checkAuth()
+})
 </script>
 
 <template>
@@ -18,10 +23,32 @@
       </p>
     </div>
 
-    <div class="flex gap-4">
-      <NuxtLink to="/example">
-        <Button size="lg">Acessar Sistema</Button>
-      </NuxtLink>
-    </div>
+    <!-- Logado -->
+    <template v-if="auth.isAuthenticated">
+      <p class="text-sm text-muted-foreground">
+        Logado como <span class="font-medium text-foreground">{{ auth.user?.nome }}</span>
+      </p>
+      <div class="flex gap-4">
+        <NuxtLink to="/app">
+          <Button size="lg">Acessar Workspace</Button>
+        </NuxtLink>
+        <Button variant="outline" size="lg" @click="auth.logout()">
+          Sair
+        </Button>
+      </div>
+    </template>
+
+    <!-- Não logado -->
+    <template v-else>
+      <div class="flex gap-4">
+        <NuxtLink to="/login">
+          <Button size="lg">Fazer Login</Button>
+        </NuxtLink>
+      </div>
+    </template>
+
+    <p class="text-xs text-muted-foreground mt-8">
+      &copy; {{ new Date().getFullYear() }} D2DNA
+    </p>
   </div>
 </template>

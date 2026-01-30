@@ -5,6 +5,14 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
+  // Nuxt Layers - ordem de prioridade (último sobrescreve)
+  extends: [
+    './layers/0-base',
+    './layers/1-example',
+    './layers/2-desktop',
+    './layers/3-auth'
+  ],
+
   // Performance - Experimental features
   experimental: {
     crossOriginPrefetch: true

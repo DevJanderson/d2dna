@@ -38,6 +38,19 @@ function handleSuccess() {
       <!-- Card de Login -->
       <div class="rounded-lg border bg-card p-6 shadow-sm">
         <AuthLoginForm @success="handleSuccess" />
+
+        <div class="mt-4 text-center">
+          <NuxtLink to="/forgot-password" class="text-sm text-muted-foreground hover:text-primary hover:underline">
+            Esqueci minha senha
+          </NuxtLink>
+        </div>
+      </div>
+
+      <!-- Voltar -->
+      <div class="text-center">
+        <NuxtLink to="/" class="text-sm text-muted-foreground hover:text-primary hover:underline">
+          Voltar para a página inicial
+        </NuxtLink>
       </div>
 
       <!-- Footer -->
