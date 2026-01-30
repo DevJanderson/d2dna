@@ -82,6 +82,18 @@ onMounted(() => {
   }
 })
 
+// Carrega usuários quando a janela de gerenciamento é aberta
+watch(
+  () => windowManager.windows.value,
+  (windows) => {
+    const hasUserManagement = windows.some(w => w.id === 'user-management')
+    if (hasUserManagement && usersList.value.length === 0 && !usersLoading.value) {
+      loadUsers()
+    }
+  },
+  { deep: true }
+)
+
 // ============================================
 // FILA DE REVISÃO - Dados e funções
 // ============================================
