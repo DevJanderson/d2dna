@@ -5,6 +5,11 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
+  // Servidor de desenvolvimento acessível pela rede local
+  devServer: {
+    host: '0.0.0.0'
+  },
+
   // Nuxt Layers - ordem de prioridade (último sobrescreve)
   extends: [
     './layers/0-base',
