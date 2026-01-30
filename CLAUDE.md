@@ -53,15 +53,14 @@ Nuxt 4 + shadcn-vue + Tailwind CSS v4 + **Nuxt Layers**.
 ```
 layers/                 # TUDO fica aqui (inclusive server/)
   0-core/               # Fundação: app.vue, error.vue, index.vue, CSS global
-    server/api/         # Endpoints globais (health, etc.)
   1-base/               # UI: shadcn-vue, utils, tipos globais
   2-example/            # Feature layer de exemplo (copiar para novas)
-    server/api/         # Endpoints específicos da feature
+  3-desktop/            # Sistema de janelas estilo desktop (Windows/macOS)
 generated/              # Código gerado pelo Kubb (tipos, schemas)
 tests/                  # unit/, integration/, e2e/
 ```
 
-> **Server dentro das layers:** Não existe `server/` na raiz. Cada layer contém seu próprio `server/` com endpoints específicos.
+> **Server dentro das layers:** Cada layer pode conter seu próprio `server/` com endpoints específicos.
 
 > Use hífen (`-`) no nome das layers, não ponto. Layers em `~/layers` são auto-registradas.
 
@@ -70,7 +69,7 @@ tests/                  # unit/, integration/, e2e/
 ### Ordem de Prioridade (Layers)
 
 ```
-2-example > 1-base > 0-core
+3-desktop > 2-example > 1-base > 0-core
 ```
 
 Número maior = maior prioridade = sobrescreve layers anteriores.
@@ -173,4 +172,5 @@ Cada diretório principal tem seu próprio `CLAUDE.md` com instruções específ
 | [layers/0-core/server/CLAUDE.md](layers/0-core/server/CLAUDE.md) | API routes, Nitro, segurança server-side |
 | [layers/1-base/CLAUDE.md](layers/1-base/CLAUDE.md) | UI, shadcn-vue, utils, tipos globais |
 | [layers/2-example/CLAUDE.md](layers/2-example/CLAUDE.md) | Template para criar features |
+| [layers/3-desktop/CLAUDE.md](layers/3-desktop/CLAUDE.md) | Sistema de janelas (useWindowManager) |
 | [tests/CLAUDE.md](tests/CLAUDE.md) | Vitest, Playwright, mocking |
