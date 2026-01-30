@@ -83,23 +83,25 @@ function getScoreColor(score: number) {
         </div>
 
         <div class="space-y-2">
-          <button
+          <Card
             v-for="match in pendingMatches"
             :key="match.id"
-            class="w-full rounded-lg border p-3 text-left transition-colors hover:bg-muted"
+            class="cursor-pointer transition-colors hover:bg-muted"
             :class="{ 'border-primary bg-primary/5': selectedMatch?.id === match.id }"
             @click="selectMatch(match)"
           >
-            <div class="flex items-center justify-between">
-              <span class="font-medium text-sm">Match #{{ match.id }}</span>
-              <span class="text-sm font-bold" :class="getScoreColor(match.score)">
-                {{ match.score }}%
-              </span>
-            </div>
-            <div class="mt-1 text-xs text-muted-foreground">
-              {{ match.nameA }} ↔ {{ match.nameB }}
-            </div>
-          </button>
+            <CardContent class="p-3">
+              <div class="flex items-center justify-between">
+                <span class="font-medium text-sm">Match #{{ match.id }}</span>
+                <span class="text-sm font-bold" :class="getScoreColor(match.score)">
+                  {{ match.score }}%
+                </span>
+              </div>
+              <div class="mt-1 text-xs text-muted-foreground">
+                {{ match.nameA }} ↔ {{ match.nameB }}
+              </div>
+            </CardContent>
+          </Card>
         </div>
 
         <div v-if="pendingMatches.length === 0" class="py-8 text-center text-muted-foreground">
@@ -133,58 +135,62 @@ function getScoreColor(score: number) {
         <!-- Comparação lado a lado -->
         <div class="flex-1 grid grid-cols-2 gap-4 py-4">
           <!-- Registro A -->
-          <div class="rounded-lg border p-4">
-            <div class="text-xs font-medium text-muted-foreground mb-3">REGISTRO A</div>
-            <div class="space-y-3">
+          <Card>
+            <CardHeader class="pb-2">
+              <CardTitle class="text-xs font-medium text-muted-foreground">REGISTRO A</CardTitle>
+            </CardHeader>
+            <CardContent class="space-y-3">
               <div>
-                <label class="text-xs text-muted-foreground">Nome</label>
+                <span class="text-xs text-muted-foreground">Nome</span>
                 <p class="font-medium">{{ selectedMatch.nameA }}</p>
               </div>
               <div>
-                <label class="text-xs text-muted-foreground">CPF</label>
+                <span class="text-xs text-muted-foreground">CPF</span>
                 <p class="font-medium">123.456.789-00</p>
               </div>
               <div>
-                <label class="text-xs text-muted-foreground">Data Nascimento</label>
+                <span class="text-xs text-muted-foreground">Data Nascimento</span>
                 <p class="font-medium">15/03/1975</p>
               </div>
               <div>
-                <label class="text-xs text-muted-foreground">Nome da Mãe</label>
+                <span class="text-xs text-muted-foreground">Nome da Mae</span>
                 <p class="font-medium">MARIA DA SILVA</p>
               </div>
               <div>
-                <label class="text-xs text-muted-foreground">CNS</label>
+                <span class="text-xs text-muted-foreground">CNS</span>
                 <p class="font-medium">123456789012345</p>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
 
           <!-- Registro B -->
-          <div class="rounded-lg border p-4">
-            <div class="text-xs font-medium text-muted-foreground mb-3">REGISTRO B</div>
-            <div class="space-y-3">
+          <Card>
+            <CardHeader class="pb-2">
+              <CardTitle class="text-xs font-medium text-muted-foreground">REGISTRO B</CardTitle>
+            </CardHeader>
+            <CardContent class="space-y-3">
               <div>
-                <label class="text-xs text-muted-foreground">Nome</label>
+                <span class="text-xs text-muted-foreground">Nome</span>
                 <p class="font-medium">{{ selectedMatch.nameB }}</p>
               </div>
               <div>
-                <label class="text-xs text-muted-foreground">CPF</label>
+                <span class="text-xs text-muted-foreground">CPF</span>
                 <p class="font-medium text-muted-foreground italic">(vazio)</p>
               </div>
               <div>
-                <label class="text-xs text-muted-foreground">Data Nascimento</label>
+                <span class="text-xs text-muted-foreground">Data Nascimento</span>
                 <p class="font-medium">00/03/1975</p>
               </div>
               <div>
-                <label class="text-xs text-muted-foreground">Nome da Mãe</label>
+                <span class="text-xs text-muted-foreground">Nome da Mae</span>
                 <p class="font-medium">MARIA SILVA</p>
               </div>
               <div>
-                <label class="text-xs text-muted-foreground">CNS</label>
+                <span class="text-xs text-muted-foreground">CNS</span>
                 <p class="font-medium">987654321098765</p>
               </div>
-            </div>
-          </div>
+            </CardContent>
+          </Card>
         </div>
 
         <!-- Motivo do match -->
