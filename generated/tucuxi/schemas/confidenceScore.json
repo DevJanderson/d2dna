@@ -1,0 +1,26 @@
+{
+  "properties": {
+    "method": {
+      "type": "string",
+      "enum": ["cpf_exact", "cns_phonetic", "cns_only", "composite", "name_only", "dna_match"],
+      "title": "Method"
+    },
+    "score": { "type": "number", "maximum": 100, "minimum": 0, "title": "Score" },
+    "details": { "additionalProperties": true, "type": "object", "title": "Details" }
+  },
+  "type": "object",
+  "required": ["method", "score"],
+  "title": "ConfidenceScore",
+  "description": "Score de confiança para cada método",
+  "example": {
+    "details": {
+      "cns_found": true,
+      "metaphone_match": true,
+      "name_similarity": 0.95,
+      "soundex_match": true
+    },
+    "method": "cns_phonetic",
+    "score": 90
+  },
+  "x-readme-ref-name": "ConfidenceScore"
+}

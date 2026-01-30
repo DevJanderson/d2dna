@@ -1,0 +1,98 @@
+{
+  "properties": {
+    "data": {
+      "items": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id" },
+          "uuid_cliente": { "type": "string", "format": "uuid", "title": "Uuid Cliente" },
+          "nome": { "type": "string", "title": "Nome" },
+          "data_nascimento": {
+            "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+            "title": "Data Nascimento"
+          },
+          "sexo": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Sexo" },
+          "nome_mae": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Nome Mae" },
+          "cpf": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Cpf" },
+          "cns": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Cns" },
+          "origem": { "anyOf": [{ "type": "integer" }, { "type": "null" }], "title": "Origem" },
+          "id_origem": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Id Origem"
+          },
+          "review": { "anyOf": [{ "type": "boolean" }, { "type": "null" }], "title": "Review" },
+          "obs_review": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Obs Review"
+          },
+          "status": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Status" }
+        },
+        "type": "object",
+        "required": ["id", "uuid_cliente", "nome"],
+        "title": "ReviewSchema",
+        "x-readme-ref-name": "ReviewSchema"
+      },
+      "type": "array",
+      "title": "Data",
+      "description": "Lista de itens da página atual"
+    },
+    "pagination": {
+      "description": "Metadados de paginação",
+      "properties": {
+        "next_cursor": {
+          "anyOf": [{ "type": "string" }, { "type": "null" }],
+          "title": "Next Cursor",
+          "description": "Cursor opaco para próxima página",
+          "example": "eyJpZCI6MTAwfQ=="
+        },
+        "previous_cursor": {
+          "anyOf": [{ "type": "string" }, { "type": "null" }],
+          "title": "Previous Cursor",
+          "description": "Cursor opaco para página anterior",
+          "example": "eyJpZCI6NTB9"
+        },
+        "has_next": {
+          "type": "boolean",
+          "title": "Has Next",
+          "description": "Indica se há próxima página",
+          "default": false
+        },
+        "has_previous": {
+          "type": "boolean",
+          "title": "Has Previous",
+          "description": "Indica se há página anterior",
+          "default": false
+        },
+        "limit": {
+          "type": "integer",
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Limit",
+          "description": "Número de itens retornados",
+          "default": 50
+        }
+      },
+      "type": "object",
+      "title": "PaginationMeta",
+      "example": {
+        "has_next": true,
+        "has_previous": false,
+        "limit": 50,
+        "next_cursor": "eyJpZCI6MTAwfQ=="
+      },
+      "x-readme-ref-name": "PaginationMeta"
+    }
+  },
+  "type": "object",
+  "required": ["data", "pagination"],
+  "title": "PaginatedResponse[ReviewSchema]",
+  "example": {
+    "data": [],
+    "pagination": {
+      "has_next": true,
+      "has_previous": false,
+      "limit": 50,
+      "next_cursor": "eyJpZCI6MTAwfQ=="
+    }
+  },
+  "x-readme-ref-name": "PaginatedResponse_ReviewSchema_"
+}

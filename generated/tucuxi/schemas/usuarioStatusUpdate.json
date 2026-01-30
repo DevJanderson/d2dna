@@ -1,0 +1,16 @@
+{
+  "properties": {
+    "ativo": {
+      "type": "boolean",
+      "title": "Ativo",
+      "description": "Define se o usuário está ativo (true) ou inativo/desativado (false)",
+      "example": true
+    }
+  },
+  "type": "object",
+  "required": ["ativo"],
+  "title": "UsuarioStatusUpdate",
+  "description": "Schema para atualização unificada de status do usuário",
+  "examples": [{ "ativo": true }, { "ativo": false }],
+  "x-readme-ref-name": "UsuarioStatusUpdate"
+}

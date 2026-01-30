@@ -1,0 +1,36 @@
+{
+  "properties": {
+    "type": {
+      "type": "string",
+      "title": "Type",
+      "description": "Tipo de erro: digit_swap, year_typo, month_day_swap, etc"
+    },
+    "original_date": {
+      "type": "string",
+      "title": "Original Date",
+      "description": "Data original fornecida"
+    },
+    "possible_date": {
+      "type": "string",
+      "title": "Possible Date",
+      "description": "Data corrigida possível"
+    },
+    "confidence": {
+      "type": "number",
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Confidence",
+      "description": "Confiança na correção (0.0 a 1.0)"
+    },
+    "description": {
+      "type": "string",
+      "title": "Description",
+      "description": "Descrição do erro detectado"
+    }
+  },
+  "type": "object",
+  "required": ["type", "original_date", "possible_date", "confidence", "description"],
+  "title": "DateErrorPattern",
+  "description": "Padrão de erro de data detectado",
+  "x-readme-ref-name": "DateErrorPattern"
+}

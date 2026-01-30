@@ -1,0 +1,51 @@
+{
+  "properties": {
+    "nome": {
+      "anyOf": [{ "type": "string", "minLength": 3 }, { "type": "null" }],
+      "title": "Nome",
+      "description": "Nome completo para filtrar resultados",
+      "example": "João Silva"
+    },
+    "data_nascimento": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "title": "Data Nascimento",
+      "description": "Data de nascimento central (YYYY-MM-DD)",
+      "example": "1990-05-15"
+    },
+    "nome_mae": {
+      "anyOf": [{ "type": "string", "minLength": 3 }, { "type": "null" }],
+      "title": "Nome Mae",
+      "description": "Nome da mãe para filtrar resultados",
+      "example": "Maria Santos"
+    },
+    "cpf": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Cpf",
+      "description": "CPF para filtrar resultados",
+      "example": "123.456.789-10"
+    },
+    "sexo": {
+      "anyOf": [{ "type": "string", "pattern": "^[MmFf]$" }, { "type": "null" }],
+      "title": "Sexo",
+      "description": "Sexo para filtrar resultados (M ou F)",
+      "example": "M"
+    }
+  },
+  "type": "object",
+  "required": ["data_nascimento"],
+  "title": "DateToleranceSearchRequest",
+  "description": "Request para busca com tolerância de data",
+  "examples": [
+    { "data_nascimento": "1990-05-15", "nome": "João Silva", "title": "Busca simples com data" },
+    {
+      "cpf": "123.456.789-10",
+      "data_nascimento": "1985-03-20",
+      "nome": "Maria Santos",
+      "nome_mae": "Ana Santos",
+      "sexo": "F",
+      "title": "Busca completa com filtros"
+    }
+  ],
+  "x-readme-ref-name": "DateToleranceSearchRequest"
+}

@@ -1,0 +1,73 @@
+{
+  "properties": {
+    "id": {
+      "anyOf": [{ "type": "integer" }, { "type": "null" }],
+      "title": "Id",
+      "description": "ID do detalhe",
+      "example": 1
+    },
+    "telefone": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Telefone",
+      "description": "Telefone do cliente",
+      "example": "(99) 99999-9999"
+    },
+    "email": {
+      "anyOf": [{ "type": "string", "format": "email" }, { "type": "string" }, { "type": "null" }],
+      "title": "Email",
+      "description": "E-mail do cliente",
+      "example": "cliente@exemplo.com"
+    },
+    "cep": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Cep",
+      "description": "CEP do endereço",
+      "example": "41234-123"
+    },
+    "estado": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Estado",
+      "description": "Estado (UF)",
+      "example": "BA"
+    },
+    "cidade": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Cidade",
+      "description": "Cidade",
+      "example": "Salvador"
+    },
+    "bairro": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Bairro",
+      "description": "Bairro",
+      "example": "Pituba"
+    },
+    "logradouro": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Logradouro",
+      "description": "Rua ou avenida",
+      "example": "Av. ACM"
+    },
+    "numero": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Numero",
+      "description": "Número do endereço",
+      "example": "123"
+    },
+    "complemento": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Complemento",
+      "description": "Complemento",
+      "example": "Apto 101"
+    },
+    "principal": {
+      "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+      "title": "Principal",
+      "description": "Se é o contato/endereço principal",
+      "default": true
+    }
+  },
+  "type": "object",
+  "title": "ClienteDetalheSchema",
+  "x-readme-ref-name": "ClienteDetalheSchema"
+}

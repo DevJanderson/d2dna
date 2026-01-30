@@ -1,0 +1,87 @@
+{
+  "properties": {
+    "uuid_cliente": {
+      "type": "string",
+      "format": "uuid",
+      "title": "Uuid Cliente",
+      "description": "UUID do cliente",
+      "example": "550e8400-e29b-41d4-a716-446655440000"
+    },
+    "nome": {
+      "type": "string",
+      "title": "Nome",
+      "description": "Nome do cliente",
+      "example": "João Silva Santos"
+    },
+    "data_nascimento": {
+      "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+      "title": "Data Nascimento",
+      "description": "Data de nascimento",
+      "example": "1990-01-15"
+    },
+    "sexo": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Sexo",
+      "description": "Sexo (M/F)",
+      "example": "M"
+    },
+    "nome_mae": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Nome Mae",
+      "description": "Nome da mãe",
+      "example": "Maria Silva"
+    },
+    "cpf": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Cpf",
+      "description": "CPF (apenas números)",
+      "example": "12345678901"
+    },
+    "cns": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Cns",
+      "description": "CNS (até 15 dígitos)",
+      "example": "123456789012345"
+    },
+    "origem": {
+      "anyOf": [{ "type": "integer" }, { "type": "null" }],
+      "title": "Origem",
+      "description": "Código da origem dos dados",
+      "example": 1
+    },
+    "id_user": {
+      "anyOf": [{ "type": "integer" }, { "type": "null" }],
+      "title": "Id User",
+      "description": "ID do usuário que fez a operação",
+      "example": 1
+    },
+    "tipo_operacao": {
+      "type": "integer",
+      "title": "Tipo Operacao",
+      "description": "Tipo de operação (obrigatório no create)",
+      "example": 1
+    },
+    "data_atendimento": {
+      "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
+      "title": "Data Atendimento",
+      "description": "Data do atendimento/histórico",
+      "example": "2024-01-15T10:30:00"
+    },
+    "descricao": {
+      "anyOf": [{ "type": "string", "maxLength": 1000 }, { "type": "null" }],
+      "title": "Descricao",
+      "description": "Descrição do histórico",
+      "example": "Consulta de rotina"
+    },
+    "id_origem": {
+      "anyOf": [{ "type": "string", "maxLength": 50 }, { "type": "null" }],
+      "title": "Id Origem",
+      "description": "ID de origem externa",
+      "example": "EXT001"
+    }
+  },
+  "type": "object",
+  "required": ["uuid_cliente", "nome", "tipo_operacao"],
+  "title": "HistoricoClienteCreate",
+  "x-readme-ref-name": "HistoricoClienteCreate"
+}

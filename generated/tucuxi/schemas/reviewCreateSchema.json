@@ -1,0 +1,21 @@
+{
+  "properties": {
+    "uuid_cliente": { "type": "string", "format": "uuid", "title": "Uuid Cliente" },
+    "id_revisor": { "anyOf": [{ "type": "integer" }, { "type": "null" }], "title": "Id Revisor" },
+    "acao": { "type": "string", "title": "Acao" },
+    "tipo_revisao": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Tipo Revisao"
+    },
+    "observacao": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Observacao" },
+    "status": {
+      "type": "string",
+      "enum": ["aprovado", "rejeitado", "corrigido"],
+      "title": "Status"
+    }
+  },
+  "type": "object",
+  "required": ["uuid_cliente", "acao", "status"],
+  "title": "ReviewCreateSchema",
+  "x-readme-ref-name": "ReviewCreateSchema"
+}

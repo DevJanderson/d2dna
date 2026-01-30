@@ -1,0 +1,87 @@
+{
+  "properties": {
+    "cliente": {
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Cliente",
+      "description": "Dados do cliente encontrado"
+    },
+    "date_proximity_score": {
+      "type": "integer",
+      "maximum": 100,
+      "minimum": 0,
+      "title": "Date Proximity Score",
+      "description": "Score de proximidade da data (0-100)"
+    },
+    "days_difference": {
+      "type": "integer",
+      "minimum": 0,
+      "title": "Days Difference",
+      "description": "Diferença em dias da data fornecida"
+    },
+    "exact_match": {
+      "type": "boolean",
+      "title": "Exact Match",
+      "description": "Se a data é exatamente igual"
+    },
+    "error_patterns_detected": {
+      "items": {
+        "properties": {
+          "type": {
+            "type": "string",
+            "title": "Type",
+            "description": "Tipo de erro: digit_swap, year_typo, month_day_swap, etc"
+          },
+          "original_date": {
+            "type": "string",
+            "title": "Original Date",
+            "description": "Data original fornecida"
+          },
+          "possible_date": {
+            "type": "string",
+            "title": "Possible Date",
+            "description": "Data corrigida possível"
+          },
+          "confidence": {
+            "type": "number",
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Confidence",
+            "description": "Confiança na correção (0.0 a 1.0)"
+          },
+          "description": {
+            "type": "string",
+            "title": "Description",
+            "description": "Descrição do erro detectado"
+          }
+        },
+        "type": "object",
+        "required": ["type", "original_date", "possible_date", "confidence", "description"],
+        "title": "DateErrorPattern",
+        "description": "Padrão de erro de data detectado",
+        "x-readme-ref-name": "DateErrorPattern"
+      },
+      "type": "array",
+      "title": "Error Patterns Detected",
+      "description": "Padrões de erro detectados na data"
+    },
+    "overall_score": {
+      "type": "integer",
+      "maximum": 100,
+      "minimum": 0,
+      "title": "Overall Score",
+      "description": "Score geral considerando todos os campos"
+    }
+  },
+  "type": "object",
+  "required": [
+    "cliente",
+    "date_proximity_score",
+    "days_difference",
+    "exact_match",
+    "overall_score"
+  ],
+  "title": "DateToleranceResult",
+  "description": "Resultado individual da busca com tolerância de data",
+  "x-readme-ref-name": "DateToleranceResult"
+}

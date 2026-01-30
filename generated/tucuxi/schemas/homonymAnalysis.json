@@ -1,0 +1,37 @@
+{
+  "properties": {
+    "potential_homonyms": {
+      "type": "integer",
+      "minimum": 0,
+      "title": "Potential Homonyms",
+      "description": "Número de possíveis homônimos"
+    },
+    "resolution_method": {
+      "type": "string",
+      "title": "Resolution Method",
+      "description": "Método usado para resolver: address, phone, email, none"
+    },
+    "confidence": {
+      "type": "string",
+      "title": "Confidence",
+      "description": "Confiança na resolução: high, medium, low"
+    },
+    "disambiguation_score": {
+      "type": "number",
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Disambiguation Score",
+      "description": "Score de desambiguação (0.0-1.0)"
+    },
+    "details": {
+      "anyOf": [{ "additionalProperties": true, "type": "object" }, { "type": "null" }],
+      "title": "Details",
+      "description": "Detalhes da análise"
+    }
+  },
+  "type": "object",
+  "required": ["potential_homonyms", "resolution_method", "confidence", "disambiguation_score"],
+  "title": "HomonymAnalysis",
+  "description": "Análise de possíveis homônimos",
+  "x-readme-ref-name": "HomonymAnalysis"
+}

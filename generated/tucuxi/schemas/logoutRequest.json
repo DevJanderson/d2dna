@@ -1,0 +1,7 @@
+{
+  "properties": { "refresh_token": { "type": "string", "title": "Refresh Token" } },
+  "type": "object",
+  "required": ["refresh_token"],
+  "title": "LogoutRequest",
+  "x-readme-ref-name": "LogoutRequest"
+}

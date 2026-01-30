@@ -34,6 +34,16 @@ npm run test:e2e           # Playwright E2E
 npm run test:e2e:install   # Instala browsers (primeiro uso)
 ```
 
+## Antes de iniciar o servidor
+
+Sempre verificar se já há servidor rodando na porta 3000 antes de iniciar um novo:
+
+```bash
+lsof -i :3000  # Se retornar algo, matar o processo primeiro
+```
+
+Isso evita múltiplos servidores rodando em background, que podem travar o computador.
+
 ## Componentes shadcn-vue
 
 ```bash

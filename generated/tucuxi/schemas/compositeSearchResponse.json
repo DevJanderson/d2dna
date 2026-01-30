@@ -1,0 +1,94 @@
+{
+  "properties": {
+    "total_matches": {
+      "type": "integer",
+      "minimum": 0,
+      "title": "Total Matches",
+      "description": "Total de registros encontrados"
+    },
+    "search_mode": {
+      "type": "string",
+      "title": "Search Mode",
+      "description": "Modo de busca usado: strict (AND) ou flexible (OR)"
+    },
+    "search_info": {
+      "description": "Informações detalhadas sobre a busca",
+      "properties": {
+        "exact_fields": {
+          "items": { "type": "string" },
+          "type": "array",
+          "title": "Exact Fields",
+          "description": "Campos usados para busca exata"
+        },
+        "phonetic_fields": {
+          "items": { "type": "string" },
+          "type": "array",
+          "title": "Phonetic Fields",
+          "description": "Campos usados para busca fonética"
+        },
+        "mode": {
+          "type": "string",
+          "title": "Mode",
+          "description": "Modo de busca: strict (AND) ou flexible (OR)"
+        },
+        "total_conditions": {
+          "type": "integer",
+          "title": "Total Conditions",
+          "description": "Total de condições aplicadas na query"
+        }
+      },
+      "type": "object",
+      "required": ["mode", "total_conditions"],
+      "title": "SearchInfo",
+      "x-readme-ref-name": "SearchInfo"
+    },
+    "used_phonetic": {
+      "type": "boolean",
+      "title": "Used Phonetic",
+      "description": "Indica se foi usada busca fonética"
+    },
+    "results": {
+      "items": { "additionalProperties": true, "type": "object" },
+      "type": "array",
+      "title": "Results",
+      "description": "Lista de clientes ordenados por relevância",
+      "example": [
+        {
+          "cpf": "12345678910",
+          "data_nascimento": "1990-05-15",
+          "id": 123,
+          "match_details": { "cpf": "exact", "data_nascimento": "exact", "nome": "phonetic (85%)" },
+          "nome": "JOÃO DA SILVA SANTOS",
+          "score": 180,
+          "uuid_cliente": "550e8400-e29b-41d4-a716-446655440000"
+        }
+      ]
+    }
+  },
+  "type": "object",
+  "required": ["total_matches", "search_mode", "search_info", "used_phonetic", "results"],
+  "title": "CompositeSearchResponse",
+  "description": "Response da busca composta com scoring e metadados",
+  "example": {
+    "results": [
+      {
+        "cpf": "12345678910",
+        "id": 123,
+        "match_details": { "cpf": "exact", "nome": "phonetic (85%)" },
+        "nome": "JOÃO DA SILVA SANTOS",
+        "score": 180,
+        "uuid_cliente": "550e8400-e29b-41d4-a716-446655440000"
+      }
+    ],
+    "search_info": {
+      "exact_fields": ["cpf", "data_nascimento"],
+      "mode": "strict",
+      "phonetic_fields": ["nome"],
+      "total_conditions": 3
+    },
+    "search_mode": "strict",
+    "total_matches": 3,
+    "used_phonetic": true
+  },
+  "x-readme-ref-name": "CompositeSearchResponse"
+}

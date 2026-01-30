@@ -1,0 +1,41 @@
+{
+  "properties": {
+    "uuid_cliente": {
+      "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }],
+      "title": "Uuid Cliente"
+    },
+    "nome": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Nome" },
+    "data_nascimento": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Data Nascimento"
+    },
+    "sexo": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Sexo" },
+    "nome_mae": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Nome Mae" },
+    "cpf": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Cpf" },
+    "cns": {
+      "anyOf": [
+        { "items": { "type": "string" }, "type": "array" },
+        { "type": "string" },
+        { "type": "null" }
+      ],
+      "title": "Cns"
+    },
+    "origem": { "anyOf": [{ "type": "integer" }, { "type": "null" }], "title": "Origem" },
+    "id_origem": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Id Origem" },
+    "telefone": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Telefone" },
+    "email": {
+      "anyOf": [{ "type": "string", "format": "email" }, { "type": "null" }],
+      "title": "Email"
+    },
+    "cep": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Cep" },
+    "estado": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Estado" },
+    "cidade": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Cidade" },
+    "bairro": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Bairro" },
+    "logradouro": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Logradouro" },
+    "numero": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Numero" },
+    "complemento": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Complemento" }
+  },
+  "type": "object",
+  "title": "ClienteSchemaUpdate",
+  "x-readme-ref-name": "ClienteSchemaUpdate"
+}

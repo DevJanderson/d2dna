@@ -1,0 +1,30 @@
+{
+  "properties": {
+    "total_score": { "type": "integer", "title": "Total Score" },
+    "field_scores": {
+      "additionalProperties": { "type": "integer" },
+      "type": "object",
+      "title": "Field Scores"
+    },
+    "recommendations": {
+      "items": { "type": "string" },
+      "type": "array",
+      "title": "Recommendations"
+    },
+    "estimated_success_rate": { "type": "number", "title": "Estimated Success Rate" },
+    "homonym_risk": { "type": "string", "title": "Homonym Risk" },
+    "missing_fields": { "items": { "type": "string" }, "type": "array", "title": "Missing Fields" }
+  },
+  "type": "object",
+  "required": [
+    "total_score",
+    "field_scores",
+    "recommendations",
+    "estimated_success_rate",
+    "homonym_risk",
+    "missing_fields"
+  ],
+  "title": "DataQualityAnalysis",
+  "description": "Análise de qualidade dos dados",
+  "x-readme-ref-name": "DataQualityAnalysis"
+}

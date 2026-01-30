@@ -1,0 +1,21 @@
+{
+  "properties": {
+    "email": {
+      "type": "string",
+      "format": "email",
+      "title": "Email",
+      "description": "E-mail cadastrado",
+      "example": "example@d2dna.com"
+    },
+    "password": {
+      "type": "string",
+      "title": "Password",
+      "description": "Sua senha",
+      "example": "*********"
+    }
+  },
+  "type": "object",
+  "required": ["email", "password"],
+  "title": "LoginSchema",
+  "x-readme-ref-name": "LoginSchema"
+}

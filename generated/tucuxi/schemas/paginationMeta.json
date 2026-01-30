@@ -1,0 +1,46 @@
+{
+  "properties": {
+    "next_cursor": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Next Cursor",
+      "description": "Cursor opaco para próxima página",
+      "example": "eyJpZCI6MTAwfQ=="
+    },
+    "previous_cursor": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Previous Cursor",
+      "description": "Cursor opaco para página anterior",
+      "example": "eyJpZCI6NTB9"
+    },
+    "has_next": {
+      "type": "boolean",
+      "title": "Has Next",
+      "description": "Indica se há próxima página",
+      "default": false
+    },
+    "has_previous": {
+      "type": "boolean",
+      "title": "Has Previous",
+      "description": "Indica se há página anterior",
+      "default": false
+    },
+    "limit": {
+      "type": "integer",
+      "maximum": 100,
+      "minimum": 1,
+      "title": "Limit",
+      "description": "Número de itens retornados",
+      "default": 50
+    }
+  },
+  "type": "object",
+  "title": "PaginationMeta",
+  "description": "Metadados de paginação cursor-based",
+  "example": {
+    "has_next": true,
+    "has_previous": false,
+    "limit": 50,
+    "next_cursor": "eyJpZCI6MTAwfQ=="
+  },
+  "x-readme-ref-name": "PaginationMeta"
+}

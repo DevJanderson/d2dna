@@ -1,0 +1,7 @@
+{
+  "properties": { "file": { "type": "string", "format": "binary", "title": "File" } },
+  "type": "object",
+  "required": ["file"],
+  "title": "Body_upload_foto_perfil_api_v1_usuarios__usuario_id__foto_perfil_post",
+  "x-readme-ref-name": "Body_upload_foto_perfil_api_v1_usuarios__usuario_id__foto_perfil_post"
+}

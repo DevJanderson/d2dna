@@ -1,0 +1,18 @@
+{
+  "properties": {
+    "id": { "type": "integer", "title": "Id" },
+    "nome": { "type": "string", "title": "Nome" },
+    "email": { "type": "string", "format": "email", "title": "Email" },
+    "admin": { "type": "boolean", "title": "Admin", "default": false },
+    "telefone": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Telefone" },
+    "estado": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Estado" },
+    "cidade": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Cidade" },
+    "funcao": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Funcao" },
+    "instituicao": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Instituicao" },
+    "foto_perfil": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Foto Perfil" }
+  },
+  "type": "object",
+  "required": ["id", "nome", "email"],
+  "title": "UsuarioLogadoSchema",
+  "x-readme-ref-name": "UsuarioLogadoSchema"
+}

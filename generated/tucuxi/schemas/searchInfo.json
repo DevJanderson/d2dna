@@ -1,0 +1,31 @@
+{
+  "properties": {
+    "exact_fields": {
+      "items": { "type": "string" },
+      "type": "array",
+      "title": "Exact Fields",
+      "description": "Campos usados para busca exata"
+    },
+    "phonetic_fields": {
+      "items": { "type": "string" },
+      "type": "array",
+      "title": "Phonetic Fields",
+      "description": "Campos usados para busca fonética"
+    },
+    "mode": {
+      "type": "string",
+      "title": "Mode",
+      "description": "Modo de busca: strict (AND) ou flexible (OR)"
+    },
+    "total_conditions": {
+      "type": "integer",
+      "title": "Total Conditions",
+      "description": "Total de condições aplicadas na query"
+    }
+  },
+  "type": "object",
+  "required": ["mode", "total_conditions"],
+  "title": "SearchInfo",
+  "description": "Informações sobre a busca realizada",
+  "x-readme-ref-name": "SearchInfo"
+}

@@ -45,5 +45,8 @@ coverage
 /blob-report/
 /playwright/.cache/
 
+# Kubb (cache interno)
+**/.kubb/
+
 # Misc
 *.tsbuildinfo

@@ -1,0 +1,24 @@
+{
+  "properties": {
+    "id": { "type": "integer", "title": "Id" },
+    "uuid_cliente": { "type": "string", "format": "uuid", "title": "Uuid Cliente" },
+    "nome": { "type": "string", "title": "Nome" },
+    "data_nascimento": {
+      "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
+      "title": "Data Nascimento"
+    },
+    "sexo": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Sexo" },
+    "nome_mae": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Nome Mae" },
+    "cpf": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Cpf" },
+    "cns": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Cns" },
+    "origem": { "anyOf": [{ "type": "integer" }, { "type": "null" }], "title": "Origem" },
+    "id_origem": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Id Origem" },
+    "review": { "anyOf": [{ "type": "boolean" }, { "type": "null" }], "title": "Review" },
+    "obs_review": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Obs Review" },
+    "status": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Status" }
+  },
+  "type": "object",
+  "required": ["id", "uuid_cliente", "nome"],
+  "title": "ReviewSchema",
+  "x-readme-ref-name": "ReviewSchema"
+}
