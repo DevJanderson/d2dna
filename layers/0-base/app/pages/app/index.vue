@@ -4,29 +4,27 @@
  * Interface multi-janelas para revisão de matches
  */
 definePageMeta({
-  layout: 'desktop'
+  layout: 'desktop',
+  middleware: 'auth'
 })
 
 const windowManager = useWindowManager()
 
-// Abre janelas padrão do workspace ao montar
-onMounted(() => {
-  // Janela de boas-vindas / fila de revisão
-  windowManager.open({
-    id: 'review-queue',
-    title: 'Fila de Revisão',
-    position: { x: 20, y: 20 },
-    size: { width: 350, height: 500 }
-  })
-
-  // Janela do comparador de matches
-  windowManager.open({
-    id: 'match-viewer',
-    title: 'Comparador de Matches',
-    position: { x: 390, y: 20 },
-    size: { width: 700, height: 500 }
-  })
-})
+// TODO: Janelas serão abertas via dock
+// onMounted(() => {
+//   windowManager.open({
+//     id: 'review-queue',
+//     title: 'Fila de Revisão',
+//     position: { x: 20, y: 20 },
+//     size: { width: 350, height: 500 }
+//   })
+//   windowManager.open({
+//     id: 'match-viewer',
+//     title: 'Comparador de Matches',
+//     position: { x: 390, y: 20 },
+//     size: { width: 700, height: 500 }
+//   })
+// })
 
 // Dados mock para demonstração
 const pendingMatches = ref([

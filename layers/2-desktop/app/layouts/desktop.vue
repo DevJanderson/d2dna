@@ -6,9 +6,9 @@
 </script>
 
 <template>
-  <div class="relative h-screen bg-muted">
+  <div class="scanlines relative h-screen bg-muted">
     <!-- Container flexbox -->
-    <div class="relative z-10 flex h-full">
+    <div class="relative z-20 flex h-full">
       <!-- Dock Sidebar -->
       <AppDock />
 

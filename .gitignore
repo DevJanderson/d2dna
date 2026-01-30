@@ -50,3 +50,9 @@ coverage
 
 # Misc
 *.tsbuildinfo
+
+# Playwright (scripts de dev e auth state)
+scripts/
+
+# Screenshots de desenvolvimento
+screenshots/
