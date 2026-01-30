@@ -296,7 +296,7 @@ async function saveProfile() {
 
   isSavingProfile.value = true
   try {
-    await $fetch(`/api/v1/usuarios/${user.value.id}`, {
+    await $fetch(`/api/usuarios/${user.value.id}`, {
       method: 'PUT',
       body: profileForm.value
     })
@@ -349,7 +349,7 @@ async function savePassword() {
   passwordError.value = ''
 
   try {
-    await $fetch('/api/v1/usuarios/change-password', {
+    await $fetch('/api/usuarios/change-password', {
       method: 'POST',
       body: {
         active_password: passwordForm.value.activePassword,
@@ -465,7 +465,7 @@ async function loadUsers() {
     }
     params.set('limit', '50')
 
-    const response = await $fetch<{ data: UserListItem[] }>(`/api/v1/usuarios?${params}`)
+    const response = await $fetch<{ data: UserListItem[] }>(`/api/usuarios?${params}`)
     usersList.value = response.data
   } catch {
     usersList.value = []
@@ -499,7 +499,7 @@ async function createUser() {
   createUserError.value = ''
 
   try {
-    await $fetch('/api/v1/usuarios/signup', {
+    await $fetch('/api/usuarios/signup', {
       method: 'POST',
       body: {
         nome: newUserForm.value.nome,
@@ -573,7 +573,7 @@ async function saveEditUser() {
 
   isSavingUser.value = true
   try {
-    await $fetch(`/api/v1/usuarios/${selectedUserForEdit.value.id}`, {
+    await $fetch(`/api/usuarios/${selectedUserForEdit.value.id}`, {
       method: 'PUT',
       body: {
         nome: editUserForm.value.nome,
@@ -601,7 +601,7 @@ async function saveEditUser() {
 /** Alterna status ativo/inativo do usuário */
 async function toggleUserStatus(userItem: UserListItem) {
   try {
-    await $fetch(`/api/v1/usuarios/${userItem.id}`, {
+    await $fetch(`/api/usuarios/${userItem.id}`, {
       method: 'PUT',
       body: {
         ativo: !userItem.ativo
