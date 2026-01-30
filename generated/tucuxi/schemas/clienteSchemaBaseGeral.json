@@ -1,0 +1,163 @@
+{
+  "properties": {
+    "id": { "anyOf": [{ "type": "integer" }, { "type": "null" }], "title": "Id" },
+    "uuid_cliente": {
+      "anyOf": [{ "type": "string", "format": "uuid" }, { "type": "null" }],
+      "title": "Uuid Cliente"
+    },
+    "nome": { "type": "string", "title": "Nome", "example": "João Silva Santos" },
+    "data_nascimento": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Data Nascimento",
+      "example": "1998-12-08"
+    },
+    "sexo": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Sexo",
+      "example": "M"
+    },
+    "nome_mae": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Nome Mae",
+      "example": "Maria Pereira Santos"
+    },
+    "cpf": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Cpf",
+      "example": "12345678901"
+    },
+    "cns": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Cns",
+      "example": "000012345678901"
+    },
+    "origem": {
+      "anyOf": [{ "type": "integer" }, { "type": "null" }],
+      "title": "Origem",
+      "default": 1,
+      "example": 1
+    },
+    "id_origem": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Id Origem" },
+    "cns_list": {
+      "anyOf": [
+        {
+          "items": {
+            "properties": {
+              "cns": {
+                "type": "string",
+                "title": "Cns",
+                "description": "CNS adicional do cliente (15 dígitos)",
+                "example": "123456789012345"
+              },
+              "is_master": {
+                "type": "boolean",
+                "title": "Is Master",
+                "description": "Define se este é o CNS principal alternativo",
+                "default": false
+              }
+            },
+            "type": "object",
+            "required": ["cns"],
+            "title": "ClienteCNSSchema",
+            "x-readme-ref-name": "ClienteCNSSchema"
+          },
+          "type": "array"
+        },
+        { "type": "null" }
+      ],
+      "title": "Cns List",
+      "default": []
+    },
+    "detalhes": {
+      "anyOf": [
+        {
+          "items": {
+            "properties": {
+              "id": {
+                "anyOf": [{ "type": "integer" }, { "type": "null" }],
+                "title": "Id",
+                "description": "ID do detalhe",
+                "example": 1
+              },
+              "telefone": {
+                "anyOf": [{ "type": "string" }, { "type": "null" }],
+                "title": "Telefone",
+                "description": "Telefone do cliente",
+                "example": "(99) 99999-9999"
+              },
+              "email": {
+                "anyOf": [
+                  { "type": "string", "format": "email" },
+                  { "type": "string" },
+                  { "type": "null" }
+                ],
+                "title": "Email",
+                "description": "E-mail do cliente",
+                "example": "cliente@exemplo.com"
+              },
+              "cep": {
+                "anyOf": [{ "type": "string" }, { "type": "null" }],
+                "title": "Cep",
+                "description": "CEP do endereço",
+                "example": "41234-123"
+              },
+              "estado": {
+                "anyOf": [{ "type": "string" }, { "type": "null" }],
+                "title": "Estado",
+                "description": "Estado (UF)",
+                "example": "BA"
+              },
+              "cidade": {
+                "anyOf": [{ "type": "string" }, { "type": "null" }],
+                "title": "Cidade",
+                "description": "Cidade",
+                "example": "Salvador"
+              },
+              "bairro": {
+                "anyOf": [{ "type": "string" }, { "type": "null" }],
+                "title": "Bairro",
+                "description": "Bairro",
+                "example": "Pituba"
+              },
+              "logradouro": {
+                "anyOf": [{ "type": "string" }, { "type": "null" }],
+                "title": "Logradouro",
+                "description": "Rua ou avenida",
+                "example": "Av. ACM"
+              },
+              "numero": {
+                "anyOf": [{ "type": "string" }, { "type": "null" }],
+                "title": "Numero",
+                "description": "Número do endereço",
+                "example": "123"
+              },
+              "complemento": {
+                "anyOf": [{ "type": "string" }, { "type": "null" }],
+                "title": "Complemento",
+                "description": "Complemento",
+                "example": "Apto 101"
+              },
+              "principal": {
+                "anyOf": [{ "type": "boolean" }, { "type": "null" }],
+                "title": "Principal",
+                "description": "Se é o contato/endereço principal",
+                "default": true
+              }
+            },
+            "type": "object",
+            "title": "ClienteDetalheSchema",
+            "x-readme-ref-name": "ClienteDetalheSchema"
+          },
+          "type": "array"
+        },
+        { "type": "null" }
+      ],
+      "title": "Detalhes",
+      "default": []
+    }
+  },
+  "type": "object",
+  "required": ["nome"],
+  "title": "ClienteSchemaBaseGeral",
+  "x-readme-ref-name": "ClienteSchemaBaseGeral"
+}

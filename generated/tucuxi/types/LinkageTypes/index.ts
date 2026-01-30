@@ -1,0 +1,145 @@
+export type {
+  AnalyzeDataQualityApiV1LinkageAnalyzeDataPost200,
+  AnalyzeDataQualityApiV1LinkageAnalyzeDataPost422,
+  AnalyzeDataQualityApiV1LinkageAnalyzeDataPostMutationRequest,
+  AnalyzeDataQualityApiV1LinkageAnalyzeDataPostMutationResponse,
+  AnalyzeDataQualityApiV1LinkageAnalyzeDataPostMutation
+} from './AnalyzeDataQualityApiV1LinkageAnalyzeDataPost'
+export type {
+  BatchProcessingApiV1LinkageBatchPostHeaderParams,
+  BatchProcessingApiV1LinkageBatchPost200,
+  BatchProcessingApiV1LinkageBatchPost422,
+  BatchProcessingApiV1LinkageBatchPostMutationRequest,
+  BatchProcessingApiV1LinkageBatchPostMutationResponse,
+  BatchProcessingApiV1LinkageBatchPostMutation
+} from './BatchProcessingApiV1LinkageBatchPost'
+export type {
+  CheckDuplicatesApiV1LinkageCheckDuplicatesPostQueryParams,
+  CheckDuplicatesApiV1LinkageCheckDuplicatesPost200,
+  CheckDuplicatesApiV1LinkageCheckDuplicatesPost422,
+  CheckDuplicatesApiV1LinkageCheckDuplicatesPostMutationRequest,
+  CheckDuplicatesApiV1LinkageCheckDuplicatesPostMutationResponse,
+  CheckDuplicatesApiV1LinkageCheckDuplicatesPostMutation
+} from './CheckDuplicatesApiV1LinkageCheckDuplicatesPost'
+export type {
+  ExplainSearchApiV1LinkageExplainPost200,
+  ExplainSearchApiV1LinkageExplainPost422,
+  ExplainSearchApiV1LinkageExplainPostMutationRequest,
+  ExplainSearchApiV1LinkageExplainPostMutationResponse,
+  ExplainSearchApiV1LinkageExplainPostMutation
+} from './ExplainSearchApiV1LinkageExplainPost'
+export type {
+  GetByCnsApiV1LinkageDeterministicCnsCnsGetPathParams,
+  GetByCnsApiV1LinkageDeterministicCnsCnsGetQueryParams,
+  GetByCnsApiV1LinkageDeterministicCnsCnsGet200,
+  GetByCnsApiV1LinkageDeterministicCnsCnsGet422,
+  GetByCnsApiV1LinkageDeterministicCnsCnsGetQueryResponse,
+  GetByCnsApiV1LinkageDeterministicCnsCnsGetQuery
+} from './GetByCnsApiV1LinkageDeterministicCnsCnsGet'
+export type {
+  GetByCpfApiV1LinkageDeterministicCpfCpfGetPathParams,
+  GetByCpfApiV1LinkageDeterministicCpfCpfGetQueryParams,
+  GetByCpfApiV1LinkageDeterministicCpfCpfGet200,
+  GetByCpfApiV1LinkageDeterministicCpfCpfGet422,
+  GetByCpfApiV1LinkageDeterministicCpfCpfGetQueryResponse,
+  GetByCpfApiV1LinkageDeterministicCpfCpfGetQuery
+} from './GetByCpfApiV1LinkageDeterministicCpfCpfGet'
+export type {
+  GetClienteCnsListApiV1LinkageDeterministicClienteUuidClienteCnsGetPathParams,
+  GetClienteCnsListApiV1LinkageDeterministicClienteUuidClienteCnsGet200,
+  GetClienteCnsListApiV1LinkageDeterministicClienteUuidClienteCnsGet422,
+  GetClienteCnsListApiV1LinkageDeterministicClienteUuidClienteCnsGetQueryResponse,
+  GetClienteCnsListApiV1LinkageDeterministicClienteUuidClienteCnsGetQuery
+} from './GetClienteCnsListApiV1LinkageDeterministicClienteUuidClienteCnsGet'
+export type {
+  GetFieldQualityStatisticsApiV1LinkageStatisticsFieldQualityGetQueryParams,
+  GetFieldQualityStatisticsApiV1LinkageStatisticsFieldQualityGet200,
+  GetFieldQualityStatisticsApiV1LinkageStatisticsFieldQualityGet422,
+  GetFieldQualityStatisticsApiV1LinkageStatisticsFieldQualityGetQueryResponse,
+  GetFieldQualityStatisticsApiV1LinkageStatisticsFieldQualityGetQuery
+} from './GetFieldQualityStatisticsApiV1LinkageStatisticsFieldQualityGet'
+export type {
+  GetMetricsApiV1LinkageMetricsGetQueryParams,
+  GetMetricsApiV1LinkageMetricsGet200,
+  GetMetricsApiV1LinkageMetricsGet422,
+  GetMetricsApiV1LinkageMetricsGetQueryResponse,
+  GetMetricsApiV1LinkageMetricsGetQuery
+} from './GetMetricsApiV1LinkageMetricsGet'
+export type {
+  GetStrategiesApiV1LinkageStrategiesGet200,
+  GetStrategiesApiV1LinkageStrategiesGetQueryResponse,
+  GetStrategiesApiV1LinkageStrategiesGetQuery
+} from './GetStrategiesApiV1LinkageStrategiesGet'
+export type {
+  ResolveHomonymsApiV1LinkageResolveHomonymsPost501,
+  ResolveHomonymsApiV1LinkageResolveHomonymsPostMutationResponse,
+  ResolveHomonymsApiV1LinkageResolveHomonymsPostMutation
+} from './ResolveHomonymsApiV1LinkageResolveHomonymsPost'
+export type {
+  SearchClienteTucuxiApiV1LinkageTucuxiPost200,
+  SearchClienteTucuxiApiV1LinkageTucuxiPost422,
+  SearchClienteTucuxiApiV1LinkageTucuxiPostMutationRequest,
+  SearchClienteTucuxiApiV1LinkageTucuxiPostMutationResponse,
+  SearchClienteTucuxiApiV1LinkageTucuxiPostMutation
+} from './SearchClienteTucuxiApiV1LinkageTucuxiPost'
+export type {
+  SearchCompositeApiV1LinkageDeterministicCompositePostQueryParams,
+  SearchCompositeApiV1LinkageDeterministicCompositePost200,
+  SearchCompositeApiV1LinkageDeterministicCompositePost422,
+  SearchCompositeApiV1LinkageDeterministicCompositePostMutationRequest,
+  SearchCompositeApiV1LinkageDeterministicCompositePostMutationResponse,
+  SearchCompositeApiV1LinkageDeterministicCompositePostMutation
+} from './SearchCompositeApiV1LinkageDeterministicCompositePost'
+export type {
+  SearchDateToleranceApiV1LinkageProbabilisticDateTolerancePostQueryParams,
+  SearchDateToleranceApiV1LinkageProbabilisticDateTolerancePost200,
+  SearchDateToleranceApiV1LinkageProbabilisticDateTolerancePost422,
+  SearchDateToleranceApiV1LinkageProbabilisticDateTolerancePostMutationRequest,
+  SearchDateToleranceApiV1LinkageProbabilisticDateTolerancePostMutationResponse,
+  SearchDateToleranceApiV1LinkageProbabilisticDateTolerancePostMutation
+} from './SearchDateToleranceApiV1LinkageProbabilisticDateTolerancePost'
+export type {
+  SearchMultiCnsApiV1LinkageDeterministicMultiCnsPostQueryParams,
+  SearchMultiCnsApiV1LinkageDeterministicMultiCnsPost200,
+  SearchMultiCnsApiV1LinkageDeterministicMultiCnsPost422,
+  SearchMultiCnsApiV1LinkageDeterministicMultiCnsPostMutationRequest,
+  SearchMultiCnsApiV1LinkageDeterministicMultiCnsPostMutationResponse,
+  SearchMultiCnsApiV1LinkageDeterministicMultiCnsPostMutation
+} from './SearchMultiCnsApiV1LinkageDeterministicMultiCnsPost'
+export type {
+  SearchPhoneticApiV1LinkageProbabilisticPhoneticPostQueryParams,
+  SearchPhoneticApiV1LinkageProbabilisticPhoneticPost200,
+  SearchPhoneticApiV1LinkageProbabilisticPhoneticPost422,
+  SearchPhoneticApiV1LinkageProbabilisticPhoneticPostMutationRequest,
+  SearchPhoneticApiV1LinkageProbabilisticPhoneticPostMutationResponse,
+  SearchPhoneticApiV1LinkageProbabilisticPhoneticPostMutation
+} from './SearchPhoneticApiV1LinkageProbabilisticPhoneticPost'
+export type {
+  SmartSearchApiV1LinkageSmartSearchPostHeaderParams,
+  SmartSearchApiV1LinkageSmartSearchPost200,
+  SmartSearchApiV1LinkageSmartSearchPost422,
+  SmartSearchApiV1LinkageSmartSearchPostMutationRequest,
+  SmartSearchApiV1LinkageSmartSearchPostMutationResponse,
+  SmartSearchApiV1LinkageSmartSearchPostMutation
+} from './SmartSearchApiV1LinkageSmartSearchPost'
+export type {
+  ValidateBatchApiV1LinkageValidationBatchPost200,
+  ValidateBatchApiV1LinkageValidationBatchPost422,
+  ValidateBatchApiV1LinkageValidationBatchPostMutationRequest,
+  ValidateBatchApiV1LinkageValidationBatchPostMutationResponse,
+  ValidateBatchApiV1LinkageValidationBatchPostMutation
+} from './ValidateBatchApiV1LinkageValidationBatchPost'
+export type {
+  ValidateCnsApiV1LinkageValidationCnsPostQueryParams,
+  ValidateCnsApiV1LinkageValidationCnsPost200,
+  ValidateCnsApiV1LinkageValidationCnsPost422,
+  ValidateCnsApiV1LinkageValidationCnsPostMutationResponse,
+  ValidateCnsApiV1LinkageValidationCnsPostMutation
+} from './ValidateCnsApiV1LinkageValidationCnsPost'
+export type {
+  ValidateCpfApiV1LinkageValidationCpfPostQueryParams,
+  ValidateCpfApiV1LinkageValidationCpfPost200,
+  ValidateCpfApiV1LinkageValidationCpfPost422,
+  ValidateCpfApiV1LinkageValidationCpfPostMutationResponse,
+  ValidateCpfApiV1LinkageValidationCpfPostMutation
+} from './ValidateCpfApiV1LinkageValidationCpfPost'

@@ -1,0 +1,117 @@
+{
+  "properties": {
+    "data": {
+      "items": {
+        "properties": {
+          "id": { "type": "integer", "title": "Id" },
+          "nome": { "type": "string", "title": "Nome" },
+          "email": { "type": "string", "format": "email", "title": "Email" },
+          "admin": { "type": "boolean", "title": "Admin", "default": false },
+          "ativo": { "type": "boolean", "title": "Ativo", "default": true },
+          "telefone": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Telefone",
+            "description": "Telefone no formato (99) 99999-9999"
+          },
+          "estado": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Estado",
+            "description": "Estado (UF)",
+            "example": "SP"
+          },
+          "cidade": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Cidade" },
+          "foto_perfil": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Foto Perfil",
+            "description": "URL da foto de perfil"
+          },
+          "funcao": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Funcao",
+            "example": "gestor"
+          },
+          "instituicao": {
+            "anyOf": [{ "type": "string" }, { "type": "null" }],
+            "title": "Instituicao",
+            "example": "Instituto de Pesquisa X"
+          },
+          "desativado_em": {
+            "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
+            "title": "Desativado Em"
+          },
+          "ultimo_login": {
+            "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
+            "title": "Ultimo Login"
+          }
+        },
+        "type": "object",
+        "required": ["id", "nome", "email"],
+        "title": "UsuarioSchemaList",
+        "x-readme-ref-name": "UsuarioSchemaList"
+      },
+      "type": "array",
+      "title": "Data",
+      "description": "Lista de itens da página atual"
+    },
+    "pagination": {
+      "description": "Metadados de paginação",
+      "properties": {
+        "next_cursor": {
+          "anyOf": [{ "type": "string" }, { "type": "null" }],
+          "title": "Next Cursor",
+          "description": "Cursor opaco para próxima página",
+          "example": "eyJpZCI6MTAwfQ=="
+        },
+        "previous_cursor": {
+          "anyOf": [{ "type": "string" }, { "type": "null" }],
+          "title": "Previous Cursor",
+          "description": "Cursor opaco para página anterior",
+          "example": "eyJpZCI6NTB9"
+        },
+        "has_next": {
+          "type": "boolean",
+          "title": "Has Next",
+          "description": "Indica se há próxima página",
+          "default": false
+        },
+        "has_previous": {
+          "type": "boolean",
+          "title": "Has Previous",
+          "description": "Indica se há página anterior",
+          "default": false
+        },
+        "limit": {
+          "type": "integer",
+          "maximum": 100,
+          "minimum": 1,
+          "title": "Limit",
+          "description": "Número de itens retornados",
+          "default": 50
+        }
+      },
+      "type": "object",
+      "title": "PaginationMeta",
+      "example": {
+        "has_next": true,
+        "has_previous": false,
+        "limit": 50,
+        "next_cursor": "eyJpZCI6MTAwfQ=="
+      },
+      "x-readme-ref-name": "PaginationMeta"
+    }
+  },
+  "type": "object",
+  "required": ["data", "pagination"],
+  "title": "UsuariosPaginadosCursorSchema",
+  "description": "Response paginado com cursor para listagem de usuários\nPerformance O(1) para qualquer volume de dados",
+  "example": {
+    "data": [],
+    "pagination": {
+      "has_next": true,
+      "has_previous": false,
+      "limit": 50,
+      "next_cursor": "eyJpZCI6MTAwfQ=="
+    }
+  },
+  "x-readme-ref-name": "UsuariosPaginadosCursorSchema"
+}

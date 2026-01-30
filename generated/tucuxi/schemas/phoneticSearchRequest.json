@@ -1,0 +1,51 @@
+{
+  "properties": {
+    "nome": {
+      "anyOf": [{ "type": "string", "minLength": 3 }, { "type": "null" }],
+      "title": "Nome",
+      "description": "Nome para busca fonética (erros de digitação aceitos)",
+      "example": "Joao Silva"
+    },
+    "nome_mae": {
+      "anyOf": [{ "type": "string", "minLength": 3 }, { "type": "null" }],
+      "title": "Nome Mae",
+      "description": "Nome da mãe para busca fonética",
+      "example": "Maria Santos"
+    },
+    "data_nascimento": {
+      "anyOf": [{ "type": "string", "pattern": "^\\d{4}-\\d{2}-\\d{2}$" }, { "type": "null" }],
+      "title": "Data Nascimento",
+      "description": "Data de nascimento para filtrar resultados (YYYY-MM-DD)",
+      "example": "1990-05-15"
+    },
+    "sexo": {
+      "anyOf": [{ "type": "string", "pattern": "^[MmFf]$" }, { "type": "null" }],
+      "title": "Sexo",
+      "description": "Sexo para filtrar resultados (M ou F)",
+      "example": "M"
+    },
+    "min_similarity": {
+      "type": "number",
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Min Similarity",
+      "description": "Similaridade mínima para considerar match (0.0 a 1.0)",
+      "default": 0.7
+    }
+  },
+  "type": "object",
+  "title": "PhoneticSearchRequest",
+  "description": "Request para busca fonética probabilística",
+  "examples": [
+    { "min_similarity": 0.8, "nome": "Joao Silva", "title": "Busca simples por nome" },
+    {
+      "data_nascimento": "1985-03-20",
+      "min_similarity": 0.7,
+      "nome": "Maria Santus",
+      "nome_mae": "Ana Silve",
+      "sexo": "F",
+      "title": "Busca completa com filtros"
+    }
+  ],
+  "x-readme-ref-name": "PhoneticSearchRequest"
+}

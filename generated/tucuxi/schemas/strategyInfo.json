@@ -1,0 +1,29 @@
+{
+  "properties": {
+    "strategy": { "type": "string", "title": "Strategy", "description": "Estratégia selecionada" },
+    "reason": { "type": "string", "title": "Reason", "description": "Motivo da seleção" },
+    "score_breakdown": {
+      "additionalProperties": { "type": "integer" },
+      "type": "object",
+      "title": "Score Breakdown",
+      "description": "Pontuação por campo"
+    },
+    "alternatives": {
+      "items": { "additionalProperties": true, "type": "object" },
+      "type": "array",
+      "title": "Alternatives",
+      "description": "Estratégias alternativas consideradas"
+    },
+    "optimization_hints": {
+      "items": { "type": "string" },
+      "type": "array",
+      "title": "Optimization Hints",
+      "description": "Dicas para otimizar a busca"
+    }
+  },
+  "type": "object",
+  "required": ["strategy", "reason", "score_breakdown"],
+  "title": "StrategyInfo",
+  "description": "Informações sobre a estratégia selecionada",
+  "x-readme-ref-name": "StrategyInfo"
+}

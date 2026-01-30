@@ -1,0 +1,143 @@
+{
+  "properties": {
+    "strategy_used": {
+      "type": "string",
+      "title": "Strategy Used",
+      "description": "Estratégia efetivamente usada"
+    },
+    "strategy_info": {
+      "description": "Detalhes da estratégia",
+      "properties": {
+        "strategy": {
+          "type": "string",
+          "title": "Strategy",
+          "description": "Estratégia selecionada"
+        },
+        "reason": { "type": "string", "title": "Reason", "description": "Motivo da seleção" },
+        "score_breakdown": {
+          "additionalProperties": { "type": "integer" },
+          "type": "object",
+          "title": "Score Breakdown",
+          "description": "Pontuação por campo"
+        },
+        "alternatives": {
+          "items": { "additionalProperties": true, "type": "object" },
+          "type": "array",
+          "title": "Alternatives",
+          "description": "Estratégias alternativas consideradas"
+        },
+        "optimization_hints": {
+          "items": { "type": "string" },
+          "type": "array",
+          "title": "Optimization Hints",
+          "description": "Dicas para otimizar a busca"
+        }
+      },
+      "type": "object",
+      "required": ["strategy", "reason", "score_breakdown"],
+      "title": "StrategyInfo",
+      "x-readme-ref-name": "StrategyInfo"
+    },
+    "confidence_score": {
+      "type": "integer",
+      "minimum": 0,
+      "title": "Confidence Score",
+      "description": "Score de confiança (0-315)"
+    },
+    "confidence_level": {
+      "type": "string",
+      "title": "Confidence Level",
+      "description": "Nível de confiança: Very High, High, Medium, Low"
+    },
+    "fields_used": {
+      "items": { "type": "string" },
+      "type": "array",
+      "title": "Fields Used",
+      "description": "Campos utilizados na busca"
+    },
+    "execution_time_ms": {
+      "type": "number",
+      "title": "Execution Time Ms",
+      "description": "Tempo de execução em ms"
+    },
+    "total_matches": {
+      "type": "integer",
+      "minimum": 0,
+      "title": "Total Matches",
+      "description": "Total de registros encontrados"
+    },
+    "cache_hit": {
+      "type": "boolean",
+      "title": "Cache Hit",
+      "description": "Se foi usado cache",
+      "default": false
+    },
+    "homonym_analysis": {
+      "anyOf": [
+        {
+          "properties": {
+            "potential_homonyms": {
+              "type": "integer",
+              "minimum": 0,
+              "title": "Potential Homonyms",
+              "description": "Número de possíveis homônimos"
+            },
+            "resolution_method": {
+              "type": "string",
+              "title": "Resolution Method",
+              "description": "Método usado para resolver: address, phone, email, none"
+            },
+            "confidence": {
+              "type": "string",
+              "title": "Confidence",
+              "description": "Confiança na resolução: high, medium, low"
+            },
+            "disambiguation_score": {
+              "type": "number",
+              "maximum": 1,
+              "minimum": 0,
+              "title": "Disambiguation Score",
+              "description": "Score de desambiguação (0.0-1.0)"
+            },
+            "details": {
+              "anyOf": [{ "additionalProperties": true, "type": "object" }, { "type": "null" }],
+              "title": "Details",
+              "description": "Detalhes da análise"
+            }
+          },
+          "type": "object",
+          "required": [
+            "potential_homonyms",
+            "resolution_method",
+            "confidence",
+            "disambiguation_score"
+          ],
+          "title": "HomonymAnalysis",
+          "description": "Análise de possíveis homônimos",
+          "x-readme-ref-name": "HomonymAnalysis"
+        },
+        { "type": "null" }
+      ],
+      "description": "Análise de homônimos se aplicável"
+    },
+    "performance_metrics": {
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Performance Metrics",
+      "description": "Métricas de performance detalhadas"
+    }
+  },
+  "type": "object",
+  "required": [
+    "strategy_used",
+    "strategy_info",
+    "confidence_score",
+    "confidence_level",
+    "fields_used",
+    "execution_time_ms",
+    "total_matches"
+  ],
+  "title": "SmartSearchMetadata",
+  "description": "Metadados detalhados da busca inteligente",
+  "x-readme-ref-name": "SmartSearchMetadata"
+}

@@ -1,0 +1,40 @@
+{
+  "properties": {
+    "cliente": {
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Cliente",
+      "description": "Dados do cliente"
+    },
+    "match_score": {
+      "type": "integer",
+      "maximum": 100,
+      "minimum": 0,
+      "title": "Match Score",
+      "description": "Score de match (0-100)"
+    },
+    "match_details": {
+      "additionalProperties": { "type": "string" },
+      "type": "object",
+      "title": "Match Details",
+      "description": "Detalhes de como cada campo deu match"
+    },
+    "homonym_probability": {
+      "type": "number",
+      "maximum": 1,
+      "minimum": 0,
+      "title": "Homonym Probability",
+      "description": "Probabilidade de ser homônimo (0.0-1.0)"
+    },
+    "disambiguation_info": {
+      "anyOf": [{ "additionalProperties": true, "type": "object" }, { "type": "null" }],
+      "title": "Disambiguation Info",
+      "description": "Informações usadas para desambiguação"
+    }
+  },
+  "type": "object",
+  "required": ["cliente", "match_score", "match_details", "homonym_probability"],
+  "title": "SmartSearchResult",
+  "description": "Resultado individual com scoring e detalhes",
+  "x-readme-ref-name": "SmartSearchResult"
+}

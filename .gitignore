@@ -45,5 +45,14 @@ coverage
 /blob-report/
 /playwright/.cache/
 
+# Kubb (cache interno)
+**/.kubb/
+
 # Misc
 *.tsbuildinfo
+
+# Playwright (scripts de dev e auth state)
+scripts/
+
+# Screenshots de desenvolvimento
+screenshots/

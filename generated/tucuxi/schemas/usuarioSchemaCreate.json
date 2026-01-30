@@ -1,0 +1,50 @@
+{
+  "properties": {
+    "nome": { "type": "string", "title": "Nome" },
+    "email": { "type": "string", "format": "email", "title": "Email" },
+    "admin": { "type": "boolean", "title": "Admin", "default": false },
+    "ativo": { "type": "boolean", "title": "Ativo", "default": true },
+    "telefone": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Telefone",
+      "description": "Telefone no formato (99) 99999-9999"
+    },
+    "estado": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Estado",
+      "description": "Estado (UF)",
+      "example": "SP"
+    },
+    "cidade": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Cidade" },
+    "foto_perfil": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Foto Perfil",
+      "description": "URL da foto de perfil"
+    },
+    "funcao": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Funcao",
+      "example": "gestor"
+    },
+    "instituicao": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Instituicao",
+      "example": "Instituto de Pesquisa X"
+    },
+    "senha": {
+      "type": "string",
+      "title": "Senha",
+      "description": "A senha deve ter pelo menos 8 caracteres, incluir pelo menos uma letra maiúscula, uma letra minúscula, um número e um caractere especial."
+    },
+    "master_key": {
+      "type": "string",
+      "title": "Master Key",
+      "description": "Chave mestre para criar usuários",
+      "example": "sua_chave_mestre_da_api"
+    }
+  },
+  "type": "object",
+  "required": ["nome", "email", "senha", "master_key"],
+  "title": "UsuarioSchemaCreate",
+  "x-readme-ref-name": "UsuarioSchemaCreate"
+}

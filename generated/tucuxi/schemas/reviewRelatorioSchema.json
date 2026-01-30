@@ -1,0 +1,20 @@
+{
+  "properties": {
+    "id": { "type": "integer", "title": "Id" },
+    "uuid_cliente": { "type": "string", "format": "uuid", "title": "Uuid Cliente" },
+    "id_revisor": { "type": "integer", "title": "Id Revisor" },
+    "data_revisao": { "type": "string", "format": "date-time", "title": "Data Revisao" },
+    "acao": { "type": "string", "title": "Acao" },
+    "tipo_revisao": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Tipo Revisao"
+    },
+    "observacao": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Observacao" },
+    "status": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Status" },
+    "nome_cliente": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Nome Cliente" }
+  },
+  "type": "object",
+  "required": ["id", "uuid_cliente", "id_revisor", "data_revisao", "acao"],
+  "title": "ReviewRelatorioSchema",
+  "x-readme-ref-name": "ReviewRelatorioSchema"
+}

@@ -1,0 +1,83 @@
+{
+  "properties": {
+    "nome": {
+      "type": "string",
+      "minLength": 2,
+      "title": "Nome",
+      "description": "Nome completo do cliente"
+    },
+    "data_nascimento": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Data Nascimento",
+      "description": "Data de nascimento (YYYY-MM-DD)"
+    },
+    "nome_mae": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Nome Mae",
+      "description": "Nome da mãe"
+    },
+    "cpf": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Cpf",
+      "description": "CPF (apenas números)"
+    },
+    "cns": {
+      "anyOf": [
+        { "items": { "type": "string" }, "type": "array" },
+        { "type": "string" },
+        { "type": "null" }
+      ],
+      "title": "Cns",
+      "description": "Lista de CNS ou string separada por ;"
+    },
+    "sexo": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Sexo",
+      "description": "Sexo (M/F)"
+    },
+    "origem": {
+      "type": "integer",
+      "title": "Origem",
+      "description": "Sistema de origem",
+      "default": 1
+    },
+    "id_origem": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Id Origem",
+      "description": "ID de origem do registro"
+    },
+    "confidence_threshold": {
+      "type": "integer",
+      "maximum": 100,
+      "minimum": 0,
+      "title": "Confidence Threshold",
+      "description": "Limiar de confiança para usar DNA (0-100)",
+      "default": 80
+    },
+    "max_response_time": {
+      "type": "integer",
+      "maximum": 1000,
+      "minimum": 10,
+      "title": "Max Response Time",
+      "description": "Timeout máximo em ms",
+      "default": 50
+    },
+    "update_db": {
+      "type": "boolean",
+      "title": "Update Db",
+      "description": "Atualizar banco de dados com resultado",
+      "default": true
+    },
+    "return_all_scores": {
+      "type": "boolean",
+      "title": "Return All Scores",
+      "description": "Retornar scores de todos os métodos testados",
+      "default": false
+    }
+  },
+  "type": "object",
+  "required": ["nome"],
+  "title": "TucuxiV2Request",
+  "description": "Request para o endpoint híbrido Tucuxi v2",
+  "x-readme-ref-name": "TucuxiV2Request"
+}

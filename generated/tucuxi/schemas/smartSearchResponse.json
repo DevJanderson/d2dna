@@ -1,0 +1,238 @@
+{
+  "properties": {
+    "results": {
+      "items": {
+        "properties": {
+          "cliente": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Cliente",
+            "description": "Dados do cliente"
+          },
+          "match_score": {
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 0,
+            "title": "Match Score",
+            "description": "Score de match (0-100)"
+          },
+          "match_details": {
+            "additionalProperties": { "type": "string" },
+            "type": "object",
+            "title": "Match Details",
+            "description": "Detalhes de como cada campo deu match"
+          },
+          "homonym_probability": {
+            "type": "number",
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Homonym Probability",
+            "description": "Probabilidade de ser homônimo (0.0-1.0)"
+          },
+          "disambiguation_info": {
+            "anyOf": [{ "additionalProperties": true, "type": "object" }, { "type": "null" }],
+            "title": "Disambiguation Info",
+            "description": "Informações usadas para desambiguação"
+          }
+        },
+        "type": "object",
+        "required": ["cliente", "match_score", "match_details", "homonym_probability"],
+        "title": "SmartSearchResult",
+        "description": "Resultado individual com scoring e detalhes",
+        "x-readme-ref-name": "SmartSearchResult"
+      },
+      "type": "array",
+      "title": "Results",
+      "description": "Resultados ordenados por relevância"
+    },
+    "search_metadata": {
+      "description": "Metadados detalhados da busca",
+      "properties": {
+        "strategy_used": {
+          "type": "string",
+          "title": "Strategy Used",
+          "description": "Estratégia efetivamente usada"
+        },
+        "strategy_info": {
+          "description": "Detalhes da estratégia",
+          "properties": {
+            "strategy": {
+              "type": "string",
+              "title": "Strategy",
+              "description": "Estratégia selecionada"
+            },
+            "reason": { "type": "string", "title": "Reason", "description": "Motivo da seleção" },
+            "score_breakdown": {
+              "additionalProperties": { "type": "integer" },
+              "type": "object",
+              "title": "Score Breakdown",
+              "description": "Pontuação por campo"
+            },
+            "alternatives": {
+              "items": { "additionalProperties": true, "type": "object" },
+              "type": "array",
+              "title": "Alternatives",
+              "description": "Estratégias alternativas consideradas"
+            },
+            "optimization_hints": {
+              "items": { "type": "string" },
+              "type": "array",
+              "title": "Optimization Hints",
+              "description": "Dicas para otimizar a busca"
+            }
+          },
+          "type": "object",
+          "required": ["strategy", "reason", "score_breakdown"],
+          "title": "StrategyInfo",
+          "x-readme-ref-name": "StrategyInfo"
+        },
+        "confidence_score": {
+          "type": "integer",
+          "minimum": 0,
+          "title": "Confidence Score",
+          "description": "Score de confiança (0-315)"
+        },
+        "confidence_level": {
+          "type": "string",
+          "title": "Confidence Level",
+          "description": "Nível de confiança: Very High, High, Medium, Low"
+        },
+        "fields_used": {
+          "items": { "type": "string" },
+          "type": "array",
+          "title": "Fields Used",
+          "description": "Campos utilizados na busca"
+        },
+        "execution_time_ms": {
+          "type": "number",
+          "title": "Execution Time Ms",
+          "description": "Tempo de execução em ms"
+        },
+        "total_matches": {
+          "type": "integer",
+          "minimum": 0,
+          "title": "Total Matches",
+          "description": "Total de registros encontrados"
+        },
+        "cache_hit": {
+          "type": "boolean",
+          "title": "Cache Hit",
+          "description": "Se foi usado cache",
+          "default": false
+        },
+        "homonym_analysis": {
+          "anyOf": [
+            {
+              "properties": {
+                "potential_homonyms": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "title": "Potential Homonyms",
+                  "description": "Número de possíveis homônimos"
+                },
+                "resolution_method": {
+                  "type": "string",
+                  "title": "Resolution Method",
+                  "description": "Método usado para resolver: address, phone, email, none"
+                },
+                "confidence": {
+                  "type": "string",
+                  "title": "Confidence",
+                  "description": "Confiança na resolução: high, medium, low"
+                },
+                "disambiguation_score": {
+                  "type": "number",
+                  "maximum": 1,
+                  "minimum": 0,
+                  "title": "Disambiguation Score",
+                  "description": "Score de desambiguação (0.0-1.0)"
+                },
+                "details": {
+                  "anyOf": [{ "additionalProperties": true, "type": "object" }, { "type": "null" }],
+                  "title": "Details",
+                  "description": "Detalhes da análise"
+                }
+              },
+              "type": "object",
+              "required": [
+                "potential_homonyms",
+                "resolution_method",
+                "confidence",
+                "disambiguation_score"
+              ],
+              "title": "HomonymAnalysis",
+              "description": "Análise de possíveis homônimos",
+              "x-readme-ref-name": "HomonymAnalysis"
+            },
+            { "type": "null" }
+          ],
+          "description": "Análise de homônimos se aplicável"
+        },
+        "performance_metrics": {
+          "additionalProperties": true,
+          "type": "object",
+          "title": "Performance Metrics",
+          "description": "Métricas de performance detalhadas"
+        }
+      },
+      "type": "object",
+      "required": [
+        "strategy_used",
+        "strategy_info",
+        "confidence_score",
+        "confidence_level",
+        "fields_used",
+        "execution_time_ms",
+        "total_matches"
+      ],
+      "title": "SmartSearchMetadata",
+      "x-readme-ref-name": "SmartSearchMetadata"
+    },
+    "recommendations": {
+      "items": { "type": "string" },
+      "type": "array",
+      "title": "Recommendations",
+      "description": "Recomendações para melhorar resultados"
+    }
+  },
+  "type": "object",
+  "required": ["results", "search_metadata"],
+  "title": "SmartSearchResponse",
+  "description": "Response da busca inteligente com análise completa",
+  "example": {
+    "recommendations": [
+      "Adicione o nome da mãe para evitar homônimos",
+      "CNS pode acelerar buscas futuras"
+    ],
+    "results": [
+      {
+        "cliente": { "cpf": "12345678910", "id": 123, "nome": "JOÃO DA SILVA" },
+        "homonym_probability": 0.05,
+        "match_details": { "cpf": "exact", "data_nascimento": "exact", "nome": "exact" },
+        "match_score": 95
+      }
+    ],
+    "search_metadata": {
+      "cache_hit": false,
+      "confidence_level": "High",
+      "confidence_score": 180,
+      "execution_time_ms": 15.5,
+      "fields_used": ["cpf", "nome", "data_nascimento"],
+      "performance_metrics": {
+        "db_execution_time": 12.1,
+        "post_processing_time": 1.1,
+        "query_build_time": 2.3
+      },
+      "strategy_info": {
+        "alternatives": [{ "score": 100, "strategy": "DIRECT_CPF" }],
+        "optimization_hints": ["Adicionar nome da mãe aumentaria precisão"],
+        "reason": "Múltiplos campos com índices disponíveis",
+        "score_breakdown": { "cpf": 100, "data_nascimento": 50, "nome": 30 },
+        "strategy": "COMPOSITE_INDEX"
+      },
+      "strategy_used": "COMPOSITE_INDEX",
+      "total_matches": 1
+    }
+  },
+  "x-readme-ref-name": "SmartSearchResponse"
+}

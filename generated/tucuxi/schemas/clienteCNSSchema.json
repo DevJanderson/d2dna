@@ -1,0 +1,20 @@
+{
+  "properties": {
+    "cns": {
+      "type": "string",
+      "title": "Cns",
+      "description": "CNS adicional do cliente (15 dígitos)",
+      "example": "123456789012345"
+    },
+    "is_master": {
+      "type": "boolean",
+      "title": "Is Master",
+      "description": "Define se este é o CNS principal alternativo",
+      "default": false
+    }
+  },
+  "type": "object",
+  "required": ["cns"],
+  "title": "ClienteCNSSchema",
+  "x-readme-ref-name": "ClienteCNSSchema"
+}

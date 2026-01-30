@@ -1,0 +1,76 @@
+export type {
+  AddClienteCnsApiV1ClientesUuidClienteCnsPostPathParams,
+  AddClienteCnsApiV1ClientesUuidClienteCnsPost201,
+  AddClienteCnsApiV1ClientesUuidClienteCnsPost422,
+  AddClienteCnsApiV1ClientesUuidClienteCnsPostMutationRequest,
+  AddClienteCnsApiV1ClientesUuidClienteCnsPostMutationResponse,
+  AddClienteCnsApiV1ClientesUuidClienteCnsPostMutation
+} from './AddClienteCnsApiV1ClientesUuidClienteCnsPost'
+export type {
+  AddClienteDetalheApiV1ClientesUuidClienteDetalhesPostPathParams,
+  AddClienteDetalheApiV1ClientesUuidClienteDetalhesPost201,
+  AddClienteDetalheApiV1ClientesUuidClienteDetalhesPost422,
+  AddClienteDetalheApiV1ClientesUuidClienteDetalhesPostMutationRequest,
+  AddClienteDetalheApiV1ClientesUuidClienteDetalhesPostMutationResponse,
+  AddClienteDetalheApiV1ClientesUuidClienteDetalhesPostMutation
+} from './AddClienteDetalheApiV1ClientesUuidClienteDetalhesPost'
+export type {
+  CreateClienteApiV1ClientesPostQueryParams,
+  CreateClienteApiV1ClientesPost201,
+  CreateClienteApiV1ClientesPost422,
+  CreateClienteApiV1ClientesPostMutationRequest,
+  CreateClienteApiV1ClientesPostMutationResponse,
+  CreateClienteApiV1ClientesPostMutation
+} from './CreateClienteApiV1ClientesPost'
+export type {
+  DeleteClienteApiV1ClientesUuidClienteDeletePathParams,
+  DeleteClienteApiV1ClientesUuidClienteDelete200,
+  DeleteClienteApiV1ClientesUuidClienteDelete422,
+  DeleteClienteApiV1ClientesUuidClienteDeleteMutationResponse,
+  DeleteClienteApiV1ClientesUuidClienteDeleteMutation
+} from './DeleteClienteApiV1ClientesUuidClienteDelete'
+export type {
+  GetClienteApiV1ClientesUuidClienteGetPathParams,
+  GetClienteApiV1ClientesUuidClienteGet200,
+  GetClienteApiV1ClientesUuidClienteGet422,
+  GetClienteApiV1ClientesUuidClienteGetQueryResponse,
+  GetClienteApiV1ClientesUuidClienteGetQuery
+} from './GetClienteApiV1ClientesUuidClienteGet'
+export type {
+  GetClienteDetalhesApiV1ClientesUuidClienteDetalhesGetPathParams,
+  GetClienteDetalhesApiV1ClientesUuidClienteDetalhesGet200,
+  GetClienteDetalhesApiV1ClientesUuidClienteDetalhesGet422,
+  GetClienteDetalhesApiV1ClientesUuidClienteDetalhesGetQueryResponse,
+  GetClienteDetalhesApiV1ClientesUuidClienteDetalhesGetQuery
+} from './GetClienteDetalhesApiV1ClientesUuidClienteDetalhesGet'
+export type {
+  GetCnsClienteApiV1ClientesUuidClienteCnsGetPathParams,
+  GetCnsClienteApiV1ClientesUuidClienteCnsGet200,
+  GetCnsClienteApiV1ClientesUuidClienteCnsGet422,
+  GetCnsClienteApiV1ClientesUuidClienteCnsGetQueryResponse,
+  GetCnsClienteApiV1ClientesUuidClienteCnsGetQuery
+} from './GetCnsClienteApiV1ClientesUuidClienteCnsGet'
+export type {
+  ListClientesApiV1ClientesGetQueryParams,
+  ListClientesApiV1ClientesGet200,
+  ListClientesApiV1ClientesGet422,
+  ListClientesApiV1ClientesGetQueryResponse,
+  ListClientesApiV1ClientesGetQuery
+} from './ListClientesApiV1ClientesGet'
+export type {
+  UpdateClienteApiV1ClientesUuidClientePutPathParams,
+  UpdateClienteApiV1ClientesUuidClientePutQueryParams,
+  UpdateClienteApiV1ClientesUuidClientePut200,
+  UpdateClienteApiV1ClientesUuidClientePut422,
+  UpdateClienteApiV1ClientesUuidClientePutMutationRequest,
+  UpdateClienteApiV1ClientesUuidClientePutMutationResponse,
+  UpdateClienteApiV1ClientesUuidClientePutMutation
+} from './UpdateClienteApiV1ClientesUuidClientePut'
+export type {
+  UpdateClienteDetalheApiV1ClientesUuidClienteDetalhesDetalheIdPutPathParams,
+  UpdateClienteDetalheApiV1ClientesUuidClienteDetalhesDetalheIdPut200,
+  UpdateClienteDetalheApiV1ClientesUuidClienteDetalhesDetalheIdPut422,
+  UpdateClienteDetalheApiV1ClientesUuidClienteDetalhesDetalheIdPutMutationRequest,
+  UpdateClienteDetalheApiV1ClientesUuidClienteDetalhesDetalheIdPutMutationResponse,
+  UpdateClienteDetalheApiV1ClientesUuidClienteDetalhesDetalheIdPutMutation
+} from './UpdateClienteDetalheApiV1ClientesUuidClienteDetalhesDetalheIdPut'

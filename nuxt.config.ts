@@ -5,6 +5,14 @@ export default defineNuxtConfig({
   compatibilityDate: '2025-07-15',
   devtools: { enabled: true },
 
+  // Nuxt Layers - ordem de prioridade (último sobrescreve)
+  extends: [
+    './layers/0-base',
+    './layers/1-example',
+    './layers/2-desktop',
+    './layers/3-auth'
+  ],
+
   // Performance - Experimental features
   experimental: {
     crossOriginPrefetch: true
@@ -15,19 +23,29 @@ export default defineNuxtConfig({
     compressPublicAssets: true
   },
 
+  // Route Rules - configurações por rota
+  routeRules: {
+    // Rotas do @nuxt/content não precisam de CSRF
+    '/__nuxt_content/**': { security: { rateLimiter: false } },
+    '/api/_content/**': { security: { rateLimiter: false } }
+  },
+
   // SEO - Meta tags globais
   app: {
     head: {
       htmlAttrs: { lang: 'pt-BR' },
-      title: 'Nuxt 4 Layers Template',
+      title: 'Tucuxi-Blast',
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Template profissional para Nuxt 4 com shadcn-vue, Tailwind CSS v4 e arquitetura de Layers.' },
+        { name: 'description', content: 'Sistema de Record Linkage e Gestão de Dados' },
         { name: 'theme-color', content: '#000000' }
       ],
       link: [
-        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+        { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+        { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+        { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
+        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap' }
       ]
     }
   },
@@ -39,7 +57,7 @@ export default defineNuxtConfig({
   },
 
   // Nuxt Layers - auto-scan de ~/layers (Nuxt 4+)
-  // Ordem de prioridade: 4-landing > 2-example > 1-base
+  // Ordem de prioridade: 2-example > 1-base > 0-core
 
   modules: [
     '@nuxt/eslint',
@@ -49,7 +67,7 @@ export default defineNuxtConfig({
     '@nuxt/image',
     '@nuxtjs/color-mode',
     'nuxt-security',
-    'nuxt-csurf'
+    '@nuxt/content'
   ],
 
   // Security - Headers e proteções
@@ -59,9 +77,9 @@ export default defineNuxtConfig({
       contentSecurityPolicy: {
         'default-src': ["'self'"],
         'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
-        'style-src': ["'self'", "'unsafe-inline'"],
-        'img-src': ["'self'", 'data:', 'https:'],
-        'font-src': ["'self'"],
+        'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+        'img-src': ["'self'", 'data:', 'https:', 'https://d2dna.com'],
+        'font-src': ["'self'", 'https://fonts.gstatic.com'],
         'connect-src': ["'self'"],
         'frame-ancestors': ["'none'"],
         'base-uri': ["'self'"],
@@ -77,13 +95,6 @@ export default defineNuxtConfig({
       maxRequestSizeInBytes: 2000000,
       maxUploadFileRequestInBytes: 8000000
     }
-  },
-
-  // CSRF Protection
-  csurf: {
-    https: process.env.NODE_ENV === 'production',
-    cookieKey: 'csrf',
-    methodsToProtect: ['POST', 'PUT', 'PATCH', 'DELETE']
   },
 
   // VeeValidate - validação de formulários
@@ -112,7 +123,7 @@ export default defineNuxtConfig({
 
   shadcn: {
     prefix: '',
-    componentDir: './layers/1-base/app/components/ui'
+    componentDir: './layers/0-base/app/components/ui'
   },
 
   runtimeConfig: {
@@ -134,5 +145,5 @@ export default defineNuxtConfig({
     }
   },
 
-  // CSS global está em layers/0-core/
+  // CSS global está em layers/0-base/
 })

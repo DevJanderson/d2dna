@@ -1,0 +1,10 @@
+{
+  "properties": {
+    "message": { "type": "string", "title": "Message" },
+    "uuid_cliente": { "type": "string", "format": "uuid", "title": "Uuid Cliente" }
+  },
+  "type": "object",
+  "required": ["message", "uuid_cliente"],
+  "title": "ClienteSchemaDelete",
+  "x-readme-ref-name": "ClienteSchemaDelete"
+}

@@ -1,0 +1,187 @@
+{
+  "properties": {
+    "tolerance_days": {
+      "type": "integer",
+      "maximum": 365,
+      "minimum": 0,
+      "title": "Tolerance Days",
+      "description": "Tolerância em dias usada na busca"
+    },
+    "search_date": {
+      "type": "string",
+      "title": "Search Date",
+      "description": "Data central da busca"
+    },
+    "date_range": {
+      "additionalProperties": { "type": "string" },
+      "type": "object",
+      "title": "Date Range",
+      "description": "Intervalo de datas pesquisado"
+    },
+    "total_matches": {
+      "type": "integer",
+      "minimum": 0,
+      "title": "Total Matches",
+      "description": "Total de registros encontrados"
+    },
+    "exact_matches": {
+      "type": "integer",
+      "minimum": 0,
+      "title": "Exact Matches",
+      "description": "Matches com data exata"
+    },
+    "approximate_matches": {
+      "type": "integer",
+      "minimum": 0,
+      "title": "Approximate Matches",
+      "description": "Matches com data aproximada"
+    },
+    "common_errors_checked": {
+      "items": { "type": "string" },
+      "type": "array",
+      "title": "Common Errors Checked",
+      "description": "Erros comuns verificados"
+    },
+    "results": {
+      "items": {
+        "properties": {
+          "cliente": {
+            "additionalProperties": true,
+            "type": "object",
+            "title": "Cliente",
+            "description": "Dados do cliente encontrado"
+          },
+          "date_proximity_score": {
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 0,
+            "title": "Date Proximity Score",
+            "description": "Score de proximidade da data (0-100)"
+          },
+          "days_difference": {
+            "type": "integer",
+            "minimum": 0,
+            "title": "Days Difference",
+            "description": "Diferença em dias da data fornecida"
+          },
+          "exact_match": {
+            "type": "boolean",
+            "title": "Exact Match",
+            "description": "Se a data é exatamente igual"
+          },
+          "error_patterns_detected": {
+            "items": {
+              "properties": {
+                "type": {
+                  "type": "string",
+                  "title": "Type",
+                  "description": "Tipo de erro: digit_swap, year_typo, month_day_swap, etc"
+                },
+                "original_date": {
+                  "type": "string",
+                  "title": "Original Date",
+                  "description": "Data original fornecida"
+                },
+                "possible_date": {
+                  "type": "string",
+                  "title": "Possible Date",
+                  "description": "Data corrigida possível"
+                },
+                "confidence": {
+                  "type": "number",
+                  "maximum": 1,
+                  "minimum": 0,
+                  "title": "Confidence",
+                  "description": "Confiança na correção (0.0 a 1.0)"
+                },
+                "description": {
+                  "type": "string",
+                  "title": "Description",
+                  "description": "Descrição do erro detectado"
+                }
+              },
+              "type": "object",
+              "required": ["type", "original_date", "possible_date", "confidence", "description"],
+              "title": "DateErrorPattern",
+              "description": "Padrão de erro de data detectado",
+              "x-readme-ref-name": "DateErrorPattern"
+            },
+            "type": "array",
+            "title": "Error Patterns Detected",
+            "description": "Padrões de erro detectados na data"
+          },
+          "overall_score": {
+            "type": "integer",
+            "maximum": 100,
+            "minimum": 0,
+            "title": "Overall Score",
+            "description": "Score geral considerando todos os campos"
+          }
+        },
+        "type": "object",
+        "required": [
+          "cliente",
+          "date_proximity_score",
+          "days_difference",
+          "exact_match",
+          "overall_score"
+        ],
+        "title": "DateToleranceResult",
+        "description": "Resultado individual da busca com tolerância de data",
+        "x-readme-ref-name": "DateToleranceResult"
+      },
+      "type": "array",
+      "title": "Results",
+      "description": "Lista de resultados ordenados por score"
+    }
+  },
+  "type": "object",
+  "required": [
+    "tolerance_days",
+    "search_date",
+    "date_range",
+    "total_matches",
+    "exact_matches",
+    "approximate_matches",
+    "common_errors_checked",
+    "results"
+  ],
+  "title": "DateToleranceResponse",
+  "description": "Response da busca com tolerância de data",
+  "example": {
+    "approximate_matches": 4,
+    "common_errors_checked": ["digit_swap", "year_typo", "month_day_swap"],
+    "date_range": { "end": "1990-05-18", "start": "1990-05-12" },
+    "exact_matches": 1,
+    "results": [
+      {
+        "cliente": { "data_nascimento": "1990-05-15", "id": 123, "nome": "JOÃO SILVA" },
+        "date_proximity_score": 100,
+        "days_difference": 0,
+        "error_patterns_detected": [],
+        "exact_match": true,
+        "overall_score": 100
+      },
+      {
+        "cliente": { "data_nascimento": "1990-05-16", "id": 456, "nome": "JOÃO DA SILVA" },
+        "date_proximity_score": 80,
+        "days_difference": 1,
+        "error_patterns_detected": [
+          {
+            "confidence": 0.8,
+            "description": "Possível troca de dígitos 5↔6",
+            "original_date": "1990-05-15",
+            "possible_date": "1990-05-16",
+            "type": "digit_swap"
+          }
+        ],
+        "exact_match": false,
+        "overall_score": 85
+      }
+    ],
+    "search_date": "1990-05-15",
+    "tolerance_days": 3,
+    "total_matches": 5
+  },
+  "x-readme-ref-name": "DateToleranceResponse"
+}

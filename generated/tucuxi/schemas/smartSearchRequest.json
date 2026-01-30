@@ -1,0 +1,94 @@
+{
+  "properties": {
+    "cpf": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Cpf",
+      "description": "CPF (maior peso no scoring)",
+      "example": "123.456.789-10"
+    },
+    "cns": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Cns",
+      "description": "CNS - Cartão Nacional de Saúde",
+      "example": "123456789012345"
+    },
+    "nome": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Nome",
+      "description": "Nome completo",
+      "example": "João da Silva Santos"
+    },
+    "data_nascimento": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Data Nascimento",
+      "description": "Data de nascimento (YYYY-MM-DD)",
+      "example": "1990-05-15"
+    },
+    "nome_mae": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Nome Mae",
+      "description": "Nome da mãe (ajuda resolver homônimos)",
+      "example": "Maria Santos Silva"
+    },
+    "sexo": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Sexo",
+      "description": "Sexo (M ou F)",
+      "example": "M"
+    },
+    "endereco": {
+      "anyOf": [{ "additionalProperties": true, "type": "object" }, { "type": "null" }],
+      "title": "Endereco",
+      "description": "Dados de endereço para resolver homônimos",
+      "example": { "bairro": "Bela Vista", "cep": "01310-100", "cidade": "São Paulo", "uf": "SP" }
+    },
+    "telefone": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Telefone",
+      "description": "Telefone de contato",
+      "example": "(11) 98765-4321"
+    },
+    "email": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Email",
+      "description": "E-mail de contato",
+      "example": "joao.silva@email.com"
+    },
+    "origem": {
+      "type": "integer",
+      "minimum": 1,
+      "title": "Origem",
+      "description": "Sistema de origem do registro",
+      "default": 1
+    },
+    "update_db": {
+      "type": "boolean",
+      "title": "Update Db",
+      "description": "Se True, segue lógica de inserir/atualizar/histórico. Se False, apenas busca.",
+      "default": false,
+      "example": false
+    }
+  },
+  "type": "object",
+  "title": "SmartSearchRequest",
+  "description": "Request para busca inteligente com seleção automática de estratégia",
+  "examples": [
+    {
+      "cpf": "123.456.789-10",
+      "data_nascimento": "1990-05-15",
+      "nome": "João Silva",
+      "title": "Busca com alta confiança"
+    },
+    {
+      "cns": "123456789012345",
+      "data_nascimento": "1985-03-20",
+      "endereco": { "cep": "01310-100", "cidade": "São Paulo" },
+      "nome": "Maria Santos",
+      "nome_mae": "Ana Santos",
+      "sexo": "F",
+      "title": "Busca com dados completos"
+    },
+    { "nome": "Pedro Oliveira", "sexo": "M", "title": "Busca mínima" }
+  ],
+  "x-readme-ref-name": "SmartSearchRequest"
+}

@@ -1,0 +1,48 @@
+{
+  "properties": {
+    "id": { "type": "integer", "title": "Id" },
+    "nome": { "type": "string", "title": "Nome" },
+    "email": { "type": "string", "format": "email", "title": "Email" },
+    "admin": { "type": "boolean", "title": "Admin", "default": false },
+    "ativo": { "type": "boolean", "title": "Ativo", "default": true },
+    "telefone": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Telefone",
+      "description": "Telefone no formato (99) 99999-9999"
+    },
+    "estado": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Estado",
+      "description": "Estado (UF)",
+      "example": "SP"
+    },
+    "cidade": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Cidade" },
+    "foto_perfil": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Foto Perfil",
+      "description": "URL da foto de perfil"
+    },
+    "funcao": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Funcao",
+      "example": "gestor"
+    },
+    "instituicao": {
+      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "title": "Instituicao",
+      "example": "Instituto de Pesquisa X"
+    },
+    "desativado_em": {
+      "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
+      "title": "Desativado Em"
+    },
+    "ultimo_login": {
+      "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
+      "title": "Ultimo Login"
+    }
+  },
+  "type": "object",
+  "required": ["id", "nome", "email"],
+  "title": "UsuarioSchemaList",
+  "x-readme-ref-name": "UsuarioSchemaList"
+}

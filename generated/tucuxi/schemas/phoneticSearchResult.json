@@ -1,0 +1,75 @@
+{
+  "properties": {
+    "cliente": {
+      "additionalProperties": true,
+      "type": "object",
+      "title": "Cliente",
+      "description": "Dados do cliente encontrado"
+    },
+    "phonetic_score": {
+      "type": "integer",
+      "maximum": 100,
+      "minimum": 0,
+      "title": "Phonetic Score",
+      "description": "Score fonético total (0-100)"
+    },
+    "match_details": {
+      "items": {
+        "properties": {
+          "field": {
+            "type": "string",
+            "title": "Field",
+            "description": "Campo comparado: nome ou nome_mae"
+          },
+          "original_value": {
+            "type": "string",
+            "title": "Original Value",
+            "description": "Valor original fornecido"
+          },
+          "matched_value": {
+            "type": "string",
+            "title": "Matched Value",
+            "description": "Valor encontrado no banco"
+          },
+          "similarity_score": {
+            "type": "number",
+            "maximum": 1,
+            "minimum": 0,
+            "title": "Similarity Score",
+            "description": "Score de similaridade (0.0 a 1.0)"
+          },
+          "algorithm_matches": {
+            "additionalProperties": { "type": "boolean" },
+            "type": "object",
+            "title": "Algorithm Matches",
+            "description": "Quais algoritmos deram match"
+          }
+        },
+        "type": "object",
+        "required": [
+          "field",
+          "original_value",
+          "matched_value",
+          "similarity_score",
+          "algorithm_matches"
+        ],
+        "title": "PhoneticMatchDetails",
+        "description": "Detalhes de match fonético",
+        "x-readme-ref-name": "PhoneticMatchDetails"
+      },
+      "type": "array",
+      "title": "Match Details",
+      "description": "Detalhes de cada campo que deu match"
+    },
+    "confidence_level": {
+      "type": "string",
+      "title": "Confidence Level",
+      "description": "Nível de confiança: high, medium, low"
+    }
+  },
+  "type": "object",
+  "required": ["cliente", "phonetic_score", "match_details", "confidence_level"],
+  "title": "PhoneticSearchResult",
+  "description": "Resultado individual da busca fonética",
+  "x-readme-ref-name": "PhoneticSearchResult"
+}
