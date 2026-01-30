@@ -40,7 +40,7 @@ npm run test:e2e:install   # Instala browsers (primeiro uso)
 npx shadcn-vue@latest add <componente>
 ```
 
-Componentes ficam em `layers/1-base/app/components/ui/` (auto-import).
+Componentes ficam em `layers/0-base/app/components/ui/` (auto-import).
 
 ## Arquitetura
 
@@ -52,10 +52,9 @@ Nuxt 4 + shadcn-vue + Tailwind CSS v4 + **Nuxt Layers**.
 
 ```
 layers/                 # TUDO fica aqui (inclusive server/)
-  0-core/               # Fundação: app.vue, error.vue, index.vue, CSS global
-  1-base/               # UI: shadcn-vue, utils, tipos globais
-  2-example/            # Feature layer de exemplo (copiar para novas)
-  3-desktop/            # Sistema de janelas estilo desktop (Windows/macOS)
+  0-base/               # Fundação + UI: app.vue, CSS, shadcn-vue, utils
+  1-example/            # Feature layer de exemplo (copiar para novas)
+  2-desktop/            # Sistema de janelas estilo desktop (Windows/macOS)
 generated/              # Código gerado pelo Kubb (tipos, schemas)
 tests/                  # unit/, integration/, e2e/
 ```
@@ -69,7 +68,7 @@ tests/                  # unit/, integration/, e2e/
 ### Ordem de Prioridade (Layers)
 
 ```
-3-desktop > 2-example > 1-base > 0-core
+2-desktop > 1-example > 0-base
 ```
 
 Número maior = maior prioridade = sobrescreve layers anteriores.
@@ -132,8 +131,8 @@ export const useExampleStore = defineStore('example', () => {
 
 ### Utils vs Composables
 
-- **Utils** (`layers/1-base/app/utils/`): Funções puras, sem estado Vue
-- **Composables** (`layers/1-base/app/composables/`): Lógica com `ref`, `computed`
+- **Utils** (`layers/0-base/app/utils/`): Funções puras, sem estado Vue
+- **Composables** (`layers/{N}-{feature}/app/composables/`): Lógica com `ref`, `computed`
 
 ## Segurança
 
@@ -168,9 +167,7 @@ Cada diretório principal tem seu próprio `CLAUDE.md` com instruções específ
 
 | Documento | Conteúdo |
 |-----------|----------|
-| [layers/0-core/CLAUDE.md](layers/0-core/CLAUDE.md) | app.vue, error.vue, CSS global |
-| [layers/0-core/server/CLAUDE.md](layers/0-core/server/CLAUDE.md) | API routes, Nitro, segurança server-side |
-| [layers/1-base/CLAUDE.md](layers/1-base/CLAUDE.md) | UI, shadcn-vue, utils, tipos globais |
-| [layers/2-example/CLAUDE.md](layers/2-example/CLAUDE.md) | Template para criar features |
-| [layers/3-desktop/CLAUDE.md](layers/3-desktop/CLAUDE.md) | Sistema de janelas (useWindowManager) |
+| [layers/0-base/CLAUDE.md](layers/0-base/CLAUDE.md) | Fundação, UI, shadcn-vue, utils |
+| [layers/1-example/CLAUDE.md](layers/1-example/CLAUDE.md) | Template para criar features |
+| [layers/2-desktop/CLAUDE.md](layers/2-desktop/CLAUDE.md) | Sistema de janelas (useWindowManager) |
 | [tests/CLAUDE.md](tests/CLAUDE.md) | Vitest, Playwright, mocking |

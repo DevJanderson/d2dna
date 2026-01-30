@@ -112,7 +112,7 @@ export default defineNuxtConfig({
 
   shadcn: {
     prefix: '',
-    componentDir: './layers/1-base/app/components/ui'
+    componentDir: './layers/0-base/app/components/ui'
   },
 
   runtimeConfig: {
@@ -134,5 +134,5 @@ export default defineNuxtConfig({
     }
   },
 
-  // CSS global está em layers/0-core/
+  // CSS global está em layers/0-base/
 })
