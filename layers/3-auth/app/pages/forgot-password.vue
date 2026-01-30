@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { Check, Loader2 } from 'lucide-vue-next'
+
 definePageMeta({
   layout: 'default'
 })
@@ -20,7 +22,7 @@ async function handleSubmit() {
     isSubmitted.value = true
   } catch (e: unknown) {
     const err = e as { data?: { message?: string } }
-    error.value = err.data?.message || 'Erro ao enviar solicitação'
+    error.value = err.data?.message || 'Erro ao enviar solicitacao'
   } finally {
     isLoading.value = false
   }
@@ -33,24 +35,21 @@ async function handleSubmit() {
       <div class="text-center">
         <h1 class="text-2xl font-bold tracking-tight">Esqueci minha senha</h1>
         <p class="mt-1 text-sm text-muted-foreground">
-          Digite seu email para receber instruções
+          Digite seu email para receber instrucoes
         </p>
       </div>
 
       <div class="rounded-lg border bg-card p-6 shadow-sm">
-        <!-- Formulário -->
+        <!-- Formulario -->
         <form v-if="!isSubmitted" class="space-y-4" @submit.prevent="handleSubmit">
           <div class="space-y-2">
-            <label for="email" class="text-sm font-medium leading-none">
-              Email
-            </label>
-            <input
+            <Label for="email">Email</Label>
+            <Input
               id="email"
               v-model="email"
               type="email"
               autocomplete="email"
               required
-              class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
               placeholder="seu@email.com"
               :disabled="isLoading"
             />
@@ -60,35 +59,19 @@ async function handleSubmit() {
             {{ error }}
           </p>
 
-          <button
-            type="submit"
-            class="inline-flex h-10 w-full items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50"
-            :disabled="isLoading"
-          >
-            {{ isLoading ? 'Enviando...' : 'Enviar instruções' }}
-          </button>
+          <Button type="submit" class="w-full" :disabled="isLoading">
+            <Loader2 v-if="isLoading" class="mr-2 h-4 w-4 animate-spin" />
+            {{ isLoading ? 'Enviando...' : 'Enviar instrucoes' }}
+          </Button>
         </form>
 
         <!-- Sucesso -->
         <div v-else class="space-y-4 text-center">
           <div class="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="text-green-600"
-            >
-              <polyline points="20 6 9 17 4 12" />
-            </svg>
+            <Check class="h-6 w-6 text-green-600" />
           </div>
           <p class="text-sm text-muted-foreground">
-            Se o email existir em nossa base, você receberá instruções para redefinir sua senha.
+            Se o email existir em nossa base, voce recebera instrucoes para redefinir sua senha.
           </p>
         </div>
       </div>

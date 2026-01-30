@@ -14,7 +14,7 @@ const mockStore = {
     id: 1,
     nome: 'Test User',
     email: 'test@example.com',
-    foto_perfil: null
+    foto_perfil: null as string | null
   },
   logout: mockLogout
 }

@@ -6,7 +6,7 @@ import { setActivePinia, createPinia } from 'pinia'
 const mockLogin = vi.fn()
 const mockStore = {
   isLoading: false,
-  error: null,
+  error: null as string | null,
   login: mockLogin
 }
 
