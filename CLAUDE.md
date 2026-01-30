@@ -58,6 +58,16 @@ Nuxt 4 + shadcn-vue + Tailwind CSS v4 + **Nuxt Layers**.
 
 **Tudo é layer** - não existe pasta `app/` na raiz. Arquitetura layers-only.
 
+## Design System
+
+Estilo **MX (Machine Experience)** - design para humanos e máquinas:
+
+- **Fontes**: Space Grotesk (sans) + Space Mono (mono)
+- **ASCII Art**: Logos, bordas, separadores
+- **Efeitos**: Cursor piscando, scanlines (CRT)
+- **Espaçamento**: 8pt Grid System
+- **Cores**: Por contexto/profissão (verde=dev, azul=ciência, etc.)
+
 ### Estrutura Principal
 
 ```

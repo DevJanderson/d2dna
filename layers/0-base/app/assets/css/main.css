@@ -128,3 +128,45 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* ===== MX (Machine Experience) Styles ===== */
+
+/* Cursor piscando - efeito terminal */
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+.cursor-blink {
+  animation: blink 1s step-end infinite;
+}
+
+/* Scanlines - efeito CRT sutil */
+.scanlines {
+  position: relative;
+}
+
+.scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.015) 2px,
+    rgba(0, 0, 0, 0.015) 4px
+  );
+  pointer-events: none;
+  z-index: 10;
+}
+
+.dark .scanlines::after {
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(255, 255, 255, 0.01) 2px,
+    rgba(255, 255, 255, 0.01) 4px
+  );
+}
