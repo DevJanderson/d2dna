@@ -26,7 +26,8 @@ import {
   Power,
   GitCompare,
   Upload,
-  Home
+  Home,
+  UserCog
 } from 'lucide-vue-next'
 
 /** Configuração para abrir uma janela */
@@ -77,6 +78,55 @@ const userName = computed(() => user.value?.nome || 'Usuário')
 
 /** Função/cargo do usuário */
 const userRole = computed(() => user.value?.funcao || 'Analista')
+
+/**
+ * Abre uma janela do usuário (perfil ou configurações)
+ * Navega para /app se não estiver lá
+ */
+function openUserWindow(config: WindowConfig) {
+  if (route.path !== '/app') {
+    router.push('/app')
+  }
+  const existing = windowManager.windows.value.find(w => w.id === config.id)
+  if (existing) {
+    windowManager.focus(config.id)
+  } else {
+    windowManager.open(config)
+  }
+}
+
+/** Abre janela de perfil do usuário */
+function openProfile() {
+  openUserWindow({
+    id: 'user-profile',
+    title: 'Meu Perfil',
+    position: { x: 150, y: 80 },
+    size: { width: 450, height: 500 }
+  })
+}
+
+/** Abre janela de configurações */
+function openSettings() {
+  openUserWindow({
+    id: 'user-settings',
+    title: 'Configurações',
+    position: { x: 200, y: 100 },
+    size: { width: 500, height: 450 }
+  })
+}
+
+/** Usuário é admin? */
+const isAdmin = computed(() => authStore.isAdmin)
+
+/** Abre janela de gerenciamento de usuários (admin) */
+function openUserManagement() {
+  openUserWindow({
+    id: 'user-management',
+    title: 'Gerenciar Usuários',
+    position: { x: 100, y: 50 },
+    size: { width: 700, height: 550 }
+  })
+}
 
 /** Itens do menu de navegação principal */
 const navItems: NavItem[] = [
@@ -317,13 +367,18 @@ function hasOpenWindow(item: NavItem): boolean {
                   <p class="text-xs text-muted-foreground">{{ userRole }}</p>
                 </div>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem @click="openProfile">
                   <Users class="mr-2 h-4 w-4" />
                   Perfil
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem @click="openSettings">
                   <Settings class="mr-2 h-4 w-4" />
                   Configurações
+                </DropdownMenuItem>
+                <!-- Opção de admin -->
+                <DropdownMenuItem v-if="isAdmin" @click="openUserManagement">
+                  <UserCog class="mr-2 h-4 w-4" />
+                  Gerenciar Usuários
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <!-- text-destructive: vermelho para ação perigosa -->
