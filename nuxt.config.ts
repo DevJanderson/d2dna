@@ -79,12 +79,14 @@ export default defineNuxtConfig({
   security: {
     headers: {
       crossOriginEmbedderPolicy: process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp',
-      contentSecurityPolicy: {
+      crossOriginOpenerPolicy: process.env.NODE_ENV === 'development' ? false : 'same-origin',
+      originAgentCluster: process.env.NODE_ENV === 'development' ? false : '?1',
+      contentSecurityPolicy: process.env.NODE_ENV === 'development' ? false : {
         'default-src': ["'self'"],
         'script-src': ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
         'style-src': ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
         'img-src': ["'self'", 'data:', 'https:', 'https://d2dna.com'],
-        'font-src': ["'self'", 'https://fonts.gstatic.com'],
+        'font-src': ["'self'", 'data:', 'https://fonts.gstatic.com'],
         'connect-src': ["'self'"],
         'frame-ancestors': ["'none'"],
         'base-uri': ["'self'"],
