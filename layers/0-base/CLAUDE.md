@@ -57,10 +57,22 @@ layers/0-base/
 A página inicial segue o estilo **MX (Machine Experience)** - design para humanos e máquinas:
 
 ### Elementos visuais
-- **ASCII Art**: Logo Tucuxi, logo D2DNA, bordas `┌───┐`
+- **ASCII Art D2DNA**: Logo em blocos Unicode (estilo █████▄)
+- **ASCII Art Tucuxi**: Golfinho em caracteres ASCII
 - **Cursor piscando**: Classe `.cursor-blink` após status
-- **Scanlines**: Overlay CRT sutil (classe `.scanlines`)
+- **Scanlines**: Overlay CRT sutil (classe `.scanlines`, z-index: 10)
 - **Fonte mono**: Space Mono para estética terminal
+
+### z-index para scanlines
+O efeito scanlines usa `z-index: 10`. Para elementos ficarem **acima** do efeito (sem as linhas), adicione `relative z-20`:
+
+```vue
+<div class="relative z-20 bg-white ...">
+  <!-- Conteúdo sem scanlines por cima -->
+</div>
+```
+
+Usado em: cards de parceiros, cards de equipe, formulários
 
 ### Espaçamento (8pt Grid)
 - Entre seções: 48-64px (Tailwind 12-16)

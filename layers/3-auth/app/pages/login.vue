@@ -1,4 +1,8 @@
 <script setup lang="ts">
+/**
+ * Página de login - Estilo MX (Machine Experience)
+ * Design terminal com ASCII art e efeitos CRT
+ */
 definePageMeta({
   layout: 'default'
 })
@@ -25,38 +29,61 @@ function handleSuccess() {
 </script>
 
 <template>
-  <div class="flex min-h-screen items-center justify-center bg-background p-4">
-    <div class="w-full max-w-sm space-y-6">
-      <!-- Logo/Título -->
-      <div class="text-center">
-        <h1 class="text-2xl font-bold tracking-tight">Tucuxi</h1>
-        <p class="mt-1 text-sm text-muted-foreground">
-          Entre com suas credenciais
-        </p>
-      </div>
+  <div class="min-h-screen bg-background font-mono scanlines flex items-center justify-center p-4">
+    <div class="w-full max-w-sm space-y-8">
+      <!-- Header com ASCII art -->
+      <header class="text-center space-y-4">
+        <!-- ASCII D2DNA -->
+        <pre class="text-xs text-primary/70 select-none leading-tight" aria-hidden="true">
+█████▄   ██████╗    █████▄   ███╗   ██╗  █████╗
+██   ██  ╚════██╗   ██   ██  ████╗  ██║ ██╔══██╗
+██   ██   █████╔╝   ██   ██  ██╔██╗ ██║ ███████║
+██   ██  ██╔═══╝    ██   ██  ██║╚██╗██║ ██╔══██║
+█████▀   ███████╗   █████▀   ██║ ╚████║ ██║  ██║
+╚════╝   ╚══════╝   ╚════╝   ╚═╝  ╚═══╝ ╚═╝  ╚═╝</pre>
+
+        <div class="space-y-2">
+          <h1 class="text-2xl font-bold tracking-wider text-foreground">
+            TUCUXI<span class="cursor-blink text-primary">_</span>
+          </h1>
+          <p class="text-xs text-muted-foreground">
+            <span class="text-muted-foreground/50">&gt;</span> record linkage e gestao de dados
+          </p>
+        </div>
+      </header>
 
       <!-- Card de Login -->
-      <div class="rounded-lg border bg-card p-6 shadow-sm">
+      <div class="relative z-20 bg-white dark:bg-card rounded-lg border border-border/50 shadow-sm p-6 space-y-4">
+        <p class="text-xs text-muted-foreground text-center">
+          <span class="text-muted-foreground/50">&gt;</span> autenticacao_requerida
+        </p>
+
+        <!-- Formulário -->
         <AuthLoginForm @success="handleSuccess" />
 
-        <div class="mt-4 text-center">
-          <NuxtLink to="/forgot-password" class="text-sm text-muted-foreground hover:text-primary hover:underline">
-            Esqueci minha senha
+        <!-- Links -->
+        <div class="flex justify-between text-xs pt-2">
+          <NuxtLink
+            to="/forgot-password"
+            class="text-muted-foreground hover:text-primary transition-colors"
+          >
+            <span class="text-muted-foreground/50">&gt;</span> esqueci_senha
+          </NuxtLink>
+          <NuxtLink
+            to="/"
+            class="text-muted-foreground hover:text-primary transition-colors"
+          >
+            <span class="text-muted-foreground/50">&gt;</span> voltar
           </NuxtLink>
         </div>
       </div>
 
-      <!-- Voltar -->
-      <div class="text-center">
-        <NuxtLink to="/" class="text-sm text-muted-foreground hover:text-primary hover:underline">
-          Voltar para a página inicial
-        </NuxtLink>
-      </div>
-
       <!-- Footer -->
-      <p class="text-center text-xs text-muted-foreground">
-        &copy; {{ new Date().getFullYear() }} D2DNA. Todos os direitos reservados.
-      </p>
+      <footer class="text-center">
+        <p class="text-xs text-muted-foreground/70">
+          <span class="text-muted-foreground/50">&gt;</span> copyright: {{ new Date().getFullYear() }} D2DNA
+        </p>
+      </footer>
     </div>
   </div>
 </template>

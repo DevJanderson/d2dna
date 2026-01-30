@@ -49,7 +49,7 @@ const colorClasses = {
 </script>
 
 <template>
-  <div class="relative h-44">
+  <div class="relative z-20 h-44">
     <!-- Blob SVG -->
     <svg
       class="absolute top-0 left-0 w-48 h-40"

@@ -45,8 +45,28 @@ layers/3-auth/
 
 | Rota | Protegida | Descrição |
 |------|-----------|-----------|
-| `/login` | Não | Formulário de login |
+| `/login` | Não | Formulário de login (estilo MX) |
 | `/forgot-password` | Não | Solicitar reset de senha |
+
+## Design MX (Machine Experience)
+
+A página de login segue o estilo **MX (Machine Experience)**:
+
+### Elementos visuais
+- **ASCII Art D2DNA**: Logo em blocos Unicode no topo
+- **Cursor piscando**: `TUCUXI_` com underscore animado
+- **Scanlines**: Efeito CRT sutil (herdado do CSS global)
+- **Fonte mono**: Consistente em toda a página
+- **Labels terminal**: `> email:` e `> senha:`
+
+### Estrutura do card
+- Background branco (`bg-white dark:bg-card`)
+- Bordas arredondadas (`rounded-lg`)
+- Sombra sutil (`shadow-sm`)
+- `z-20` para ficar acima do efeito scanlines
+
+### Mensagens de erro
+Estilo terminal: `[ERRO] mensagem` com fundo vermelho sutil
 
 ## Fluxo de Autenticação
 

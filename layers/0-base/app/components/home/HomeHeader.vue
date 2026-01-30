@@ -34,16 +34,17 @@ const asciiTucuxi = `
       <h1 class="text-3xl md:text-4xl font-bold tracking-tight mb-3">
         Tucuxi-Blast
       </h1>
-      <p class="text-sm text-muted-foreground mb-4">
+      <p class="text-sm text-muted-foreground mb-8">
         Sistema de Record Linkage e Gestao de Dados
       </p>
       <!-- Logo D2DNA ASCII -->
-      <pre class="text-[10px] sm:text-xs leading-tight text-muted-foreground/70 select-none" aria-hidden="true">
- ____   ___  ____  _   _    _
-|  _ \ |__ \|  _ \| \ | |  / \
-| | | |  / /| | | |  \| | / _ \
-| |_| | / /_| |_| | |\  |/ ___ \
-|____/ |____|____/|_| \_/_/   \_\</pre>
+      <pre class="text-[8px] sm:text-[10px] leading-tight text-primary/70 select-none" aria-hidden="true">
+█████▄   ██████╗    █████▄   ███╗   ██╗  █████╗
+██   ██  ╚════██╗   ██   ██  ████╗  ██║ ██╔══██╗
+██   ██   █████╔╝   ██   ██  ██╔██╗ ██║ ███████║
+██   ██  ██╔═══╝    ██   ██  ██║╚██╗██║ ██╔══██║
+█████▀   ███████╗   █████▀   ██║ ╚████║ ██║  ██║
+╚════╝   ╚══════╝   ╚════╝   ╚═╝  ╚═══╝ ╚═╝  ╚═╝</pre>
     </div>
 
     <!-- Direita: ASCII Art Tucuxi -->

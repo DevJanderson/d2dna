@@ -31,7 +31,7 @@ const partners = [
       <div
         v-for="partner in partners"
         :key="partner.name"
-        class="group flex items-center justify-center p-8 bg-white dark:bg-muted/20 rounded-sm border border-border/30 hover:border-primary/50 transition-colors"
+        class="relative z-20 group flex items-center justify-center p-8 bg-white dark:bg-muted/20 rounded-sm border border-border/30 hover:border-primary/50 transition-colors"
       >
         <img
           :src="partner.logo"
