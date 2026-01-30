@@ -3,32 +3,13 @@ import type { H3Event } from 'h3'
 const API_BASE_URL = 'https://api.d2dna.com'
 
 /**
- * Verifica se a requisição está via HTTPS (incluindo via proxy/tunnel)
- */
-function isSecureRequest(event: H3Event): boolean {
-  // Em produção, sempre secure
-  if (process.env.NODE_ENV === 'production') return true
-
-  // Verifica headers de proxy (Cloudflare, nginx, etc.)
-  const forwardedProto = getHeader(event, 'x-forwarded-proto')
-  if (forwardedProto === 'https') return true
-
-  // Verifica header do Cloudflare
-  const cfVisitor = getHeader(event, 'cf-visitor')
-  if (cfVisitor?.includes('"scheme":"https"')) return true
-
-  return false
-}
-
-/**
  * Salva access token em cookie httpOnly (SEGURO)
  */
 export function setAccessToken(event: H3Event, token: string, expiresIn = 3600) {
-  const secure = isSecureRequest(event)
   setCookie(event, 'access_token', token, {
     httpOnly: true,
-    secure,
-    sameSite: secure ? 'strict' : 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
     maxAge: expiresIn,
     path: '/'
   })
@@ -38,11 +19,10 @@ export function setAccessToken(event: H3Event, token: string, expiresIn = 3600) 
  * Salva refresh token em cookie httpOnly
  */
 export function setRefreshToken(event: H3Event, token: string) {
-  const secure = isSecureRequest(event)
   setCookie(event, 'refresh_token', token, {
     httpOnly: true,
-    secure,
-    sameSite: secure ? 'strict' : 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: 'strict',
     maxAge: 60 * 60 * 24 * 7, // 7 dias
     path: '/'
   })
