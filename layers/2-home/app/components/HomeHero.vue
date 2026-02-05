@@ -53,7 +53,7 @@ onMounted(() => {
     <!-- Gradiente warm sutil — canto inferior direito como Anytype -->
     <div class="absolute inset-0 -z-10">
       <div class="absolute inset-0 bg-background" />
-      <div class="absolute bottom-0 right-0 h-[70%] w-[50%] bg-gradient-to-tl from-amber-100/60 via-rose-100/30 to-transparent dark:from-amber-950/20 dark:via-rose-950/10 dark:to-transparent" />
+      <div class="absolute bottom-0 right-0 h-[70%] w-[50%] bg-linear-to-tl from-sky-100/50 via-blue-50/30 to-transparent dark:from-sky-950/20 dark:via-blue-950/10 dark:to-transparent" />
     </div>
 
     <!-- Navbar simples -->
@@ -88,7 +88,7 @@ onMounted(() => {
         >
           <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight text-foreground leading-[1.08]">
             Dados fragmentados,
-            <span class="text-rose-400 dark:text-rose-400">agora conectados</span>
+            <span class="text-sky-500 dark:text-sky-400">agora conectados</span>
           </h1>
         </div>
 
@@ -98,103 +98,118 @@ onMounted(() => {
           :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
           aria-hidden="true"
         >
-          <svg viewBox="0 0 440 380" fill="none" class="w-full max-w-125 h-auto" xmlns="http://www.w3.org/2000/svg">
+          <svg viewBox="0 0 460 400" fill="none" class="w-full max-w-130 h-auto" xmlns="http://www.w3.org/2000/svg">
             <!-- Glow sutil atrás do registro central -->
-            <circle cx="220" cy="200" r="100" fill="currentColor" class="text-rose-400/5" />
+            <circle cx="230" cy="200" r="110" fill="currentColor" class="hero-glow text-sky-500/5" />
 
-            <!-- Registro central unificado (maior, com fill sutil) -->
-            <rect x="140" y="100" width="160" height="190" rx="10" fill="currentColor" class="text-background" />
-            <rect x="140" y="100" width="160" height="190" rx="10" stroke="currentColor" stroke-width="2" class="text-foreground/70" />
-            <!-- Header do registro central -->
-            <rect x="140" y="100" width="160" height="34" rx="10" fill="currentColor" class="text-foreground/5" />
-            <rect x="140" y="124" width="160" height="10" fill="currentColor" class="text-foreground/5" />
-            <line x1="140" y1="134" x2="300" y2="134" stroke="currentColor" stroke-width="1.2" class="text-foreground/20" />
+            <!-- ═══ REGISTRO CENTRAL UNIFICADO ═══ -->
+            <rect x="150" y="100" width="160" height="200" rx="10" fill="currentColor" class="text-background" />
+            <rect x="150" y="100" width="160" height="200" rx="10" stroke="currentColor" stroke-width="2" class="text-foreground/70" />
+            <!-- Header -->
+            <rect x="150" y="100" width="160" height="34" rx="10" fill="currentColor" class="text-foreground/5" />
+            <rect x="150" y="124" width="160" height="10" fill="currentColor" class="text-foreground/5" />
+            <line x1="150" y1="134" x2="310" y2="134" stroke="currentColor" stroke-width="1.2" class="text-foreground/15" />
             <!-- Dots do header -->
-            <circle cx="157" cy="117" r="4" fill="currentColor" class="text-rose-400/40" />
-            <circle cx="171" cy="117" r="4" fill="currentColor" class="text-amber-400/40" />
-            <circle cx="185" cy="117" r="4" fill="currentColor" class="text-emerald-400/40" />
-            <!-- Ícone pessoa no registro central -->
-            <circle cx="220" cy="168" r="18" stroke="currentColor" stroke-width="2" class="text-foreground/50" />
-            <path d="M200 200 a20 12 0 0 1 40 0" stroke="currentColor" stroke-width="2" class="text-foreground/50" />
-            <!-- Linhas de dados no registro central -->
-            <rect x="162" y="218" width="116" height="6" rx="3" fill="currentColor" class="text-foreground/10" />
-            <rect x="162" y="234" width="96" height="6" rx="3" fill="currentColor" class="text-foreground/8" />
-            <rect x="162" y="250" width="72" height="6" rx="3" fill="currentColor" class="text-foreground/6" />
-            <!-- Badge de verificado -->
-            <circle cx="282" cy="270" r="12" fill="currentColor" class="text-emerald-500/20" />
-            <circle cx="282" cy="270" r="12" stroke="currentColor" stroke-width="1.5" class="text-emerald-500/60" />
-            <path d="M276 270 l4 4 l7 -9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500/80" />
+            <circle cx="167" cy="117" r="4" fill="currentColor" class="text-sky-500/40" />
+            <circle cx="181" cy="117" r="4" fill="currentColor" class="text-amber-400/40" />
+            <circle cx="195" cy="117" r="4" fill="currentColor" class="text-emerald-400/40" />
+            <!-- Ícone pessoa -->
+            <circle cx="230" cy="170" r="18" stroke="currentColor" stroke-width="2" class="text-foreground/40" />
+            <path d="M210 202 a20 12 0 0 1 40 0" stroke="currentColor" stroke-width="2" class="text-foreground/40" />
+            <!-- Linhas de dados -->
+            <rect x="172" y="222" width="116" height="6" rx="3" fill="currentColor" class="text-foreground/10" />
+            <rect x="172" y="238" width="96" height="6" rx="3" fill="currentColor" class="text-foreground/8" />
+            <rect x="172" y="254" width="72" height="6" rx="3" fill="currentColor" class="text-foreground/6" />
+            <!-- Label "DNA" no card -->
+            <text x="280" y="150" class="text-sky-500/20" fill="currentColor" font-size="11" font-family="monospace" font-weight="bold">DNA</text>
+            <!-- Badge verificado -->
+            <circle cx="292" cy="280" r="12" fill="currentColor" class="text-emerald-500/15" />
+            <circle cx="292" cy="280" r="12" stroke="currentColor" stroke-width="1.5" class="text-emerald-500/50" />
+            <path d="M286 280 l4 4 l7 -9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500/70" />
 
-            <!-- Registro fragmentado 1 (topo esquerda) -->
-            <rect x="12" y="18" width="115" height="84" rx="8" fill="currentColor" class="text-background" />
-            <rect x="12" y="18" width="115" height="84" rx="8" stroke="currentColor" stroke-width="1.5" class="text-foreground/25" />
-            <rect x="12" y="18" width="115" height="28" rx="8" fill="currentColor" class="text-foreground/4" />
-            <rect x="12" y="38" width="115" height="8" fill="currentColor" class="text-foreground/4" />
-            <line x1="12" y1="46" x2="127" y2="46" stroke="currentColor" stroke-width="0.8" class="text-foreground/12" />
-            <rect x="26" y="56" width="68" height="5" rx="2.5" fill="currentColor" class="text-foreground/8" />
-            <rect x="26" y="68" width="84" height="5" rx="2.5" fill="currentColor" class="text-foreground/6" />
-            <rect x="26" y="80" width="50" height="5" rx="2.5" fill="currentColor" class="text-foreground/5" />
+            <!-- ═══ FRAGMENTO 1 — TOPO ESQUERDA (Documento) ═══ -->
+            <g class="hero-float">
+            <rect x="15" y="25" width="120" height="85" rx="8" fill="currentColor" class="text-background" />
+            <rect x="15" y="25" width="120" height="85" rx="8" stroke="currentColor" stroke-width="1.5" class="text-foreground/20" />
+            <rect x="15" y="25" width="120" height="26" rx="8" fill="currentColor" class="text-foreground/4" />
+            <rect x="15" y="43" width="120" height="8" fill="currentColor" class="text-foreground/4" />
+            <line x1="15" y1="51" x2="135" y2="51" stroke="currentColor" stroke-width="0.8" class="text-foreground/10" />
+            <rect x="28" y="60" width="72" height="5" rx="2.5" fill="currentColor" class="text-foreground/8" />
+            <rect x="28" y="72" width="88" height="5" rx="2.5" fill="currentColor" class="text-foreground/6" />
+            <rect x="28" y="84" width="54" height="5" rx="2.5" fill="currentColor" class="text-foreground/4" />
             <!-- Ícone doc -->
-            <rect x="28" y="26" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.2" class="text-foreground/20" />
-            <line x1="31" y1="31" x2="37" y2="31" stroke="currentColor" stroke-width="0.8" class="text-foreground/15" />
-            <line x1="31" y1="34" x2="37" y2="34" stroke="currentColor" stroke-width="0.8" class="text-foreground/15" />
+            <rect x="30" y="32" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.2" class="text-foreground/18" />
+            <line x1="33" y1="37" x2="39" y2="37" stroke="currentColor" stroke-width="0.8" class="text-foreground/12" />
+            <line x1="33" y1="40" x2="39" y2="40" stroke="currentColor" stroke-width="0.8" class="text-foreground/12" />
+            </g>
 
-            <!-- Registro fragmentado 2 (topo direita) -->
-            <rect x="310" y="8" width="115" height="84" rx="8" fill="currentColor" class="text-background" />
-            <rect x="310" y="8" width="115" height="84" rx="8" stroke="currentColor" stroke-width="1.5" class="text-foreground/25" />
-            <rect x="310" y="8" width="115" height="28" rx="8" fill="currentColor" class="text-foreground/4" />
-            <rect x="310" y="28" width="115" height="8" fill="currentColor" class="text-foreground/4" />
-            <line x1="310" y1="36" x2="425" y2="36" stroke="currentColor" stroke-width="0.8" class="text-foreground/12" />
-            <rect x="324" y="46" width="84" height="5" rx="2.5" fill="currentColor" class="text-foreground/8" />
-            <rect x="324" y="58" width="68" height="5" rx="2.5" fill="currentColor" class="text-foreground/6" />
-            <rect x="324" y="70" width="50" height="5" rx="2.5" fill="currentColor" class="text-foreground/5" />
+            <!-- ═══ FRAGMENTO 2 — TOPO DIREITA (Banco de dados) ═══ -->
+            <g class="hero-float hero-float-delay-1">
+            <rect x="325" y="15" width="120" height="85" rx="8" fill="currentColor" class="text-background" />
+            <rect x="325" y="15" width="120" height="85" rx="8" stroke="currentColor" stroke-width="1.5" class="text-foreground/20" />
+            <rect x="325" y="15" width="120" height="26" rx="8" fill="currentColor" class="text-foreground/4" />
+            <rect x="325" y="33" width="120" height="8" fill="currentColor" class="text-foreground/4" />
+            <line x1="325" y1="41" x2="445" y2="41" stroke="currentColor" stroke-width="0.8" class="text-foreground/10" />
+            <rect x="338" y="50" width="88" height="5" rx="2.5" fill="currentColor" class="text-foreground/8" />
+            <rect x="338" y="62" width="72" height="5" rx="2.5" fill="currentColor" class="text-foreground/6" />
+            <rect x="338" y="74" width="54" height="5" rx="2.5" fill="currentColor" class="text-foreground/4" />
             <!-- Ícone database -->
-            <ellipse cx="326" cy="20" rx="7" ry="4" stroke="currentColor" stroke-width="1.2" class="text-foreground/20" />
-            <path d="M319 20 v8 a7 4 0 0 0 14 0 v-8" stroke="currentColor" stroke-width="1.2" class="text-foreground/20" />
+            <ellipse cx="340" cy="27" rx="7" ry="4" stroke="currentColor" stroke-width="1.2" class="text-foreground/18" />
+            <path d="M333 27 v8 a7 4 0 0 0 14 0 v-8" stroke="currentColor" stroke-width="1.2" class="text-foreground/18" />
+            </g>
 
-            <!-- Registro fragmentado 3 (baixo esquerda) -->
-            <rect x="5" y="268" width="115" height="84" rx="8" fill="currentColor" class="text-background" />
-            <rect x="5" y="268" width="115" height="84" rx="8" stroke="currentColor" stroke-width="1.5" class="text-foreground/25" />
-            <rect x="5" y="268" width="115" height="28" rx="8" fill="currentColor" class="text-foreground/4" />
-            <rect x="5" y="288" width="115" height="8" fill="currentColor" class="text-foreground/4" />
-            <line x1="5" y1="296" x2="120" y2="296" stroke="currentColor" stroke-width="0.8" class="text-foreground/12" />
-            <rect x="19" y="306" width="84" height="5" rx="2.5" fill="currentColor" class="text-foreground/8" />
-            <rect x="19" y="318" width="68" height="5" rx="2.5" fill="currentColor" class="text-foreground/6" />
-            <rect x="19" y="330" width="42" height="5" rx="2.5" fill="currentColor" class="text-foreground/5" />
+            <!-- ═══ FRAGMENTO 3 — BAIXO ESQUERDA (Busca) ═══ -->
+            <g class="hero-float hero-float-delay-2">
+            <rect x="10" y="285" width="120" height="85" rx="8" fill="currentColor" class="text-background" />
+            <rect x="10" y="285" width="120" height="85" rx="8" stroke="currentColor" stroke-width="1.5" class="text-foreground/20" />
+            <rect x="10" y="285" width="120" height="26" rx="8" fill="currentColor" class="text-foreground/4" />
+            <rect x="10" y="303" width="120" height="8" fill="currentColor" class="text-foreground/4" />
+            <line x1="10" y1="311" x2="130" y2="311" stroke="currentColor" stroke-width="0.8" class="text-foreground/10" />
+            <rect x="24" y="320" width="88" height="5" rx="2.5" fill="currentColor" class="text-foreground/8" />
+            <rect x="24" y="332" width="72" height="5" rx="2.5" fill="currentColor" class="text-foreground/6" />
+            <rect x="24" y="344" width="46" height="5" rx="2.5" fill="currentColor" class="text-foreground/4" />
             <!-- Ícone search -->
-            <circle cx="25" cy="282" r="6" stroke="currentColor" stroke-width="1.2" class="text-foreground/20" />
-            <line x1="30" y1="287" x2="34" y2="291" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" class="text-foreground/20" />
+            <circle cx="30" cy="298" r="6" stroke="currentColor" stroke-width="1.2" class="text-foreground/18" />
+            <line x1="35" y1="303" x2="39" y2="307" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" class="text-foreground/18" />
+            </g>
 
-            <!-- Registro fragmentado 4 (baixo direita) -->
-            <rect x="330" y="295" width="100" height="68" rx="8" fill="currentColor" class="text-background" />
-            <rect x="330" y="295" width="100" height="68" rx="8" stroke="currentColor" stroke-width="1.5" class="text-foreground/18" />
-            <rect x="330" y="295" width="100" height="24" rx="8" fill="currentColor" class="text-foreground/3" />
-            <rect x="330" y="312" width="100" height="7" fill="currentColor" class="text-foreground/3" />
-            <line x1="330" y1="319" x2="430" y2="319" stroke="currentColor" stroke-width="0.8" class="text-foreground/10" />
-            <rect x="344" y="329" width="68" height="5" rx="2.5" fill="currentColor" class="text-foreground/6" />
-            <rect x="344" y="341" width="50" height="5" rx="2.5" fill="currentColor" class="text-foreground/4" />
+            <!-- ═══ FRAGMENTO 4 — BAIXO DIREITA (Gráfico) ═══ -->
+            <g class="hero-float hero-float-delay-3">
+            <rect x="325" y="290" width="120" height="85" rx="8" fill="currentColor" class="text-background" />
+            <rect x="325" y="290" width="120" height="85" rx="8" stroke="currentColor" stroke-width="1.5" class="text-foreground/20" />
+            <rect x="325" y="290" width="120" height="26" rx="8" fill="currentColor" class="text-foreground/4" />
+            <rect x="325" y="308" width="120" height="8" fill="currentColor" class="text-foreground/4" />
+            <line x1="325" y1="316" x2="445" y2="316" stroke="currentColor" stroke-width="0.8" class="text-foreground/10" />
+            <rect x="338" y="325" width="88" height="5" rx="2.5" fill="currentColor" class="text-foreground/8" />
+            <rect x="338" y="337" width="72" height="5" rx="2.5" fill="currentColor" class="text-foreground/6" />
+            <rect x="338" y="349" width="54" height="5" rx="2.5" fill="currentColor" class="text-foreground/4" />
+            <!-- Ícone chart -->
+            <rect x="332" y="303" width="3" height="10" rx="1" fill="currentColor" class="text-foreground/18" />
+            <rect x="337" y="299" width="3" height="14" rx="1" fill="currentColor" class="text-foreground/18" />
+            <rect x="342" y="306" width="3" height="7" rx="1" fill="currentColor" class="text-foreground/18" />
+            </g>
 
-            <!-- Linhas de conexão (pontilhadas, com cor accent) dos fragmentos ao central -->
-            <!-- Fragmento 1 → Central -->
-            <path d="M127 65 C155 65, 155 80, 155 100" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4" class="text-rose-400/30" />
-            <!-- Fragmento 2 → Central -->
-            <path d="M310 55 C285 55, 280 75, 280 100" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4" class="text-rose-400/30" />
-            <!-- Fragmento 3 → Central -->
-            <path d="M120 305 C145 290, 150 290, 155 290" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4" class="text-rose-400/30" />
-            <!-- Fragmento 4 → Central -->
-            <path d="M330 325 C310 310, 305 295, 300 290" stroke="currentColor" stroke-width="1.5" stroke-dasharray="5 4" class="text-rose-400/25" />
+            <!-- ═══ CONEXÕES (top, right, bottom, left do card central) ═══ -->
+            <!-- Frag 1 (topo-esq) → TOP (230, 100) -->
+            <path d="M135 67 C180 67, 230 75, 230 100" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4" class="hero-flow text-sky-500/35" />
+            <!-- Frag 2 (topo-dir) → RIGHT (310, 200) -->
+            <path d="M325 57 C325 120, 310 140, 310 200" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4" class="hero-flow hero-flow-delay-1 text-sky-500/35" />
+            <!-- Frag 3 (baixo-esq) → LEFT (150, 200) -->
+            <path d="M130 327 C130 270, 150 250, 150 200" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4" class="hero-flow hero-flow-delay-2 text-sky-500/35" />
+            <!-- Frag 4 (baixo-dir) → BOTTOM (230, 300) -->
+            <path d="M325 332 C280 332, 230 320, 230 300" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4" class="hero-flow hero-flow-delay-3 text-sky-500/35" />
 
-            <!-- Círculos nos pontos de conexão (com cor accent) -->
-            <circle cx="155" cy="100" r="4" fill="currentColor" class="text-rose-400/50" />
-            <circle cx="280" cy="100" r="4" fill="currentColor" class="text-rose-400/50" />
-            <circle cx="155" cy="290" r="4" fill="currentColor" class="text-rose-400/50" />
-            <circle cx="300" cy="290" r="4" fill="currentColor" class="text-rose-400/45" />
+            <!-- Círculos estáticos: top, right, bottom, left -->
+            <circle cx="230" cy="100" r="4" fill="currentColor" class="text-sky-500/50" />
+            <circle cx="310" cy="200" r="4" fill="currentColor" class="text-sky-500/50" />
+            <circle cx="150" cy="200" r="4" fill="currentColor" class="text-sky-500/50" />
+            <circle cx="230" cy="300" r="4" fill="currentColor" class="text-sky-500/50" />
 
-            <!-- Pequenos pontos decorativos nas conexões -->
-            <circle cx="142" cy="82" r="2" fill="currentColor" class="text-rose-400/25" />
-            <circle cx="290" cy="78" r="2" fill="currentColor" class="text-rose-400/25" />
-            <circle cx="138" cy="290" r="2" fill="currentColor" class="text-rose-400/25" />
-            <circle cx="315" cy="300" r="2" fill="currentColor" class="text-rose-400/20" />
+            <!-- Halos estáticos: top, right, bottom, left -->
+            <circle cx="230" cy="100" r="8" stroke="currentColor" stroke-width="0.8" fill="none" class="text-sky-500/15" />
+            <circle cx="310" cy="200" r="8" stroke="currentColor" stroke-width="0.8" fill="none" class="text-sky-500/15" />
+            <circle cx="150" cy="200" r="8" stroke="currentColor" stroke-width="0.8" fill="none" class="text-sky-500/15" />
+            <circle cx="230" cy="300" r="8" stroke="currentColor" stroke-width="0.8" fill="none" class="text-sky-500/15" />
           </svg>
         </div>
       </div>
@@ -220,3 +235,62 @@ onMounted(() => {
     </div>
   </section>
 </template>
+
+<style scoped>
+/* Fluxo de dados nas conexões (stroke-dashoffset animado) */
+.hero-flow {
+  animation: hero-flow 2.5s linear infinite;
+}
+.hero-flow-delay-1 { animation-delay: 0.6s; }
+.hero-flow-delay-2 { animation-delay: 1.2s; }
+.hero-flow-delay-3 { animation-delay: 1.8s; }
+
+@keyframes hero-flow {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+/* Flutuação sutil dos fragmentos */
+.hero-float {
+  animation: hero-float 4s ease-in-out infinite;
+}
+.hero-float-delay-1 { animation-delay: 1s; }
+.hero-float-delay-2 { animation-delay: 2s; }
+.hero-float-delay-3 { animation-delay: 3s; }
+
+@keyframes hero-float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+
+/* Pulse no glow atrás do card central */
+.hero-glow {
+  transform-origin: center;
+  animation: hero-glow 3.5s ease-in-out infinite;
+}
+
+@keyframes hero-glow {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.08);
+  }
+}
+
+/* Respeita preferência do usuário por menos movimento */
+@media (prefers-reduced-motion: reduce) {
+  .hero-flow,
+  .hero-float,
+  .hero-glow {
+    animation: none;
+  }
+}
+</style>
