@@ -48,6 +48,9 @@ coverage
 # Kubb (cache interno)
 **/.kubb/
 
+# Claude Code skills
+.claude/skills/
+
 # Misc
 *.tsbuildinfo
 

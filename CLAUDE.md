@@ -12,11 +12,14 @@ Sempre responda em Português Brasileiro (pt-BR).
 - Mensagens de commit em português (Conventional Commits)
 - Branch principal de trabalho: `develop`
 - Fluxo: `feature/*` → `develop` → `staging` → `main`
-- Ver [docs/GIT_FLOW.md](docs/GIT_FLOW.md) para detalhes
 
 ## Comandos
 
 ```bash
+# Setup (primeiro uso)
+npm install
+npm run setup        # Configura git hooks (Husky + Commitlint)
+
 # Desenvolvimento
 npm run dev          # Servidor dev http://localhost:3000
 npm run build        # Build produção
@@ -27,12 +30,22 @@ npm run format       # Formatar com Prettier
 npm run typecheck    # Verificar tipos
 npm run quality:fix  # Corrigir lint + formatar
 
-# Testes
+# Testes (Vitest - dois projetos: unit + nuxt)
 npm run test:run           # Vitest (uma execução)
 npm run test -- path/to/file.test.ts  # Executar teste específico
 npm run test:e2e           # Playwright E2E
 npm run test:e2e:install   # Instala browsers (primeiro uso)
+
+# API (Kubb)
+npm run api:generate       # Gera tipos e schemas do OpenAPI → generated/
 ```
+
+### Projetos Vitest
+
+O `vitest.config.ts` define dois projetos com ambientes diferentes:
+- **`tests/unit/`**: Ambiente Node puro (rápido) — funções puras, utils
+- **`tests/nuxt/`**: Ambiente Nuxt com happy-dom (mais lento) — composables, stores, componentes
+- **`tests/e2e/`**: Playwright (separado, não passa pelo Vitest)
 
 ## Antes de iniciar o servidor
 
