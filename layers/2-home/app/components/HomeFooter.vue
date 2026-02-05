@@ -6,14 +6,22 @@
 </script>
 
 <template>
-  <footer class="max-w-4xl mx-auto px-6 pt-12 md:pt-16 pb-16 md:pb-20">
-    <!-- Copyright e versão -->
-    <div class="text-sm text-muted-foreground space-y-1 mb-12">
-      <p><span class="text-muted-foreground/50">&gt;</span> copyright: {{ new Date().getFullYear() }} D2DNA</p>
-      <p><span class="text-muted-foreground/50">&gt;</span> version: 1.0</p>
+  <footer class="border-t border-border/40">
+    <!-- Equipe -->
+    <div class="max-w-5xl mx-auto px-6 py-16 md:py-24">
+      <HomeTeam />
     </div>
 
-    <!-- Equipe -->
-    <HomeTeam />
+    <!-- Copyright -->
+    <div class="border-t border-border/40">
+      <div class="max-w-5xl mx-auto px-6 py-6 flex items-center justify-between">
+        <p class="text-xs text-muted-foreground/60 font-mono">
+          &copy; {{ new Date().getFullYear() }} D2DNA
+        </p>
+        <p class="text-xs text-muted-foreground/40 font-mono">
+          v1.0
+        </p>
+      </div>
+    </div>
   </footer>
 </template>

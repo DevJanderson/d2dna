@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
  * Pagina inicial - Tucuxi-Blast
- * Design: MX (Machine Experience) + ASCII Art
+ * Design: MX (Machine Experience) + semi-brutalismo (inspirado Anytype.io)
  */
 const auth = useAuthStore()
 
@@ -33,15 +33,12 @@ useHead({
 
 <template>
   <main class="min-h-screen bg-background font-mono scanlines">
-    <article class="max-w-4xl mx-auto px-6 py-16 md:py-20">
-      <HomeHeader />
-      <HomeSeparator />
-      <HomeDescription />
-      <HomeSeparator />
-      <HomeStatus />
+    <HomeHero />
+
+    <div class="max-w-7xl mx-auto">
       <HomeStats />
       <HomePartners />
-    </article>
+    </div>
 
     <HomeFooter />
   </main>

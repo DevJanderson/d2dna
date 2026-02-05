@@ -18,30 +18,24 @@ const partners = [
 </script>
 
 <template>
-  <section aria-labelledby="partners-heading" class="my-12 md:my-16">
+  <section aria-labelledby="partners-heading" class="my-16 md:my-24">
     <h2 id="partners-heading" class="sr-only">Parceiros</h2>
 
-    <!-- Header estilo terminal -->
-    <pre class="text-xs text-muted-foreground/50 select-none mb-6 text-center" aria-hidden="true">┌──────────────────────────────────────────────────────────────┐</pre>
-
-    <p class="text-xs text-muted-foreground mb-8 text-center">&gt; parceiros</p>
+    <p class="text-xs font-mono text-muted-foreground/60 mb-10 text-center uppercase tracking-widest">Parceiros</p>
 
     <!-- Grid de logos -->
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-6 md:gap-8 px-4">
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-px bg-border/30">
       <div
         v-for="partner in partners"
         :key="partner.name"
-        class="relative z-20 group flex items-center justify-center p-8 bg-white dark:bg-muted/20 rounded-sm border border-border/30 hover:border-primary/50 transition-colors"
+        class="relative z-20 group flex items-center justify-center p-8 md:p-10 bg-background hover:bg-muted/30 transition-colors"
       >
         <img
           :src="partner.logo"
           :alt="partner.name"
-          class="h-20 md:h-28 w-auto object-contain grayscale opacity-70 group-hover:grayscale-0 group-hover:opacity-100 transition-all"
+          class="h-16 md:h-24 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
         />
       </div>
     </div>
-
-    <!-- Footer ASCII -->
-    <pre class="text-xs text-muted-foreground/50 select-none mt-8 text-center" aria-hidden="true">└──────────────────────────────────────────────────────────────┘</pre>
   </section>
 </template>

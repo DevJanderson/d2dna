@@ -45,14 +45,11 @@ const teamMembers = [
 </script>
 
 <template>
-  <div class="text-center">
-    <!-- Borda ASCII superior -->
-    <pre class="text-xs text-muted-foreground/50 select-none mb-4" aria-hidden="true">╔══════════════════════════════════════════════════════════════╗</pre>
-
-    <p class="text-xs text-muted-foreground mb-8">&gt; equipe</p>
+  <div>
+    <p class="text-xs font-mono text-muted-foreground/60 mb-10 text-center uppercase tracking-widest">Equipe</p>
 
     <!-- Grid de membros -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 px-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
       <HomeTeamMember
         v-for="member in teamMembers"
         :key="member.name"
@@ -62,8 +59,5 @@ const teamMembers = [
         :color="member.color"
       />
     </div>
-
-    <!-- Borda ASCII inferior -->
-    <pre class="text-xs text-muted-foreground/50 select-none mt-10" aria-hidden="true">╚══════════════════════════════════════════════════════════════╝</pre>
   </div>
 </template>
