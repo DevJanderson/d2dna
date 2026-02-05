@@ -5,7 +5,7 @@
  */
 const auth = useAuthStore()
 
-const asciiTucuxi = `                                      .--.
+const _asciiTucuxi = `                                      .--.
               _______             .-"  .'
       .---u"""       """"---._  ."    %
     .'                        "--.    %

@@ -9,7 +9,7 @@ test.describe('Homepage', () => {
     await page.goto('/')
 
     // Verifica se a página carregou
-    await expect(page).toHaveTitle(/Nuxt/)
+    await expect(page).toHaveTitle(/Tucuxi/)
 
     // Verifica se o conteúdo principal está visível
     const main = page.locator('main')
@@ -22,7 +22,7 @@ test.describe('Homepage', () => {
     await page.goto('/')
 
     // Verifica se a página ainda funciona em mobile
-    await expect(page).toHaveTitle(/Nuxt/)
+    await expect(page).toHaveTitle(/Tucuxi/)
   })
 })
 
