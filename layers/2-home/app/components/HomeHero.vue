@@ -212,8 +212,8 @@ onMounted(() => {
             :key="feature.title"
             class="px-6 py-8 md:px-8 md:py-10"
           >
-            <h3 class="text-base font-bold text-foreground mb-2">{{ feature.title }}</h3>
-            <p class="text-sm text-muted-foreground leading-relaxed">{{ feature.description }}</p>
+            <h3 class="text-lg font-bold text-foreground mb-2">{{ feature.title }}</h3>
+            <p class="text-base text-muted-foreground leading-relaxed">{{ feature.description }}</p>
           </div>
         </div>
       </div>

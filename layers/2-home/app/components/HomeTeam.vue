@@ -46,10 +46,10 @@ const teamMembers = [
 
 <template>
   <div>
-    <p class="text-xs font-mono text-muted-foreground/60 mb-10 text-center uppercase tracking-widest">Equipe</p>
+    <h2 class="text-2xl font-bold text-foreground mb-10 text-center">Equipe</h2>
 
     <!-- Grid de membros -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">
       <HomeTeamMember
         v-for="member in teamMembers"
         :key="member.name"

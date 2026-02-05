@@ -21,20 +21,23 @@ const partners = [
   <section aria-labelledby="partners-heading" class="my-16 md:my-24">
     <h2 id="partners-heading" class="sr-only">Parceiros</h2>
 
-    <p class="text-xs font-mono text-muted-foreground/60 mb-10 text-center uppercase tracking-widest">Parceiros</p>
+    <h2 class="text-2xl font-bold text-foreground mb-10 text-center">Parceiros & Clientes</h2>
 
     <!-- Grid de logos -->
-    <div class="grid grid-cols-2 md:grid-cols-3 gap-px bg-border/30">
+    <div class="grid grid-cols-3 md:grid-cols-5 gap-px bg-border/20 border border-border/20">
       <div
         v-for="partner in partners"
         :key="partner.name"
-        class="relative z-20 group flex items-center justify-center p-8 md:p-10 bg-background hover:bg-muted/30 transition-colors"
+        class="relative z-20 group flex flex-col items-center justify-center gap-3 p-6 md:p-8 bg-background hover:bg-muted/20 transition-colors"
       >
         <img
           :src="partner.logo"
           :alt="partner.name"
-          class="h-16 md:h-24 w-auto object-contain grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
+          class="h-16 md:h-24 w-auto object-contain grayscale opacity-50 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-300"
         />
+        <span class="text-xs text-muted-foreground/40 group-hover:text-muted-foreground/70 font-mono transition-colors duration-300 text-center leading-tight">
+          {{ partner.name }}
+        </span>
       </div>
     </div>
   </section>
