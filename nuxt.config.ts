@@ -8,8 +8,8 @@ export default defineNuxtConfig({
   // Nuxt Layers - ordem de prioridade (último sobrescreve)
   extends: [
     './layers/0-base',
-    './layers/1-example',
-    './layers/2-desktop',
+    './layers/1-desktop',
+    './layers/2-home',
     './layers/3-auth'
   ],
 
@@ -57,7 +57,7 @@ export default defineNuxtConfig({
   },
 
   // Nuxt Layers - auto-scan de ~/layers (Nuxt 4+)
-  // Ordem de prioridade: 2-example > 1-base > 0-core
+  // Ordem de prioridade: 3-auth > 2-home > 1-desktop > 0-base
 
   modules: [
     '@nuxt/eslint',

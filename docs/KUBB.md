@@ -307,8 +307,7 @@ projeto/
 │       └── client/                 # Cliente HTTP
 │
 ├── layers/
-│   ├── 0-core/                     # Fundação (app.vue, CSS)
-│   ├── 1-base/                     # UI compartilhada (shadcn-vue)
+│   ├── 0-base/                     # Fundação + UI (app.vue, CSS, shadcn-vue)
 │   │
 │   └── {N}-{feature}/              # Feature layer com integração API
 │       ├── nuxt.config.ts

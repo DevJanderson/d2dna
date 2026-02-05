@@ -10,7 +10,8 @@ Este documento descreve a arquitetura de layers e integração com a API Tucuxi.
 ├─────────────────────────────────────────────────────────────────┤
 │  layers/                                                         │
 │  ├── 0-base/      → Fundação + UI (shadcn-vue)                  │
-│  ├── 2-desktop/   → Sistema de janelas (workspace do analista)  │
+│  ├── 1-desktop/   → Sistema de janelas (workspace do analista)  │
+│  ├── 2-home/      → Página inicial (design MX)                  │
 │  ├── 3-auth/      → Autenticação                                │
 │  ├── 4-clientes/  → Gestão de clientes + histórico              │
 │  ├── 5-busca/     → Motor de busca (Linkage + Tucuxi v2)        │
@@ -47,7 +48,7 @@ Este documento descreve a arquitetura de layers e integração com a API Tucuxi.
 ### Prioridade
 
 ```
-6-admin > 5-busca > 4-clientes > 3-auth > 2-desktop > 1-example > 0-base
+6-admin > 5-busca > 4-clientes > 3-auth > 2-home > 1-desktop > 0-base
 ```
 
 Número maior = maior prioridade = sobrescreve layers anteriores.
@@ -57,7 +58,8 @@ Número maior = maior prioridade = sobrescreve layers anteriores.
 | Layer | Responsabilidade | Dependências |
 |-------|------------------|--------------|
 | `0-base` | UI (shadcn-vue), utils, tipos globais | - |
-| `2-desktop` | Sistema de janelas, dock, workspace | 0-base |
+| `1-desktop` | Sistema de janelas, dock, workspace | 0-base |
+| `2-home` | Página inicial (design MX) | 0-base, 3-auth |
 | `3-auth` | Login, logout, refresh, guard de rotas | 0-base |
 | `4-clientes` | CRUD clientes, histórico, review | 3-auth |
 | `5-busca` | Linkage, Tucuxi v2, busca inteligente | 3-auth |
@@ -170,4 +172,4 @@ export default defineEventHandler(async (event) => {
 | Estado | Pinia | Reatividade Vue |
 | HTTP Client | $fetch (Nuxt) | SSR + interceptors |
 | UI | shadcn-vue | Customizável + acessível |
-| Janelas | 2-desktop | UX de analista |
+| Janelas | 1-desktop | UX de analista |

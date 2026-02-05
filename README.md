@@ -158,14 +158,13 @@ npm run test:e2e           # Executa testes
 ```
 medblast/
 ├── layers/                         # TUDO fica aqui
-│   ├── 0-core/                     # Fundação: app.vue, error.vue, CSS
-│   ├── 1-base/                     # UI: shadcn-vue, utils, tipos globais
+│   ├── 0-base/                     # Fundação + UI: app.vue, CSS, shadcn-vue, utils
 │   │   ├── app/components/ui/      # Componentes shadcn-vue
 │   │   └── app/utils/              # Funções utilitárias
-│   ├── 2-example/                  # Feature de exemplo (template para novas)
-│   └── 4-landing/                  # Landing page
+│   ├── 1-desktop/                  # Sistema de janelas estilo desktop
+│   ├── 2-home/                     # Página inicial (design MX)
+│   └── 3-auth/                     # Autenticação (BFF, cookies httpOnly)
 │
-├── server/                         # API routes globais (Nitro)
 ├── tests/                          # Testes (unit, integration, e2e)
 └── docs/                           # Documentação (PRD, specs)
 ```
@@ -173,14 +172,14 @@ medblast/
 ### Ordem de Prioridade (Layers)
 
 ```
-4-landing > 2-example > 1-base > 0-core
+3-auth > 2-home > 1-desktop > 0-base
 ```
 
 Número maior = maior prioridade = sobrescreve layers anteriores.
 
 ### Criando Nova Feature
 
-Copie `layers/2-example/` como base e siga a estrutura:
+Crie uma nova layer seguindo a estrutura:
 
 ```
 layers/N-feature/
@@ -202,7 +201,7 @@ npx shadcn-vue@latest add card
 npx shadcn-vue@latest add input
 ```
 
-Componentes são instalados em `layers/1-base/app/components/ui/` e auto-importados.
+Componentes são instalados em `layers/0-base/app/components/ui/` e auto-importados.
 
 ## Validação com Zod
 

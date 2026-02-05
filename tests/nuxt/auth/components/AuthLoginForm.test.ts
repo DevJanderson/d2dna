@@ -38,7 +38,7 @@ describe('AuthLoginForm', () => {
     const wrapper = mount(AuthLoginForm)
 
     expect(wrapper.find('button[type="submit"]').exists()).toBe(true)
-    expect(wrapper.find('button[type="submit"]').text()).toContain('Entrar')
+    expect(wrapper.find('button[type="submit"]').text()).toContain('AUTENTICAR')
   })
 
   it('should call login on form submit', async () => {
@@ -93,7 +93,7 @@ describe('AuthLoginForm', () => {
 
     const wrapper = mount(AuthLoginForm)
 
-    expect(wrapper.find('button[type="submit"]').text()).toContain('Entrando')
+    expect(wrapper.find('button[type="submit"]').text()).toContain('AUTENTICANDO')
     expect(
       wrapper.find('button[type="submit"]').attributes('disabled')
     ).toBeDefined()

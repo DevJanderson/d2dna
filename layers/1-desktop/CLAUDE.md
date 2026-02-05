@@ -1,11 +1,11 @@
-# Layer 2-desktop - CLAUDE.md
+# Layer 1-desktop - CLAUDE.md
 
 Sistema de janelas estilo desktop (Windows/macOS).
 
 ## Estrutura
 
 ```
-layers/2-desktop/
+layers/1-desktop/
 ├── nuxt.config.ts
 └── app/
     ├── components/
