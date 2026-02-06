@@ -1,10 +1,11 @@
 # PRD - Product Requirements Document
 ## Plataforma MedBlast
 
-**Versão:** 2.0
-**Data:** 24 de Janeiro de 2026
+**Versão:** 3.0
+**Data:** 06 de Fevereiro de 2026
 **Produto:** Sistema de Record Linkage e Gestão de Dados Médicos
 **Empresa:** D2DNA
+**Base Científica:** Tucuxi-BLAST (PeerJ, 2022 — DOI: [10.7717/peerj.13507](https://doi.org/10.7717/peerj.13507))
 
 ---
 
@@ -12,7 +13,7 @@
 
 ### 1.1 Declaração de Visão
 
-> **Ser a plataforma definitiva de unificação de registros médicos no Brasil, eliminando duplicatas e garantindo que cada paciente tenha um histórico único, completo e confiável.**
+> **Ser a plataforma definitiva de unificação de registros médicos no Brasil, eliminando duplicatas e garantindo que cada paciente tenha um histórico único, completo e confiável — fundamentada na pesquisa acadêmica Tucuxi-BLAST da USP/Fiocruz.**
 
 ### 1.2 O Problema
 
@@ -29,20 +30,29 @@ No sistema de saúde brasileiro, um mesmo paciente pode ter dezenas de cadastros
 
 ### 1.3 A Solução
 
-O **MedBlast** utiliza tecnologia proprietária de DNA (Digital Numeric Algorithm) para:
+O **MedBlast** é a evolução web do ecossistema **Tucuxi-BLAST**, desenvolvido na tese de doutorado de José Deney Alves de Araújo (USP/FCF, Programa de Bioinformática IME/USP, orientado por Prof. Helder Nakaya). A pesquisa demonstrou que ferramentas de bioinformática podem ser reaproveitadas para record linkage com **98%+ de acurácia** e **5.69x mais velocidade** que o estado da arte.
 
-1. **Identificar** o mesmo paciente mesmo com dados incompletos ou inconsistentes
-2. **Unificar** registros de múltiplas fontes em um cadastro único
-3. **Qualificar** dados através de revisão humana assistida por IA
-4. **Disponibilizar** histórico consolidado para profissionais autorizados
+A plataforma utiliza a abordagem DNA-encoded (codificação de dados pessoais em sequências de DNA + alinhamento via BLAST + classificação por Machine Learning) para:
+
+1. **Identificar** o mesmo paciente mesmo com dados incompletos ou inconsistentes — tratando erros tipográficos como "mutações" de DNA
+2. **Deduplicar** registros dentro de um mesmo banco (módulo Tucuxi-BW)
+3. **Vincular** registros entre múltiplas fontes em um cadastro único (módulo Tucuxi-BLAST)
+4. **Qualificar** dados através de revisão humana assistida por IA (módulo Tucuxi-Tail)
+5. **Disponibilizar** histórico consolidado para profissionais autorizados
+
+#### Fundamentação Científica
+
+A abordagem foi validada com bancos reais do SUS (SINAN e SIM) contendo dados de tuberculose, HIV/AIDS e meningite do estado do Amazonas, e com banco simulado de **300 milhões de registros** (gerado pelo Tucuxi-Curumim). Os resultados publicados no PeerJ (2022) demonstram superioridade sobre fastLink, RecordLinkage, Python Record Linkage Toolkit e Dedupe.
+
+Ver detalhes completos em [docs/TUCUXI-BLAST-TESE.md](./TUCUXI-BLAST-TESE.md).
 
 ### 1.4 Proposta de Valor
 
 | Para | Que | O MedBlast | Diferente de | Nossa solução |
 |------|-----|------------|--------------|---------------|
-| Secretarias de Saúde | precisam unificar milhões de cadastros | é uma plataforma de record linkage | sistemas manuais de deduplicação | usa algoritmo DNA com 95%+ de precisão em segundos |
-| Hospitais | precisam encontrar pacientes rapidamente | oferece busca híbrida inteligente | busca apenas por CPF/nome exato | encontra pacientes mesmo com dados parciais |
-| Operadoras | precisam garantir qualidade cadastral | provê workflow de revisão | planilhas e conferência manual | automatiza 80% das decisões com supervisão humana |
+| Secretarias de Saúde | precisam unificar milhões de cadastros | é uma plataforma de record linkage | sistemas manuais de deduplicação | usa abordagem DNA-encoded com **98%+ de acurácia** validada academicamente (PeerJ, 2022) |
+| Hospitais | precisam encontrar pacientes rapidamente | oferece busca híbrida inteligente | busca apenas por CPF/nome exato | encontra pacientes mesmo com dados parciais, tolerando erros tipográficos como "mutações" |
+| Operadoras | precisam garantir qualidade cadastral | provê workflow de revisão | planilhas e conferência manual | automatiza 80% das decisões com supervisão humana via interface Tucuxi-Tail |
 
 ---
 
@@ -369,7 +379,7 @@ O **MedBlast** utiliza tecnologia proprietária de DNA (Digital Numeric Algorith
 2. Usuário informa critérios disponíveis (nome, CPF, CNS, data nascimento, nome da mãe)
 3. Sistema executa busca híbrida:
    - **Determinística**: CPF ou CNS exato (se informado)
-   - **Probabilística**: Algoritmo DNA com scoring
+   - **Probabilística**: Algoritmo DNA-encoded (Tucuxi-BLAST) com scoring via ML (Random Forest / Regressão Logística)
 4. Sistema retorna lista de candidatos com score de confiança
 5. Usuário seleciona o paciente correto
 6. Sistema exibe ficha completa do paciente
@@ -555,6 +565,78 @@ O **MedBlast** utiliza tecnologia proprietária de DNA (Digital Numeric Algorith
 
 ---
 
+## 5. Arquitetura do Motor de Record Linkage
+
+O motor de record linkage do MedBlast é baseado no ecossistema **Tucuxi**, composto por quatro módulos complementares:
+
+### 5.0.1 Módulos do Ecossistema Tucuxi
+
+| Módulo | Função | Correspondência no MedBlast |
+|--------|--------|----------------------------|
+| **Tucuxi-BLAST** | Record linkage probabilístico via codificação DNA + BLASTn + ML | Motor principal de busca e matching |
+| **Tucuxi-BW** | Deduplicação intra-banco (Python + VSEARCH clustering) | Processamento em lote / limpeza de base |
+| **Tucuxi-Tail** | Curadoria visual manual dos resultados de linkage | Interface de revisão de matches |
+| **Tucuxi-Curumim** | Geração de dados simulados com nomes brasileiros reais | Ambiente de testes e validação |
+
+### 5.0.2 Pipeline de Processamento
+
+```
+┌─────────────────────────────────────────────────────────────────────────┐
+│  1. CODIFICAÇÃO DNA                                                     │
+│     Campos: nome, data nascimento, sexo, nome da mãe                   │
+│     → Convertidos em sequências de nucleotídeos (A, T, C, G)           │
+│     → Roda de códons dinâmica (muda a cada execução = criptografia)    │
+│     → Letras foneticamente similares em PT-BR diferem por 1 nucleotídeo│
+│       (N↔M, S↔Z, G↔Q, I↔E)                                           │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  2. ALINHAMENTO VIA BLAST                                               │
+│     BLASTn compara sequências query vs. subject                        │
+│     Bit-scores e E-values normalizados (evita viés contra nomes curtos)│
+│     Erros tipográficos tratados como "mutações" de DNA                 │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  3. CLASSIFICAÇÃO POR ML                                                │
+│     Random Forest (75 estimadores) ou Regressão Logística              │
+│     6 métricas: bit-score, mismatches, gaps, coverage, posições        │
+│     Resultado: match (classe 1) ou não-match (classe 0)                │
+└─────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+┌─────────────────────────────────────────────────────────────────────────┐
+│  4. CURADORIA HUMANA (zona cinzenta)                                    │
+│     Score > 95%: match automático                                      │
+│     Score 75-95%: fila de revisão (interface Tucuxi-Tail)              │
+│     Score < 75%: descartado ou alerta                                  │
+└─────────────────────────────────────────────────────────────────────────┘
+```
+
+### 5.0.3 Benchmarks Publicados (PeerJ, 2022)
+
+| Métrica | Tucuxi-BLAST | Estado da Arte (CIDACS-RL) |
+|---------|-------------|---------------------------|
+| Tempo (200k registros vs 300M) | **23 horas** | 5 dias e 7 horas |
+| Velocidade relativa | **5.69x mais rápido** | 1x |
+| Uso de RAM | **0.4 GB** | 3 GB |
+| Acurácia (Random Forest) | **98.68%** | - |
+| Acurácia (Regressão Logística) | **97.76%** | - |
+| F-score e AUC (bancos reais SUS) | **> 98%** | - |
+| vs. fastLink | **100x mais rápido** | - |
+
+### 5.0.4 Erros Mais Frequentes nos Dados Brasileiros
+
+Dados reais identificados pela pesquisa que informam o design do algoritmo:
+
+- **Campo com mais erros**: Nome da mãe
+- **Trocas de dígitos**: 1↔0 (0.68%), 5↔6 (0.60%), 6↔7 (0.53%)
+- **Substituições de letras**: Refletem fonética do PT-BR e proximidade no teclado (N↔M, S↔Z)
+
+---
+
 ## 5. Requisitos Funcionais
 
 ### 5.1 Busca e Identificação
@@ -680,8 +762,9 @@ O **MedBlast** utiliza tecnologia proprietária de DNA (Digital Numeric Algorith
 | Taxa de match automático | > 95% | Matches com score > 95% / Total de buscas |
 | Redução de duplicatas | > 50% em 6 meses | Comparativo antes/depois |
 | Tempo médio de identificação | < 15 segundos | Tempo entre busca e seleção |
-| Taxa de falsos positivos | < 1% | Matches aprovados incorretamente |
-| Taxa de falsos negativos | < 5% | Duplicatas não detectadas |
+| Taxa de falsos positivos | < 1% | Matches aprovados incorretamente (benchmark acadêmico: < 2%) |
+| Taxa de falsos negativos | < 5% | Duplicatas não detectadas (benchmark acadêmico: F-score > 98%) |
+| Acurácia geral do matching | > 98% | Alinhado com benchmark Tucuxi-BLAST (98.68% RF) |
 
 ### 7.2 Métricas de Produto
 
@@ -712,7 +795,7 @@ Para manter o foco, os seguintes itens **NÃO** fazem parte desta versão:
 |------|--------|---------------|
 | Aplicativo mobile nativo | Foco em web responsivo | v2.0 |
 | Integração HL7/FHIR | Complexidade, poucos parceiros | v2.0 |
-| Machine Learning para auto-merge | Requer volume de dados para treinar | v2.0 |
+| ML para auto-merge em zona cinzenta | Random Forest já classifica matches; auto-merge da zona 75-95% requer mais dados de treinamento | v2.0 |
 | Multi-tenancy completo | Foco em single-tenant primeiro | v2.0 |
 | Biometria (facial, digital) | Custo de hardware | v3.0 |
 | Integração DataSUS automática | Depende de API externa | v2.0 |
@@ -729,13 +812,22 @@ Para manter o foco, os seguintes itens **NÃO** fazem parte desta versão:
 | **Score** | Pontuação de 0-100% indicando a probabilidade de dois registros serem o mesmo paciente |
 | **Merge** | Processo de unificar dois ou mais registros em um único |
 | **Registro Sobrevivente** | O registro que permanece após um merge, incorporando dados dos outros |
-| **DNA (Digital Numeric Algorithm)** | Algoritmo proprietário D2DNA para matching de registros |
+| **DNA-encoded** | Abordagem de codificação de dados pessoais em sequências de DNA (nucleotídeos A, T, C, G) para record linkage — desenvolvida na pesquisa Tucuxi-BLAST (USP/Fiocruz, PeerJ 2022) |
+| **Roda de Códons** | Mecanismo de conversão de caracteres para nucleotídeos que muda dinamicamente a cada execução, proporcionando criptografia on-the-fly dos dados |
+| **BLASTn** | Basic Local Alignment Search Tool (nucleotide) — algoritmo de bioinformática usado para alinhar sequências de DNA codificadas a partir dos registros de pacientes |
+| **Tucuxi-BLAST** | Módulo principal de record linkage probabilístico do ecossistema Tucuxi |
+| **Tucuxi-BW** | Módulo de deduplicação intra-banco usando clustering (Python + VSEARCH) |
+| **Tucuxi-Tail** | Plataforma web de curadoria visual manual dos resultados de linkage |
+| **Tucuxi-Curumim** | Gerador de bancos simulados com nomes brasileiros reais (até 300M registros) |
+| **Tucuxi** | Nome do ecossistema, homenagem ao golfinho amazônico *Sotalia fluviatilis* |
 | **CPF** | Cadastro de Pessoa Física - documento único de 11 dígitos |
 | **CNS** | Cartão Nacional de Saúde - 15 dígitos, paciente pode ter múltiplos |
 | **Busca Determinística** | Busca por identificador único exato (CPF, CNS) |
-| **Busca Probabilística** | Busca por similaridade usando algoritmos fonéticos e fuzzy |
+| **Busca Probabilística** | Busca por similaridade usando abordagem DNA-encoded + ML |
 | **Soft Delete** | Marcar registro como excluído sem remover fisicamente do banco |
 | **LGPD** | Lei Geral de Proteção de Dados - lei brasileira de privacidade |
+| **SINAN** | Sistema de Informação de Agravos de Notificação — banco do SUS usado na validação do Tucuxi-BLAST |
+| **SIM** | Sistema de Informações sobre Mortalidade — banco do SUS usado na validação do Tucuxi-BLAST |
 
 ---
 
@@ -745,6 +837,7 @@ Para manter o foco, os seguintes itens **NÃO** fazem parte desta versão:
 |--------|------|-------|----------|
 | 1.0 | 29/08/2025 | Equipe D2DNA | Documento inicial |
 | 2.0 | 24/01/2026 | Equipe D2DNA | Reestruturação completa: personas, jornadas, casos de uso detalhados |
+| 3.0 | 06/02/2026 | Equipe D2DNA | Incorporação da fundamentação científica Tucuxi-BLAST (PeerJ, 2022): arquitetura do motor de record linkage, benchmarks publicados, ecossistema de módulos, atualização de métricas e glossário |
 
 ---
 

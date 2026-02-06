@@ -59,3 +59,6 @@ scripts/
 
 # Screenshots de desenvolvimento
 screenshots/
+
+# Documentação de pesquisa (referência interna, não commitar)
+docs/TUCUXI-BLAST-TESE.md

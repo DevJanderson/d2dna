@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
- * Seção de estatísticas com animação count-up
- * Números animam de 0 ao valor final quando a seção entra no viewport
+ * Seção de estatísticas em Bento Grid com animação count-up
+ * Cards de tamanhos variados com ASCII decorativo e parágrafo de contexto
  * Respeita prefers-reduced-motion: exibe valores finais sem animação
  */
 import { useIntersectionObserver } from '@vueuse/core'
@@ -10,15 +10,52 @@ interface Stat {
   value: number
   suffix: string
   label: string
+  context: string
+  ascii: string
+  span: string
   decimals?: number
   prefix?: string
 }
 
 const stats: Stat[] = [
-  { value: 500, suffix: 'M+', label: 'registros processados' },
-  { value: 15, suffix: '+', label: 'anos de pesquisa' },
-  { value: 4, suffix: '', label: 'setores atendidos' },
-  { value: 1, suffix: '%', label: 'taxa de falsos positivos', prefix: '<' },
+  {
+    value: 300,
+    suffix: 'M+',
+    label: 'registros cruzados e validados',
+    context:
+      'CadÚnico, SUS e bases estaduais reunidos. O maior teste de record linkage já publicado no Brasil.',
+    ascii: '▁▂▃▅▇',
+    span: 'md:col-span-2',
+  },
+  {
+    value: 5.69,
+    suffix: 'x',
+    label: 'mais rápido que o padrão do mercado',
+    decimals: 2,
+    context:
+      'Benchmarkado contra o Febrl, referência mundial. Mesma máquina, mesma base — quase 6x mais veloz.',
+    ascii: '›››››',
+    span: '',
+  },
+  {
+    value: 98,
+    suffix: '%',
+    label: 'de acurácia nos vínculos',
+    prefix: '>',
+    context:
+      'Cada match é validado por machine learning. Menos de 2% de erro — auditado com gold standard manual.',
+    ascii: '████████░░',
+    span: '',
+  },
+  {
+    value: 23,
+    suffix: 'h',
+    label: 'para cruzar uma base nacional inteira',
+    context:
+      '200 mil pessoas encontradas em 300 milhões de registros — em menos de um dia, num servidor comum. Sem cluster, sem cloud.',
+    ascii: '⏱ 23:00',
+    span: 'md:col-span-2',
+  },
 ]
 
 const DURATION = 1500
@@ -102,25 +139,46 @@ onUnmounted(() => {
   <section
     ref="sectionRef"
     aria-labelledby="stats-heading"
-    class="my-10 md:my-16 transition-all duration-700 ease-out"
-    :class="hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
+    class="relative z-20 my-10 md:my-16 max-w-5xl mx-auto px-6"
   >
     <h2 id="stats-heading" class="sr-only">Estatísticas</h2>
 
-    <div class="border-y border-border/40">
-      <div class="grid grid-cols-2 md:grid-cols-4 divide-x divide-border/40">
-        <div
-          v-for="(stat, index) in stats"
-          :key="stat.label"
-          class="px-6 py-10 md:py-14 text-center"
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      <div
+        v-for="(stat, index) in stats"
+        :key="stat.label"
+        class="relative overflow-hidden rounded-2xl border border-border/40 bg-card p-6 md:p-8 transition-all duration-500 ease-out"
+        :class="[
+          stat.span,
+          hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6',
+        ]"
+        :style="{
+          transitionDelay:
+            hasAnimated || prefersReducedMotion() ? '0ms' : `${index * 150}ms`,
+        }"
+      >
+        <!-- ASCII decorativo -->
+        <span
+          class="absolute top-4 right-4 font-mono text-xl text-muted-foreground/30 select-none"
+          aria-hidden="true"
         >
-          <div class="text-4xl md:text-5xl font-bold text-foreground mb-2">
-            {{ stat.prefix }}{{ displayValues[index] }}{{ stat.suffix }}
-          </div>
-          <div class="text-sm text-muted-foreground">
-            {{ stat.label }}
-          </div>
+          {{ stat.ascii }}
+        </span>
+
+        <!-- Número animado -->
+        <div class="text-4xl md:text-5xl font-bold text-foreground mb-1">
+          {{ stat.prefix }}{{ displayValues[index] }}{{ stat.suffix }}
         </div>
+
+        <!-- Label -->
+        <div class="text-sm font-medium text-foreground/80 mb-3">
+          {{ stat.label }}
+        </div>
+
+        <!-- Contexto -->
+        <p class="text-xs text-muted-foreground leading-relaxed">
+          {{ stat.context }}
+        </p>
       </div>
     </div>
   </section>

@@ -12,6 +12,7 @@ Sempre responda em Português Brasileiro (pt-BR).
 - Mensagens de commit em português (Conventional Commits)
 - Branch principal de trabalho: `develop`
 - Fluxo: `feature/*` → `develop` → `staging` → `main`
+- Commitlint: `subject-case: lower-case`, max 72 chars no subject
 
 ## Comandos
 
@@ -65,11 +66,24 @@ npx shadcn-vue@latest add <componente>
 
 Componentes ficam em `layers/0-base/app/components/ui/` (auto-import).
 
+## Formatação
+
+Prettier: `semi: false`, `singleQuote: true`, `printWidth: 100`, `trailingComma: 'none'`.
+
+ESLint: `no-console: warn` (permite `warn`/`error`), `vue/html-self-closing: always` (inclusive HTML normal).
+
 ## Arquitetura
 
 Nuxt 4 + shadcn-vue + Tailwind CSS v4 + **Nuxt Layers**.
 
 **Tudo é layer** - não existe pasta `app/` na raiz. Arquitetura layers-only.
+
+## Tailwind CSS v4
+
+Tailwind v4 **não usa `tailwind.config.js`** — toda configuração fica em CSS puro:
+- Config principal: `layers/0-base/app/assets/css/main.css`
+- Temas, fontes e variáveis via `@theme` e `:root` no CSS
+- Plugin via Vite: `@tailwindcss/vite` (configurado em `nuxt.config.ts`)
 
 ## Design System
 
@@ -77,8 +91,8 @@ Estilo **MX (Machine Experience)** - design para humanos e máquinas:
 
 - **Fontes**: Space Grotesk (sans) + Space Mono (mono)
 - **ASCII Art**: Logos, bordas, separadores
-- **Efeitos**: Cursor piscando, scanlines (CRT)
-- **Espaçamento**: 8pt Grid System
+- **Efeitos**: Cursor piscando, scanlines (CRT) — scanlines usam `z-index: 10`, elementos acima precisam de `z-20+`
+- **Espaçamento**: 8pt Grid System (48-64px entre seções, 32px interno, 24px entre elementos)
 - **Cores**: Por contexto/profissão (verde=dev, azul=ciência, etc.)
 
 ### Estrutura Principal
@@ -195,7 +209,9 @@ npm run api:generate    # Gera tipos e schemas do OpenAPI
 
 Ver [docs/KUBB.md](docs/KUBB.md) para implementação completa.
 
-## Documentação por Diretório
+## Documentação
+
+### Por diretório (CLAUDE.md)
 
 Cada diretório principal tem seu próprio `CLAUDE.md` com instruções específicas:
 
@@ -206,3 +222,12 @@ Cada diretório principal tem seu próprio `CLAUDE.md` com instruções específ
 | [layers/2-home/CLAUDE.md](layers/2-home/CLAUDE.md) | Página inicial (design MX) |
 | [layers/3-auth/CLAUDE.md](layers/3-auth/CLAUDE.md) | Autenticação (BFF, cookies) |
 | [tests/CLAUDE.md](tests/CLAUDE.md) | Vitest, Playwright, mocking |
+
+### Técnica (docs/)
+
+| Documento | Conteúdo |
+|-----------|----------|
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Visão geral, fluxo BFF, layers futuras |
+| [docs/SECURITY.md](docs/SECURITY.md) | nuxt-security, CSP, rate limiter, CSRF |
+| [docs/KUBB.md](docs/KUBB.md) | Integração API, tipos, schemas Zod |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | Fases do projeto e prioridades |

@@ -61,7 +61,7 @@ const teamMembers = [
 <template>
   <div
     ref="sectionRef"
-    class="transition-all duration-700 ease-out"
+    class="max-w-5xl mx-auto px-6 py-10 md:py-16 transition-all duration-700 ease-out"
     :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
   >
     <h2 class="text-2xl font-bold text-foreground mb-4 text-center">Quem Está por Trás</h2>

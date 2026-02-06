@@ -1,27 +1,7 @@
 <script setup lang="ts">
 /**
- * Hero section - Terminal interativo + headline técnica
- * Layout: título esquerda, terminal interativo direita, feature cards abaixo
+ * Hero section — headline técnica + terminal interativo
  */
-const auth = useAuthStore()
-
-const features = [
-  {
-    title: 'Busca em segundos',
-    description:
-      'Dados parciais, erros de digitação, documentos incompletos — encontramos o registro certo mesmo assim.',
-  },
-  {
-    title: 'Algoritmo DNA',
-    description:
-      'Convertemos dados em sequências genômicas. A mesma tecnologia usada há décadas na bioinformática, agora aplicada a dados.',
-  },
-  {
-    title: 'Múltiplos setores',
-    description:
-      'Saúde, educação, epidemiologia e seguros. A mesma plataforma resolve duplicatas em qualquer base.',
-  },
-]
 
 // Cenários do terminal
 interface TerminalScenario {
@@ -64,8 +44,6 @@ const scenarios: TerminalScenario[] = [
 // Estado do terminal
 const terminalLines = ref<string[]>([])
 const showCursor = ref(true)
-const isVisible = ref(false)
-const prefersReducedMotion = ref(false)
 
 // Controle de timeouts para limpeza
 const timeoutIds: ReturnType<typeof setTimeout>[] = []
@@ -99,21 +77,13 @@ function typeScenario(scenarioIndex: number) {
   }, totalTime)
 }
 
+const props = defineProps<{
+  prefersReducedMotion: boolean
+  isVisible: boolean
+}>()
+
 onMounted(() => {
-  // Verifica preferência de movimento reduzido
-  if (typeof window !== 'undefined') {
-    prefersReducedMotion.value = window.matchMedia(
-      '(prefers-reduced-motion: reduce)',
-    ).matches
-  }
-
-  // Animação de entrada
-  requestAnimationFrame(() => {
-    isVisible.value = true
-  })
-
-  // Terminal: modo estático ou animado
-  if (prefersReducedMotion.value) {
+  if (props.prefersReducedMotion) {
     terminalLines.value = scenarios[0]!.lines
   } else {
     typeScenario(0)
@@ -135,46 +105,6 @@ onUnmounted(() => {
       />
     </div>
 
-    <!-- Navbar simples -->
-    <nav
-      class="relative z-20 mx-auto max-w-7xl px-6 py-5 flex items-center justify-between hero-entrance"
-      :class="[
-        prefersReducedMotion
-          ? 'opacity-100'
-          : isVisible
-            ? 'opacity-100 translate-y-0'
-            : 'opacity-0 -translate-y-4',
-      ]"
-    >
-      <pre
-        class="text-[3.5px] leading-none font-mono text-foreground/80 select-none sm:text-[4.3px]"
-      >████████╗██╗   ██╗ ██████╗██╗   ██╗██╗  ██╗██╗
-╚══██╔══╝██║   ██║██╔════╝██║   ██║╚██╗██╔╝██║
-   ██║   ██║   ██║██║     ██║   ██║ ╚███╔╝ ██║
-   ██║   ██║   ██║██║     ██║   ██║ ██╔██╗ ██║
-   ██║   ╚██████╔╝╚██████╗╚██████╔╝██╔╝ ██╗██║
-   ╚═╝    ╚═════╝  ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝</pre>
-      <div class="flex items-center gap-3">
-        <NuxtLink v-if="auth.isAuthenticated" to="/app">
-          <Button
-            size="sm"
-            class="bg-foreground text-background hover:bg-foreground/90 text-xs px-4"
-          >
-            Workspace
-          </Button>
-        </NuxtLink>
-        <NuxtLink v-else to="/login">
-          <Button
-            variant="outline"
-            size="sm"
-            class="text-xs px-4"
-          >
-            Entrar
-          </Button>
-        </NuxtLink>
-      </div>
-    </nav>
-
     <!-- Hero principal — duas colunas -->
     <div class="mx-auto max-w-7xl px-6 pt-12 pb-20 md:pt-20 md:pb-28">
       <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
@@ -192,15 +122,13 @@ onUnmounted(() => {
           <h1
             class="font-sans text-3xl font-bold tracking-tight text-foreground leading-[1.15] sm:text-4xl lg:text-5xl"
           >
-            Você não sabe quantos registros estão duplicados.<br />
-            <span class="text-sky-500 dark:text-sky-400">Nós sabemos — e resolvemos em segundos.</span>
+            Registros duplicados custam milhões.<br />
+            <span class="text-sky-500 dark:text-sky-400">Bioinformática resolve.</span>
           </h1>
           <p
             class="mt-6 max-w-lg font-sans text-lg text-muted-foreground leading-relaxed"
           >
-            Tecnologia DNA transforma dados em sequências genômicas para
-            identificar e unificar registros com 95%+ de precisão.
-            Já processamos mais de 500 milhões.
+            O Tucuxi deduplica bases nacionais em horas — não meses.
           </p>
           <div
             class="mt-8 hero-entrance hero-entrance-delay-2"
@@ -300,37 +228,6 @@ onUnmounted(() => {
         </div>
       </div>
     </div>
-
-    <!-- Feature cards — borda superior, 3 colunas com divisórias -->
-    <div>
-      <div
-        class="mx-auto max-w-7xl hero-entrance hero-entrance-delay-4"
-        :class="[
-          prefersReducedMotion
-            ? 'opacity-100'
-            : isVisible
-              ? 'opacity-100 translate-y-0'
-              : 'opacity-0 translate-y-4',
-        ]"
-      >
-        <div
-          class="grid grid-cols-1 divide-y divide-border/40 md:grid-cols-3 md:divide-x md:divide-y-0"
-        >
-          <div
-            v-for="feature in features"
-            :key="feature.title"
-            class="px-6 py-8 md:px-8 md:py-10"
-          >
-            <h3 class="mb-2 text-lg font-bold text-foreground">
-              {{ feature.title }}
-            </h3>
-            <p class="text-base leading-relaxed text-muted-foreground">
-              {{ feature.description }}
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
   </section>
 </template>
 
@@ -352,10 +249,6 @@ onUnmounted(() => {
 
 .hero-entrance-delay-3 {
   transition-delay: 600ms;
-}
-
-.hero-entrance-delay-4 {
-  transition-delay: 800ms;
 }
 
 /* Stack container — padding-bottom acomoda os ghost cards */
@@ -437,6 +330,5 @@ onUnmounted(() => {
   .terminal-cursor {
     animation: none;
   }
-
 }
 </style>

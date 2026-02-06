@@ -18,25 +18,25 @@ const steps: Step[] = [
   {
     number: '01',
     title: 'Ingestão',
-    description: 'Conectamos suas bases de dados, independente do formato ou origem',
+    description: 'Conectamos suas bases — CSV, Excel ou API. O Tucuxi-BW limpa duplicatas internas antes do linkage.',
     icon: CloudDownload,
   },
   {
     number: '02',
     title: 'Conversão DNA',
-    description: 'Cada registro vira uma sequência genômica única',
+    description: 'Cada registro vira uma sequência de nucleotídeos via roda de códons — que muda a cada execução, criptografando os dados.',
     icon: Fingerprint,
   },
   {
     number: '03',
     title: 'Linkage',
-    description: 'Algoritmo identifica duplicatas com 95%+ de precisão',
+    description: 'BLASTn alinha as sequências e Random Forest classifica os matches com 98%+ de acurácia.',
     icon: Merge,
   },
   {
     number: '04',
     title: 'Registro Único',
-    description: 'Um cadastro consolidado e rastreável por identidade',
+    description: 'Um cadastro consolidado e rastreável. Casos na zona cinzenta vão para curadoria humana via Tucuxi-Tail.',
     icon: CircleCheckBig,
   },
 ]
