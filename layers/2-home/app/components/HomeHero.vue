@@ -1,64 +1,154 @@
 <script setup lang="ts">
 /**
- * Hero section - inspirada no Anytype.io
- * Layout: título esquerda, ilustração direita, feature cards abaixo
+ * Hero section - Terminal interativo + headline técnica
+ * Layout: título esquerda, terminal interativo direita, feature cards abaixo
  */
 const auth = useAuthStore()
 
-const _asciiTucuxi = `                                      .--.
-              _______             .-"  .'
-      .---u"""       """"---._  ."    %
-    .'                        "--.    %
-__.--'  o                          "".. "
-(____.                                  ":
- \`----.__                                 ".
-         \`----------__                     ".
-               ".   . ""--.                 ".
-                 ". ".     ""-.              ".
-                   "-.)        ""-.           ".
-                                   "".         ".
-                                      "".       ".
-                                         "".      ".
-                                            "".    ".
-                  ^~^~^~^~^~^~^~^~^~^~^~^~^~^"".  "^~^~^~^~^
-                                            ^~^~^~^  ~^~
-                                                 ^~^~^~`
-
 const features = [
   {
-    title: 'Record Linkage',
-    description: 'Algoritmos avançados de vinculação determinística e probabilística para unificar registros.'
+    title: 'Busca em segundos',
+    description:
+      'Dados parciais, erros de digitação, documentos incompletos — encontramos o registro certo mesmo assim.',
   },
   {
-    title: 'Busca Inteligente',
-    description: 'Encontra pacientes mesmo com dados parciais, incompletos ou com erros de digitação.'
+    title: 'Algoritmo DNA',
+    description:
+      'Convertemos dados em sequências genômicas. A mesma tecnologia usada há décadas na bioinformática, agora aplicada a dados.',
   },
   {
-    title: 'Seguro & Privado',
-    description: 'Dados protegidos com criptografia, autenticação BFF e cookies httpOnly.'
-  }
+    title: 'Múltiplos setores',
+    description:
+      'Saúde, educação, epidemiologia e seguros. A mesma plataforma resolve duplicatas em qualquer base.',
+  },
 ]
 
-// Animação de entrada
+// Cenários do terminal
+interface TerminalScenario {
+  lines: string[]
+}
+
+const scenarios: TerminalScenario[] = [
+  {
+    lines: [
+      '$ tucuxi link --id 123.456.789-00',
+      '',
+      '[info] Convertendo para sequência DNA...',
+      '[info] 3 registros em 2 bases (score: 0.997)',
+      '',
+      '✓ Registro unificado',
+    ],
+  },
+  {
+    lines: [
+      '$ tucuxi search "Joao da Cilva"',
+      '',
+      '[info] Busca fonética + DNA...',
+      '[match] João da Silva Souza (score: 0.943)',
+      '',
+      '✓ 1 correspondência encontrada',
+    ],
+  },
+  {
+    lines: [
+      '$ tucuxi scan --base completa',
+      '',
+      '[warn] 12.847 duplicatas detectadas',
+      '[fix] Resolvendo com algoritmo DNA...',
+      '',
+      '✓ 12.847/12.847 resolvidas',
+    ],
+  },
+]
+
+// Estado do terminal
+const terminalLines = ref<string[]>([])
+const showCursor = ref(true)
 const isVisible = ref(false)
+const prefersReducedMotion = ref(false)
+
+// Controle de timeouts para limpeza
+const timeoutIds: ReturnType<typeof setTimeout>[] = []
+
+function safeTimeout(fn: () => void, delay: number) {
+  const id = setTimeout(fn, delay)
+  timeoutIds.push(id)
+  return id
+}
+
+function clearAllTimeouts() {
+  timeoutIds.forEach(clearTimeout)
+  timeoutIds.length = 0
+}
+
+// Typewriter: exibe linhas uma a uma com delay
+function typeScenario(scenarioIndex: number) {
+  const scenario = scenarios[scenarioIndex % scenarios.length]!
+  terminalLines.value = []
+
+  scenario.lines.forEach((line, i) => {
+    safeTimeout(() => {
+      terminalLines.value = [...terminalLines.value, line]
+    }, i * 400)
+  })
+
+  // Após todas as linhas + 3s de pausa, iniciar próximo cenário
+  const totalTime = scenario.lines.length * 400 + 3000
+  safeTimeout(() => {
+    typeScenario(scenarioIndex + 1)
+  }, totalTime)
+}
+
 onMounted(() => {
+  // Verifica preferência de movimento reduzido
+  if (typeof window !== 'undefined') {
+    prefersReducedMotion.value = window.matchMedia(
+      '(prefers-reduced-motion: reduce)',
+    ).matches
+  }
+
+  // Animação de entrada
   requestAnimationFrame(() => {
     isVisible.value = true
   })
+
+  // Terminal: modo estático ou animado
+  if (prefersReducedMotion.value) {
+    terminalLines.value = scenarios[0]!.lines
+  } else {
+    typeScenario(0)
+  }
+})
+
+onUnmounted(() => {
+  clearAllTimeouts()
 })
 </script>
 
 <template>
   <section class="relative overflow-hidden">
-    <!-- Gradiente warm sutil — canto inferior direito como Anytype -->
+    <!-- Gradiente sutil — canto inferior direito -->
     <div class="absolute inset-0 -z-10">
       <div class="absolute inset-0 bg-background" />
-      <div class="absolute bottom-0 right-0 h-[70%] w-[50%] bg-linear-to-tl from-sky-100/50 via-blue-50/30 to-transparent dark:from-sky-950/20 dark:via-blue-950/10 dark:to-transparent" />
+      <div
+        class="absolute bottom-0 right-0 h-[70%] w-[50%] bg-linear-to-tl from-sky-100/50 via-blue-50/30 to-transparent dark:from-sky-950/20 dark:via-blue-950/10 dark:to-transparent"
+      />
     </div>
 
     <!-- Navbar simples -->
-    <nav class="relative z-20 max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
-      <pre class="text-[3.5px] sm:text-[4.3px] leading-none font-mono text-foreground/80 select-none">████████╗██╗   ██╗ ██████╗██╗   ██╗██╗  ██╗██╗
+    <nav
+      class="relative z-20 mx-auto max-w-7xl px-6 py-5 flex items-center justify-between hero-entrance"
+      :class="[
+        prefersReducedMotion
+          ? 'opacity-100'
+          : isVisible
+            ? 'opacity-100 translate-y-0'
+            : 'opacity-0 -translate-y-4',
+      ]"
+    >
+      <pre
+        class="text-[3.5px] leading-none font-mono text-foreground/80 select-none sm:text-[4.3px]"
+      >████████╗██╗   ██╗ ██████╗██╗   ██╗██╗  ██╗██╗
 ╚══██╔══╝██║   ██║██╔════╝██║   ██║╚██╗██╔╝██║
    ██║   ██║   ██║██║     ██║   ██║ ╚███╔╝ ██║
    ██║   ██║   ██║██║     ██║   ██║ ██╔██╗ ██║
@@ -66,12 +156,19 @@ onMounted(() => {
    ╚═╝    ╚═════╝  ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝</pre>
       <div class="flex items-center gap-3">
         <NuxtLink v-if="auth.isAuthenticated" to="/app">
-          <Button size="sm" class="bg-foreground text-background hover:bg-foreground/90 text-xs px-4">
+          <Button
+            size="sm"
+            class="bg-foreground text-background hover:bg-foreground/90 text-xs px-4"
+          >
             Workspace
           </Button>
         </NuxtLink>
         <NuxtLink v-else to="/login">
-          <Button size="sm" class="bg-foreground text-background hover:bg-foreground/90 text-xs px-4">
+          <Button
+            variant="outline"
+            size="sm"
+            class="text-xs px-4"
+          >
             Entrar
           </Button>
         </NuxtLink>
@@ -79,156 +176,157 @@ onMounted(() => {
     </nav>
 
     <!-- Hero principal — duas colunas -->
-    <div class="max-w-7xl mx-auto px-6 pt-12 md:pt-20 pb-20 md:pb-28">
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-8 items-center">
-        <!-- Esquerda: Título grande -->
+    <div class="mx-auto max-w-7xl px-6 pt-12 pb-20 md:pt-20 md:pb-28">
+      <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <!-- Esquerda: Headline técnica + CTA -->
         <div
-          class="transition-all duration-1000 ease-out"
-          :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
+          class="hero-entrance hero-entrance-delay-1"
+          :class="[
+            prefersReducedMotion
+              ? 'opacity-100'
+              : isVisible
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-8',
+          ]"
         >
-          <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-[5.5rem] font-bold tracking-tight text-foreground leading-[1.08]">
-            Dados fragmentados,
-            <span class="text-sky-500 dark:text-sky-400">agora conectados</span>
+          <h1
+            class="font-sans text-3xl font-bold tracking-tight text-foreground leading-[1.15] sm:text-4xl lg:text-5xl"
+          >
+            Você não sabe quantos registros estão duplicados.<br />
+            <span class="text-sky-500 dark:text-sky-400">Nós sabemos — e resolvemos em segundos.</span>
           </h1>
+          <p
+            class="mt-6 max-w-lg font-sans text-lg text-muted-foreground leading-relaxed"
+          >
+            Tecnologia DNA transforma dados em sequências genômicas para
+            identificar e unificar registros com 95%+ de precisão.
+            Já processamos mais de 500 milhões.
+          </p>
+          <div
+            class="mt-8 hero-entrance hero-entrance-delay-2"
+            :class="[
+              prefersReducedMotion
+                ? 'opacity-100'
+                : isVisible
+                  ? 'opacity-100 translate-y-0'
+                  : 'opacity-0 translate-y-4',
+            ]"
+          >
+            <a
+              href="#how-it-works-heading"
+              class="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            >
+              Como Funciona &darr;
+            </a>
+          </div>
         </div>
 
-        <!-- Direita: Ilustração line-art de dados sendo conectados -->
+        <!-- Direita: Terminal interativo -->
         <div
-          class="relative flex justify-center lg:justify-end transition-all duration-1000 ease-out delay-300"
-          :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'"
+          class="hero-entrance hero-entrance-delay-3"
+          :class="[
+            prefersReducedMotion
+              ? 'opacity-100'
+              : isVisible
+                ? 'opacity-100 translate-y-0'
+                : 'opacity-0 translate-y-8',
+          ]"
           aria-hidden="true"
         >
-          <svg viewBox="0 0 460 400" fill="none" class="w-full max-w-130 h-auto" xmlns="http://www.w3.org/2000/svg">
-            <!-- Glow sutil atrás do registro central -->
-            <circle cx="230" cy="200" r="110" fill="currentColor" class="hero-glow text-sky-500/5" />
+          <!-- Stack de terminais — efeito cards empilhados -->
+          <div class="terminal-stack">
+            <!-- Ghost: fundo (3ª camada) -->
+            <div class="terminal-ghost terminal-ghost-bottom" />
+            <!-- Ghost: meio (2ª camada) -->
+            <div class="terminal-ghost terminal-ghost-middle" />
 
-            <!-- ═══ REGISTRO CENTRAL UNIFICADO ═══ -->
-            <rect x="150" y="100" width="160" height="200" rx="10" fill="currentColor" class="text-background" />
-            <rect x="150" y="100" width="160" height="200" rx="10" stroke="currentColor" stroke-width="2" class="text-foreground/70" />
-            <!-- Header -->
-            <rect x="150" y="100" width="160" height="34" rx="10" fill="currentColor" class="text-foreground/5" />
-            <rect x="150" y="124" width="160" height="10" fill="currentColor" class="text-foreground/5" />
-            <line x1="150" y1="134" x2="310" y2="134" stroke="currentColor" stroke-width="1.2" class="text-foreground/15" />
-            <!-- Dots do header -->
-            <circle cx="167" cy="117" r="4" fill="currentColor" class="text-sky-500/40" />
-            <circle cx="181" cy="117" r="4" fill="currentColor" class="text-amber-400/40" />
-            <circle cx="195" cy="117" r="4" fill="currentColor" class="text-emerald-400/40" />
-            <!-- Ícone pessoa -->
-            <circle cx="230" cy="170" r="18" stroke="currentColor" stroke-width="2" class="text-foreground/40" />
-            <path d="M210 202 a20 12 0 0 1 40 0" stroke="currentColor" stroke-width="2" class="text-foreground/40" />
-            <!-- Linhas de dados -->
-            <rect x="172" y="222" width="116" height="6" rx="3" fill="currentColor" class="text-foreground/10" />
-            <rect x="172" y="238" width="96" height="6" rx="3" fill="currentColor" class="text-foreground/8" />
-            <rect x="172" y="254" width="72" height="6" rx="3" fill="currentColor" class="text-foreground/6" />
-            <!-- Label "DNA" no card -->
-            <text x="280" y="150" class="text-sky-500/20" fill="currentColor" font-size="11" font-family="monospace" font-weight="bold">DNA</text>
-            <!-- Badge verificado -->
-            <circle cx="292" cy="280" r="12" fill="currentColor" class="text-emerald-500/15" />
-            <circle cx="292" cy="280" r="12" stroke="currentColor" stroke-width="1.5" class="text-emerald-500/50" />
-            <path d="M286 280 l4 4 l7 -9" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-emerald-500/70" />
+            <!-- Terminal principal (1ª camada, em flow) -->
+            <div
+              class="terminal-outer relative z-30 overflow-hidden rounded-2xl shadow-[0_20px_70px_-10px_rgba(0,0,0,0.5)]"
+            >
+              <!-- Blur glow element — luz localizada -->
+              <div class="terminal-glow-blur" />
+              <!-- Inner content — margem revela o outer como "borda" -->
+              <div class="relative z-[1] m-[3px] rounded-[13px] bg-[#09090b]">
+                <!-- Header do terminal -->
+                <div
+                  class="flex items-center gap-2 border-b border-white/[0.08] px-4 py-3"
+                >
+                  <span class="h-2.5 w-2.5 rounded-full bg-zinc-700 group-hover:bg-red-500/80 transition-colors" />
+                  <span class="h-2.5 w-2.5 rounded-full bg-zinc-700 group-hover:bg-yellow-500/80 transition-colors" />
+                  <span class="h-2.5 w-2.5 rounded-full bg-zinc-700 group-hover:bg-green-500/80 transition-colors" />
+                  <span class="ml-auto font-mono text-[11px] text-zinc-600">tucuxi v2.0</span>
+                </div>
 
-            <!-- ═══ FRAGMENTO 1 — TOPO ESQUERDA (Documento) ═══ -->
-            <g class="hero-float">
-            <rect x="15" y="25" width="120" height="85" rx="8" fill="currentColor" class="text-background" />
-            <rect x="15" y="25" width="120" height="85" rx="8" stroke="currentColor" stroke-width="1.5" class="text-foreground/20" />
-            <rect x="15" y="25" width="120" height="26" rx="8" fill="currentColor" class="text-foreground/4" />
-            <rect x="15" y="43" width="120" height="8" fill="currentColor" class="text-foreground/4" />
-            <line x1="15" y1="51" x2="135" y2="51" stroke="currentColor" stroke-width="0.8" class="text-foreground/10" />
-            <rect x="28" y="60" width="72" height="5" rx="2.5" fill="currentColor" class="text-foreground/8" />
-            <rect x="28" y="72" width="88" height="5" rx="2.5" fill="currentColor" class="text-foreground/6" />
-            <rect x="28" y="84" width="54" height="5" rx="2.5" fill="currentColor" class="text-foreground/4" />
-            <!-- Ícone doc -->
-            <rect x="30" y="32" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.2" class="text-foreground/18" />
-            <line x1="33" y1="37" x2="39" y2="37" stroke="currentColor" stroke-width="0.8" class="text-foreground/12" />
-            <line x1="33" y1="40" x2="39" y2="40" stroke="currentColor" stroke-width="0.8" class="text-foreground/12" />
-            </g>
-
-            <!-- ═══ FRAGMENTO 2 — TOPO DIREITA (Banco de dados) ═══ -->
-            <g class="hero-float hero-float-delay-1">
-            <rect x="325" y="15" width="120" height="85" rx="8" fill="currentColor" class="text-background" />
-            <rect x="325" y="15" width="120" height="85" rx="8" stroke="currentColor" stroke-width="1.5" class="text-foreground/20" />
-            <rect x="325" y="15" width="120" height="26" rx="8" fill="currentColor" class="text-foreground/4" />
-            <rect x="325" y="33" width="120" height="8" fill="currentColor" class="text-foreground/4" />
-            <line x1="325" y1="41" x2="445" y2="41" stroke="currentColor" stroke-width="0.8" class="text-foreground/10" />
-            <rect x="338" y="50" width="88" height="5" rx="2.5" fill="currentColor" class="text-foreground/8" />
-            <rect x="338" y="62" width="72" height="5" rx="2.5" fill="currentColor" class="text-foreground/6" />
-            <rect x="338" y="74" width="54" height="5" rx="2.5" fill="currentColor" class="text-foreground/4" />
-            <!-- Ícone database -->
-            <ellipse cx="340" cy="27" rx="7" ry="4" stroke="currentColor" stroke-width="1.2" class="text-foreground/18" />
-            <path d="M333 27 v8 a7 4 0 0 0 14 0 v-8" stroke="currentColor" stroke-width="1.2" class="text-foreground/18" />
-            </g>
-
-            <!-- ═══ FRAGMENTO 3 — BAIXO ESQUERDA (Busca) ═══ -->
-            <g class="hero-float hero-float-delay-2">
-            <rect x="10" y="285" width="120" height="85" rx="8" fill="currentColor" class="text-background" />
-            <rect x="10" y="285" width="120" height="85" rx="8" stroke="currentColor" stroke-width="1.5" class="text-foreground/20" />
-            <rect x="10" y="285" width="120" height="26" rx="8" fill="currentColor" class="text-foreground/4" />
-            <rect x="10" y="303" width="120" height="8" fill="currentColor" class="text-foreground/4" />
-            <line x1="10" y1="311" x2="130" y2="311" stroke="currentColor" stroke-width="0.8" class="text-foreground/10" />
-            <rect x="24" y="320" width="88" height="5" rx="2.5" fill="currentColor" class="text-foreground/8" />
-            <rect x="24" y="332" width="72" height="5" rx="2.5" fill="currentColor" class="text-foreground/6" />
-            <rect x="24" y="344" width="46" height="5" rx="2.5" fill="currentColor" class="text-foreground/4" />
-            <!-- Ícone search -->
-            <circle cx="30" cy="298" r="6" stroke="currentColor" stroke-width="1.2" class="text-foreground/18" />
-            <line x1="35" y1="303" x2="39" y2="307" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" class="text-foreground/18" />
-            </g>
-
-            <!-- ═══ FRAGMENTO 4 — BAIXO DIREITA (Gráfico) ═══ -->
-            <g class="hero-float hero-float-delay-3">
-            <rect x="325" y="290" width="120" height="85" rx="8" fill="currentColor" class="text-background" />
-            <rect x="325" y="290" width="120" height="85" rx="8" stroke="currentColor" stroke-width="1.5" class="text-foreground/20" />
-            <rect x="325" y="290" width="120" height="26" rx="8" fill="currentColor" class="text-foreground/4" />
-            <rect x="325" y="308" width="120" height="8" fill="currentColor" class="text-foreground/4" />
-            <line x1="325" y1="316" x2="445" y2="316" stroke="currentColor" stroke-width="0.8" class="text-foreground/10" />
-            <rect x="338" y="325" width="88" height="5" rx="2.5" fill="currentColor" class="text-foreground/8" />
-            <rect x="338" y="337" width="72" height="5" rx="2.5" fill="currentColor" class="text-foreground/6" />
-            <rect x="338" y="349" width="54" height="5" rx="2.5" fill="currentColor" class="text-foreground/4" />
-            <!-- Ícone chart -->
-            <rect x="332" y="303" width="3" height="10" rx="1" fill="currentColor" class="text-foreground/18" />
-            <rect x="337" y="299" width="3" height="14" rx="1" fill="currentColor" class="text-foreground/18" />
-            <rect x="342" y="306" width="3" height="7" rx="1" fill="currentColor" class="text-foreground/18" />
-            </g>
-
-            <!-- ═══ CONEXÕES (top, right, bottom, left do card central) ═══ -->
-            <!-- Frag 1 (topo-esq) → TOP (230, 100) -->
-            <path d="M135 67 C180 67, 230 75, 230 100" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4" class="hero-flow text-sky-500/35" />
-            <!-- Frag 2 (topo-dir) → RIGHT (310, 200) -->
-            <path d="M325 57 C325 120, 310 140, 310 200" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4" class="hero-flow hero-flow-delay-1 text-sky-500/35" />
-            <!-- Frag 3 (baixo-esq) → LEFT (150, 200) -->
-            <path d="M130 327 C130 270, 150 250, 150 200" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4" class="hero-flow hero-flow-delay-2 text-sky-500/35" />
-            <!-- Frag 4 (baixo-dir) → BOTTOM (230, 300) -->
-            <path d="M325 332 C280 332, 230 320, 230 300" stroke="currentColor" stroke-width="1.5" stroke-dasharray="6 4" class="hero-flow hero-flow-delay-3 text-sky-500/35" />
-
-            <!-- Círculos estáticos: top, right, bottom, left -->
-            <circle cx="230" cy="100" r="4" fill="currentColor" class="text-sky-500/50" />
-            <circle cx="310" cy="200" r="4" fill="currentColor" class="text-sky-500/50" />
-            <circle cx="150" cy="200" r="4" fill="currentColor" class="text-sky-500/50" />
-            <circle cx="230" cy="300" r="4" fill="currentColor" class="text-sky-500/50" />
-
-            <!-- Halos estáticos: top, right, bottom, left -->
-            <circle cx="230" cy="100" r="8" stroke="currentColor" stroke-width="0.8" fill="none" class="text-sky-500/15" />
-            <circle cx="310" cy="200" r="8" stroke="currentColor" stroke-width="0.8" fill="none" class="text-sky-500/15" />
-            <circle cx="150" cy="200" r="8" stroke="currentColor" stroke-width="0.8" fill="none" class="text-sky-500/15" />
-            <circle cx="230" cy="300" r="8" stroke="currentColor" stroke-width="0.8" fill="none" class="text-sky-500/15" />
-          </svg>
+                <!-- Corpo do terminal -->
+                <div class="min-h-[220px] px-5 py-4 font-mono text-[13px] leading-relaxed">
+                  <div
+                    v-for="(line, index) in terminalLines"
+                    :key="`${index}-${line}`"
+                    class="terminal-line"
+                  >
+                    <span v-if="line === ''" class="block h-3.5" />
+                    <span
+                      v-else-if="line.startsWith('$')"
+                      class="text-zinc-300"
+                    >{{ line }}</span>
+                    <span
+                      v-else-if="line.startsWith('✓')"
+                      class="font-semibold text-emerald-400"
+                    >{{ line }}</span>
+                    <span
+                      v-else-if="line.startsWith('[warn]')"
+                      class="text-amber-400/90"
+                    >{{ line }}</span>
+                    <span
+                      v-else-if="
+                        line.startsWith('[fix]') ||
+                        line.startsWith('[link]') ||
+                        line.startsWith('[match]')
+                      "
+                      class="text-sky-400"
+                    >{{ line }}</span>
+                    <span v-else class="text-emerald-400/70">{{ line }}</span>
+                  </div>
+                  <!-- Cursor piscando -->
+                  <span
+                    v-if="showCursor"
+                    class="terminal-cursor inline-block text-emerald-400"
+                  >&#9610;</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- Feature cards — borda superior, 3 colunas com divisórias -->
-    <div class="border-t border-border/40">
+    <div>
       <div
-        class="max-w-7xl mx-auto transition-all duration-1000 ease-out delay-500"
-        :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+        class="mx-auto max-w-7xl hero-entrance hero-entrance-delay-4"
+        :class="[
+          prefersReducedMotion
+            ? 'opacity-100'
+            : isVisible
+              ? 'opacity-100 translate-y-0'
+              : 'opacity-0 translate-y-4',
+        ]"
       >
-        <div class="grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-border/40">
+        <div
+          class="grid grid-cols-1 divide-y divide-border/40 md:grid-cols-3 md:divide-x md:divide-y-0"
+        >
           <div
             v-for="feature in features"
             :key="feature.title"
             class="px-6 py-8 md:px-8 md:py-10"
           >
-            <h3 class="text-lg font-bold text-foreground mb-2">{{ feature.title }}</h3>
-            <p class="text-base text-muted-foreground leading-relaxed">{{ feature.description }}</p>
+            <h3 class="mb-2 text-lg font-bold text-foreground">
+              {{ feature.title }}
+            </h3>
+            <p class="text-base leading-relaxed text-muted-foreground">
+              {{ feature.description }}
+            </p>
           </div>
         </div>
       </div>
@@ -237,59 +335,107 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* Fluxo de dados nas conexões (stroke-dashoffset animado) */
-.hero-flow {
-  animation: hero-flow 2.5s linear infinite;
-}
-.hero-flow-delay-1 { animation-delay: 0.6s; }
-.hero-flow-delay-2 { animation-delay: 1.2s; }
-.hero-flow-delay-3 { animation-delay: 1.8s; }
-
-@keyframes hero-flow {
-  to {
-    stroke-dashoffset: -20;
-  }
+/* Animação de entrada */
+.hero-entrance {
+  transition:
+    opacity 1s ease-out,
+    transform 1s ease-out;
 }
 
-/* Flutuação sutil dos fragmentos */
-.hero-float {
-  animation: hero-float 4s ease-in-out infinite;
-}
-.hero-float-delay-1 { animation-delay: 1s; }
-.hero-float-delay-2 { animation-delay: 2s; }
-.hero-float-delay-3 { animation-delay: 3s; }
-
-@keyframes hero-float {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
+.hero-entrance-delay-1 {
+  transition-delay: 200ms;
 }
 
-/* Pulse no glow atrás do card central */
-.hero-glow {
-  transform-origin: center;
-  animation: hero-glow 3.5s ease-in-out infinite;
+.hero-entrance-delay-2 {
+  transition-delay: 400ms;
 }
 
-@keyframes hero-glow {
-  0%, 100% {
+.hero-entrance-delay-3 {
+  transition-delay: 600ms;
+}
+
+.hero-entrance-delay-4 {
+  transition-delay: 800ms;
+}
+
+/* Stack container — padding-bottom acomoda os ghost cards */
+.terminal-stack {
+  position: relative;
+  padding-bottom: 28px;
+}
+
+/* Ghost cards — janelas empilhadas atrás do terminal */
+.terminal-ghost {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  height: calc(100% - 28px);
+  border-radius: 1rem;
+  background: #18181b;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.3s ease-out;
+}
+
+.terminal-ghost-middle {
+  z-index: 20;
+  top: 14px;
+  transform: scale(0.95);
+  opacity: 0.7;
+}
+
+.terminal-ghost-bottom {
+  z-index: 10;
+  top: 28px;
+  transform: scale(0.90);
+  opacity: 0.4;
+}
+
+/* Uiverse.io glow border — outer bg = cor da borda */
+.terminal-outer {
+  background: linear-gradient(
+    135deg,
+    rgba(14, 165, 233, 0.7),
+    rgba(14, 165, 233, 0.2),
+    rgba(16, 185, 129, 0.5),
+    rgba(14, 165, 233, 0.2)
+  );
+}
+
+/* Blur glow — luz localizada no canto superior esquerdo */
+.terminal-glow-blur {
+  position: absolute;
+  width: 250px;
+  height: 250px;
+  background: rgba(14, 165, 233, 0.6);
+  border-radius: 50%;
+  filter: blur(60px);
+  top: -20%;
+  left: -10%;
+  z-index: 0;
+}
+
+/* Cursor piscando do terminal */
+.terminal-cursor {
+  animation: cursor-blink 1s step-end infinite;
+}
+
+@keyframes cursor-blink {
+  0%,
+  100% {
     opacity: 1;
-    transform: scale(1);
   }
   50% {
-    opacity: 0.5;
-    transform: scale(1.08);
+    opacity: 0;
   }
 }
 
 /* Respeita preferência do usuário por menos movimento */
 @media (prefers-reduced-motion: reduce) {
-  .hero-flow,
-  .hero-float,
-  .hero-glow {
+  .hero-entrance {
+    transition: none;
+  }
+
+  .terminal-cursor {
     animation: none;
   }
 }

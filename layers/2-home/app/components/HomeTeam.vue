@@ -3,6 +3,20 @@
  * Seção de equipe D2DNA
  * Grid com membros da equipe
  */
+import { useIntersectionObserver } from '@vueuse/core'
+
+const sectionRef = ref<HTMLElement | null>(null)
+const isVisible = ref(false)
+
+useIntersectionObserver(
+  sectionRef,
+  (entries) => {
+    if (entries[0]?.isIntersecting) {
+      isVisible.value = true
+    }
+  },
+  { threshold: 0.1 },
+)
 
 const teamMembers = [
   {
@@ -45,8 +59,13 @@ const teamMembers = [
 </script>
 
 <template>
-  <div>
-    <h2 class="text-2xl font-bold text-foreground mb-10 text-center">Equipe</h2>
+  <div
+    ref="sectionRef"
+    class="transition-all duration-700 ease-out"
+    :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
+  >
+    <h2 class="text-2xl font-bold text-foreground mb-4 text-center">Quem Está por Trás</h2>
+    <p class="text-center text-muted-foreground mb-10 text-sm">Cientistas, médicos e engenheiros. A mesma equipe que criou o algoritmo, mantém a plataforma.</p>
 
     <!-- Grid de membros -->
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">

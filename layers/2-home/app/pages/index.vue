@@ -1,7 +1,7 @@
 <script setup lang="ts">
 /**
- * Pagina inicial - Tucuxi-Blast
- * Design: MX (Machine Experience) + semi-brutalismo (inspirado Anytype.io)
+ * Pagina inicial - Tucuxi
+ * Design: MX (Machine Experience) + semi-brutalismo
  */
 const auth = useAuthStore()
 
@@ -17,13 +17,14 @@ useHead({
       innerHTML: JSON.stringify({
         '@context': 'https://schema.org',
         '@type': 'WebApplication',
-        name: 'Tucuxi-Blast',
-        description: 'Sistema de Record Linkage e Gestao de Dados',
+        name: 'Tucuxi',
+        description: 'Plataforma de Record Linkage que usa técnicas genômicas para integrar bases de dados com 95%+ de precisão',
         applicationCategory: 'BusinessApplication',
         operatingSystem: 'Web',
         provider: {
           '@type': 'Organization',
-          name: 'D2DNA'
+          name: 'D2DNA',
+          url: 'https://d2dna.com'
         }
       })
     }
@@ -34,12 +35,9 @@ useHead({
 <template>
   <main class="min-h-screen bg-background font-mono scanlines">
     <HomeHero />
-
-    <div class="max-w-7xl mx-auto">
-      <HomeStats />
-      <HomePartners />
-    </div>
-
+    <HomeHowItWorks />
+    <LazyHomeStats />
+    <LazyHomePartners />
     <HomeFooter />
   </main>
 </template>
