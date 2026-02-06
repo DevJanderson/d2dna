@@ -50,7 +50,7 @@ useHead({
 
 <template>
   <main
-    class="relative min-h-screen bg-background font-mono scanlines
+    class="relative min-h-screen bg-background font-mono
            [--pattern-fg:oklch(0.59_0.19_241.02)]"
   >
     <!-- Faixas verticais hachuradas -->

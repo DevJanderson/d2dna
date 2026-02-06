@@ -14,20 +14,14 @@
  */
 import type { FunctionalComponent } from 'vue'
 import {
-  LayoutDashboard,
-  Users,
+  GitCompare,
+  Link,
+  FileBarChart,
   Settings,
-  Search,
   Bell,
-  LogOut,
   ExternalLink,
   Pin,
-  Trash2,
-  Power,
-  GitCompare,
-  Upload,
-  Home,
-  UserCog
+  Trash2
 } from 'lucide-vue-next'
 
 /** Configuração para abrir uma janela */
@@ -57,132 +51,60 @@ interface NavItem {
 const route = useRoute()
 const router = useRouter()
 const windowManager = useWindowManager()
-const authStore = useAuthStore()
 
-/** Dados do usuário logado */
-const user = computed(() => authStore.user)
-
-/** Iniciais do nome do usuário (ex: "João Silva" → "JS") */
-const userInitials = computed(() => {
-  if (!user.value?.nome) return '??'
-  const names = user.value.nome.trim().split(' ').filter(n => n.length > 0)
-  if (names.length === 0) return '??'
-  const first = names[0] ?? ''
-  const last = names[names.length - 1] ?? ''
-  if (names.length === 1) return first.substring(0, 2).toUpperCase()
-  return ((first[0] ?? '') + (last[0] ?? '')).toUpperCase()
-})
-
-/** Nome para exibição */
-const userName = computed(() => user.value?.nome || 'Usuário')
-
-/** Função/cargo do usuário */
-const userRole = computed(() => user.value?.funcao || 'Analista')
-
-/**
- * Abre uma janela do usuário (perfil ou configurações)
- * Navega para /app se não estiver lá
- */
-function openUserWindow(config: WindowConfig) {
-  if (route.path !== '/app') {
-    router.push('/app')
-  }
-  const existing = windowManager.windows.value.find(w => w.id === config.id)
-  if (existing) {
-    windowManager.focus(config.id)
-  } else {
-    windowManager.open(config)
-  }
-}
-
-/** Abre janela de perfil do usuário */
-function openProfile() {
-  openUserWindow({
-    id: 'user-profile',
-    title: 'Meu Perfil',
-    position: { x: 150, y: 80 },
-    size: { width: 450, height: 500 }
-  })
-}
-
-/** Abre janela de configurações */
-function openSettings() {
-  openUserWindow({
-    id: 'user-settings',
-    title: 'Configurações',
-    position: { x: 200, y: 100 },
-    size: { width: 500, height: 450 }
-  })
-}
-
-/** Usuário é admin? */
-const isAdmin = computed(() => authStore.isAdmin)
-
-/** Abre janela de gerenciamento de usuários (admin) */
-function openUserManagement() {
-  openUserWindow({
-    id: 'user-management',
-    title: 'Gerenciar Usuários',
-    position: { x: 100, y: 50 },
-    size: { width: 700, height: 550 }
-  })
-}
-
-/** Itens do menu de navegação principal */
+/** Itens do menu de navegação — cada um representa uma layer */
 const navItems: NavItem[] = [
   {
-    id: 'home',
-    label: 'Início',
-    icon: Home,
-    type: 'route',
-    href: '/'
-  },
-  {
-    id: 'review',
-    label: 'Revisão de Matches',
+    id: 'reviews',
+    label: 'Reviews',
     icon: GitCompare,
     type: 'window',
     windowConfig: {
-      id: 'review-queue',
-      title: 'Fila de Revisão',
+      id: 'reviews',
+      title: 'Reviews',
       position: { x: 20, y: 20 },
       size: { width: 350, height: 500 }
     },
-    // Janelas relacionadas: fila + comparador
-    relatedWindowIds: ['review-queue', 'match-viewer']
+    relatedWindowIds: ['reviews', 'match-viewer']
   },
   {
-    id: 'search',
-    label: 'Buscar Paciente',
-    icon: Users,
+    id: 'linkage',
+    label: 'Linkage',
+    icon: Link,
     type: 'window',
     windowConfig: {
-      id: 'patient-search',
-      title: 'Buscar Paciente',
+      id: 'linkage',
+      title: 'Linkage',
       position: { x: 100, y: 50 },
       size: { width: 500, height: 400 }
     },
-    relatedWindowIds: ['patient-search']
+    relatedWindowIds: ['linkage']
   },
   {
-    id: 'batch',
-    label: 'Importação em Lote',
-    icon: Upload,
+    id: 'reports',
+    label: 'Relatórios',
+    icon: FileBarChart,
     type: 'window',
     windowConfig: {
-      id: 'batch-import',
-      title: 'Importação em Lote',
+      id: 'reports',
+      title: 'Relatórios',
       position: { x: 150, y: 80 },
       size: { width: 600, height: 450 }
     },
-    relatedWindowIds: ['batch-import']
+    relatedWindowIds: ['reports']
   },
   {
-    id: 'dashboard',
-    label: 'Dashboard',
-    icon: LayoutDashboard,
-    type: 'route',
-    href: '/dashboard'
+    id: 'settings',
+    label: 'Configurações',
+    icon: Settings,
+    type: 'window',
+    windowConfig: {
+      id: 'settings',
+      title: 'Configurações',
+      position: { x: 200, y: 100 },
+      size: { width: 500, height: 450 }
+    },
+    relatedWindowIds: ['settings']
   }
 ]
 
@@ -307,10 +229,10 @@ function hasOpenWindow(item: NavItem): boolean {
   <!--
     Container externo
     - w-20: largura fixa 80px
-    - h-screen: altura total da tela
+    - h-full: altura total do container pai
     - flex items-center justify-center: centraliza a dock verticalmente
   -->
-  <div class="flex h-screen w-20 items-center justify-center py-4">
+  <div class="flex h-full w-20 items-center justify-center py-4">
 
     <!--
       Dock (aside)
@@ -325,80 +247,7 @@ function hasOpenWindow(item: NavItem): boolean {
       class="flex flex-col items-center gap-1 rounded-2xl border border-sidebar-border bg-sidebar/80 p-2 shadow-xl backdrop-blur-xl"
     >
 
-      <!-- ========== SEÇÃO 1: AVATAR DO USUÁRIO ========== -->
-      <TooltipProvider :delay-duration="0">
-        <Tooltip>
-          <TooltipTrigger as-child>
-            <DropdownMenu>
-              <DropdownMenuTrigger as-child>
-                <!--
-                  Botão do avatar
-                  - rounded-lg: bordas 8px
-                  - hover:scale-105: aumenta 5% no hover
-                -->
-                <button
-                  class="group relative mb-1 overflow-hidden rounded-lg transition-transform focus:outline-none"
-                >
-                  <!--
-                    Avatar (shadcn-vue)
-                    - AvatarImage: foto do usuário se disponível
-                    - AvatarFallback: iniciais do nome quando não há foto
-                  -->
-                  <Avatar class="h-10 w-10 rounded-lg">
-                    <AvatarImage
-                      v-if="user?.foto_perfil"
-                      :src="user.foto_perfil"
-                      :alt="userName"
-                    />
-                    <AvatarFallback
-                      class="rounded-lg bg-primary text-primary-foreground text-sm font-semibold"
-                    >
-                      {{ userInitials }}
-                    </AvatarFallback>
-                  </Avatar>
-                </button>
-              </DropdownMenuTrigger>
-
-              <!-- Menu dropdown do usuário (abre à direita) -->
-              <DropdownMenuContent side="right" align="start" class="w-56">
-                <!-- Cabeçalho com dados do usuário -->
-                <div class="px-2 py-1.5">
-                  <p class="text-sm font-medium">{{ userName }}</p>
-                  <p class="text-xs text-muted-foreground">{{ userRole }}</p>
-                </div>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem @click="openProfile">
-                  <Users class="mr-2 h-4 w-4" />
-                  Perfil
-                </DropdownMenuItem>
-                <DropdownMenuItem @click="openSettings">
-                  <Settings class="mr-2 h-4 w-4" />
-                  Configurações
-                </DropdownMenuItem>
-                <!-- Opção de admin -->
-                <DropdownMenuItem v-if="isAdmin" @click="openUserManagement">
-                  <UserCog class="mr-2 h-4 w-4" />
-                  Gerenciar Usuários
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <!-- text-destructive: vermelho para ação perigosa -->
-                <DropdownMenuItem class="text-destructive" @click="authStore.logout()">
-                  <LogOut class="mr-2 h-4 w-4" />
-                  Sair
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </TooltipTrigger>
-          <TooltipContent side="right">
-            <p>{{ userName }}</p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
-
-      <!-- Separador (linha horizontal) -->
-      <div class="my-1 h-px w-6 bg-sidebar-border" />
-
-      <!-- ========== SEÇÃO 2: NAVEGAÇÃO PRINCIPAL ========== -->
+      <!-- ========== NAVEGAÇÃO PRINCIPAL ========== -->
       <nav class="group/nav flex flex-col items-center gap-2">
         <TooltipProvider :delay-duration="0">
           <template v-for="item in navItems" :key="item.id">
@@ -467,67 +316,23 @@ function hasOpenWindow(item: NavItem): boolean {
       <!-- Separador -->
       <div class="my-1 h-px w-6 bg-sidebar-border" />
 
-      <!-- ========== SEÇÃO 3: AÇÕES RÁPIDAS ========== -->
-      <!--
-        Botões menores e mais sutis
-        - h-9 w-9: 36x36px (menor que nav)
-        - rounded-lg: bordas 8px
-        - text-muted-foreground: cor apagada
-      -->
-      <div class="flex flex-col items-center gap-1">
-        <TooltipProvider :delay-duration="0">
+      <!-- Notificações -->
+      <TooltipProvider :delay-duration="0">
+        <Tooltip>
+          <TooltipTrigger as-child>
+            <button
+              class="relative flex h-10 w-10 items-center justify-center rounded-xl text-muted-foreground transition-all hover:scale-105 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+            >
+              <Bell class="h-4 w-4" />
+              <span class="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-destructive" />
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="right">
+            <p>Notificações</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
 
-          <!-- Busca -->
-          <Tooltip>
-            <TooltipTrigger as-child>
-              <button
-                class="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-all hover:scale-105 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-              >
-                <Search class="h-4 w-4" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="right">
-              <p>Buscar</p>
-            </TooltipContent>
-          </Tooltip>
-
-          <!-- Notificações -->
-          <Tooltip>
-            <TooltipTrigger as-child>
-              <button
-                class="relative flex h-10 w-10 items-center justify-center rounded-xl text-muted-foreground transition-all hover:scale-105 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
-              >
-                <Bell class="h-4 w-4" />
-                <!--
-                  Badge de notificação
-                  - Ponto vermelho no canto superior direito
-                  - bg-destructive: cor vermelha do tema
-                -->
-                <span class="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-destructive" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="right">
-              <p>Notificações</p>
-            </TooltipContent>
-          </Tooltip>
-
-          <!-- Sair -->
-          <Tooltip>
-            <TooltipTrigger as-child>
-              <!-- hover:text-destructive: fica vermelho no hover -->
-              <button
-                class="flex h-9 w-9 items-center justify-center rounded-lg text-muted-foreground transition-all hover:scale-105 hover:bg-sidebar-accent hover:text-destructive"
-              >
-                <Power class="h-4 w-4" />
-              </button>
-            </TooltipTrigger>
-            <TooltipContent side="right">
-              <p>Sair</p>
-            </TooltipContent>
-          </Tooltip>
-
-        </TooltipProvider>
-      </div>
     </aside>
   </div>
 </template>

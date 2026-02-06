@@ -33,7 +33,7 @@ function handleSuccess() {
 </script>
 
 <template>
-  <div v-if="!checking" class="min-h-screen bg-background font-mono scanlines flex items-center justify-center p-4">
+  <div v-if="!checking" class="min-h-screen bg-background font-mono flex items-center justify-center p-4">
     <div class="w-full max-w-sm space-y-8">
       <!-- Header com ASCII art -->
       <header class="text-center space-y-4">

@@ -1,25 +1,17 @@
 <script setup lang="ts">
 /**
  * Layout Desktop
- * Layout para área autenticada com dock sidebar
- * Inclui logo D2DNA no topo esquerdo
+ * Layout para área autenticada com navbar e dock sidebar
  */
 </script>
 
 <template>
-  <div class="scanlines relative h-screen bg-muted">
-    <!-- Logo D2DNA - Topo Esquerdo -->
-    <div class="absolute top-4 left-24 z-10 select-none pointer-events-none">
-      <pre class="text-[10px] text-primary/40 leading-tight font-mono" aria-hidden="true">█████▄   ██████╗    █████▄   ███╗   ██╗  █████╗
-██   ██  ╚════██╗   ██   ██  ████╗  ██║ ██╔══██╗
-██   ██   █████╔╝   ██   ██  ██╔██╗ ██║ ███████║
-██   ██  ██╔═══╝    ██   ██  ██║╚██╗██║ ██╔══██║
-█████▀   ███████╗   █████▀   ██║ ╚████║ ██║  ██║
-╚════╝   ╚══════╝   ╚════╝   ╚═╝  ╚═══╝ ╚═╝  ╚═╝</pre>
-    </div>
+  <div class="relative h-screen bg-muted pt-2">
+    <!-- Navbar superior -->
+    <DesktopNavbar />
 
     <!-- Container flexbox -->
-    <div class="relative z-20 flex h-full">
+    <div class="relative z-20 flex h-[calc(100vh-56px)]">
       <!-- Dock Sidebar -->
       <AppDock />
 
