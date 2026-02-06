@@ -223,7 +223,7 @@ function hasOpenWindow(item: NavItem): boolean {
     - h-full: altura total do container pai
     - flex items-center justify-center: centraliza a dock verticalmente
   -->
-  <div class="flex h-full w-20 items-center justify-center py-4">
+  <div class="absolute left-0 top-0 z-30 flex h-full w-20 items-center justify-center py-4">
 
     <!--
       Dock (aside)

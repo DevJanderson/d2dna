@@ -8,6 +8,8 @@ import { Search, Home, Menu, Settings, Users, UserCog, LogOut } from 'lucide-vue
 const router = useRouter()
 const authStore = useAuthStore()
 
+const windowManager = useWindowManager()
+
 const user = computed(() => authStore.user)
 
 const userInitials = computed(() => {
@@ -23,6 +25,20 @@ const userInitials = computed(() => {
 const userName = computed(() => user.value?.nome || 'Usuário')
 const userRole = computed(() => user.value?.funcao || 'Analista')
 const isAdmin = computed(() => authStore.isAdmin)
+
+function openWindow(id: string, title: string) {
+  const existing = windowManager.windows.value.find((w) => w.id === id)
+  if (existing) {
+    windowManager.focus(id)
+  } else {
+    windowManager.open({
+      id,
+      title,
+      position: { x: 200, y: 80 },
+      size: { width: 500, height: 450 }
+    })
+  }
+}
 </script>
 
 <template>
@@ -122,15 +138,15 @@ const isAdmin = computed(() => authStore.isAdmin)
             <p class="text-xs text-muted-foreground">{{ userRole }}</p>
           </div>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>
+          <DropdownMenuItem @click="openWindow('user-profile', 'Perfil')">
             <Users class="mr-2 h-4 w-4" />
             Perfil
           </DropdownMenuItem>
-          <DropdownMenuItem>
+          <DropdownMenuItem @click="openWindow('user-settings', 'Configurações')">
             <Settings class="mr-2 h-4 w-4" />
             Configurações
           </DropdownMenuItem>
-          <DropdownMenuItem v-if="isAdmin">
+          <DropdownMenuItem v-if="isAdmin" @click="openWindow('user-management', 'Gerenciar Usuários')">
             <UserCog class="mr-2 h-4 w-4" />
             Gerenciar Usuários
           </DropdownMenuItem>
