@@ -49,14 +49,8 @@ const navItems: NavItem[] = [
     id: 'reviews',
     label: 'Reviews',
     icon: GitCompare,
-    type: 'window',
-    windowConfig: {
-      id: 'reviews',
-      title: 'Reviews',
-      position: { x: 20, y: 20 },
-      size: { width: 350, height: 500 }
-    },
-    relatedWindowIds: ['reviews', 'match-viewer']
+    type: 'route',
+    href: '/app/reviews'
   },
   {
     id: 'linkage',

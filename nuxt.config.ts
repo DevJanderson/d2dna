@@ -9,7 +9,8 @@ export default defineNuxtConfig({
   extends: [
     './layers/0-base',
     './layers/2-home',
-    './layers/3-auth'
+    './layers/3-auth',
+    './layers/4-reviews'
   ],
 
   // Performance - Experimental features
@@ -56,7 +57,7 @@ export default defineNuxtConfig({
   },
 
   // Nuxt Layers - auto-scan de ~/layers (Nuxt 4+)
-  // Ordem de prioridade: 3-auth > 2-home > 0-base
+  // Ordem de prioridade: 4-reviews > 3-auth > 2-home > 0-base
 
   modules: [
     '@nuxt/eslint',
