@@ -165,10 +165,10 @@ onUnmounted(() => {
               class="terminal-outer relative z-30 overflow-hidden rounded-2xl shadow-[0_20px_70px_-10px_rgba(0,0,0,0.5)]"
             >
               <!-- Inner content — margem revela o outer como "borda" -->
-              <div class="relative z-[1] m-[3px] rounded-[13px] bg-[#09090b]">
+              <div class="relative z-1 m-0.75 rounded-[13px] bg-[#09090b]">
                 <!-- Header do terminal -->
                 <div
-                  class="flex items-center gap-2 border-b border-white/[0.08] px-4 py-3"
+                  class="flex items-center gap-2 border-b border-white/8 px-4 py-3"
                 >
                   <span class="h-2.5 w-2.5 rounded-full bg-zinc-700 group-hover:bg-red-500/80 transition-colors" />
                   <span class="h-2.5 w-2.5 rounded-full bg-zinc-700 group-hover:bg-yellow-500/80 transition-colors" />
@@ -177,7 +177,7 @@ onUnmounted(() => {
                 </div>
 
                 <!-- Corpo do terminal -->
-                <div class="min-h-[220px] px-5 py-4 font-mono text-[13px] leading-relaxed">
+                <div class="min-h-55 px-5 py-4 font-mono text-[13px] leading-relaxed">
                   <div
                     v-for="(line, index) in terminalLines"
                     :key="`${index}-${line}`"

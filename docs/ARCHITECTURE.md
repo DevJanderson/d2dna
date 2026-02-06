@@ -9,8 +9,7 @@ Este documento descreve a arquitetura de layers e integração com a API Tucuxi.
 │                         CLIENTE (Browser)                        │
 ├─────────────────────────────────────────────────────────────────┤
 │  layers/                                                         │
-│  ├── 0-base/      → Fundação + UI (shadcn-vue)                  │
-│  ├── 1-desktop/   → Sistema de janelas (workspace do analista)  │
+│  ├── 0-base/      → Fundação + UI (shadcn-vue) + sistema de janelas │
 │  ├── 2-home/      → Página inicial (design MX)                  │
 │  ├── 3-auth/      → Autenticação                                │
 │  ├── 4-clientes/  → Gestão de clientes + histórico              │
@@ -48,7 +47,7 @@ Este documento descreve a arquitetura de layers e integração com a API Tucuxi.
 ### Prioridade
 
 ```
-6-admin > 5-busca > 4-clientes > 3-auth > 2-home > 1-desktop > 0-base
+6-admin > 5-busca > 4-clientes > 3-auth > 2-home > 0-base
 ```
 
 Número maior = maior prioridade = sobrescreve layers anteriores.
@@ -57,8 +56,7 @@ Número maior = maior prioridade = sobrescreve layers anteriores.
 
 | Layer | Responsabilidade | Dependências |
 |-------|------------------|--------------|
-| `0-base` | UI (shadcn-vue), utils, tipos globais | - |
-| `1-desktop` | Sistema de janelas, dock, workspace | 0-base |
+| `0-base` | UI (shadcn-vue), utils, tipos globais, sistema de janelas | - |
 | `2-home` | Página inicial (design MX) | 0-base, 3-auth |
 | `3-auth` | Login, logout, refresh, guard de rotas | 0-base |
 | `4-clientes` | CRUD clientes, histórico, review | 3-auth |
@@ -172,4 +170,4 @@ export default defineEventHandler(async (event) => {
 | Estado | Pinia | Reatividade Vue |
 | HTTP Client | $fetch (Nuxt) | SSR + interceptors |
 | UI | shadcn-vue | Customizável + acessível |
-| Janelas | 1-desktop | UX de analista |
+| Janelas | 0-base | UX de analista |

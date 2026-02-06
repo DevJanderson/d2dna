@@ -8,6 +8,7 @@ definePageMeta({
 })
 
 const auth = useAuthStore()
+const checking = ref(true)
 
 // Se já autenticado, redireciona
 onMounted(async () => {
@@ -20,7 +21,10 @@ onMounted(async () => {
   const isAuthenticated = await auth.checkAuth()
   if (isAuthenticated) {
     navigateTo('/app')
+    return
   }
+
+  checking.value = false
 })
 
 function handleSuccess() {
@@ -29,7 +33,7 @@ function handleSuccess() {
 </script>
 
 <template>
-  <div class="min-h-screen bg-background font-mono scanlines flex items-center justify-center p-4">
+  <div v-if="!checking" class="min-h-screen bg-background font-mono scanlines flex items-center justify-center p-4">
     <div class="w-full max-w-sm space-y-8">
       <!-- Header com ASCII art -->
       <header class="text-center space-y-4">

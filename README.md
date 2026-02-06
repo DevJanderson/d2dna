@@ -158,10 +158,9 @@ npm run test:e2e           # Executa testes
 ```
 medblast/
 ├── layers/                         # TUDO fica aqui
-│   ├── 0-base/                     # Fundação + UI: app.vue, CSS, shadcn-vue, utils
+│   ├── 0-base/                     # Fundação + UI + sistema de janelas
 │   │   ├── app/components/ui/      # Componentes shadcn-vue
 │   │   └── app/utils/              # Funções utilitárias
-│   ├── 1-desktop/                  # Sistema de janelas estilo desktop
 │   ├── 2-home/                     # Página inicial (design MX)
 │   └── 3-auth/                     # Autenticação (BFF, cookies httpOnly)
 │
@@ -172,7 +171,7 @@ medblast/
 ### Ordem de Prioridade (Layers)
 
 ```
-3-auth > 2-home > 1-desktop > 0-base
+3-auth > 2-home > 0-base
 ```
 
 Número maior = maior prioridade = sobrescreve layers anteriores.

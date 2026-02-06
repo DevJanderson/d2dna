@@ -99,8 +99,7 @@ Estilo **MX (Machine Experience)** - design para humanos e máquinas:
 
 ```
 layers/                 # TUDO fica aqui (inclusive server/)
-  0-base/               # Fundação + UI: app.vue, CSS, shadcn-vue, utils
-  1-desktop/            # Sistema de janelas estilo desktop (Windows/macOS)
+  0-base/               # Fundação + UI + sistema de janelas (Desktop, AppWindow, Dock)
   2-home/               # Página inicial (design MX, ASCII art)
   3-auth/               # Autenticação (BFF, cookies httpOnly)
 generated/              # Código gerado pelo Kubb (tipos, schemas)
@@ -116,7 +115,7 @@ tests/                  # unit/, integration/, e2e/
 ### Ordem de Prioridade (Layers)
 
 ```
-3-auth > 2-home > 1-desktop > 0-base
+3-auth > 2-home > 0-base
 ```
 
 Número maior = maior prioridade = sobrescreve layers anteriores.
@@ -217,8 +216,7 @@ Cada diretório principal tem seu próprio `CLAUDE.md` com instruções específ
 
 | Documento | Conteúdo |
 |-----------|----------|
-| [layers/0-base/CLAUDE.md](layers/0-base/CLAUDE.md) | Fundação, UI, shadcn-vue, utils |
-| [layers/1-desktop/CLAUDE.md](layers/1-desktop/CLAUDE.md) | Sistema de janelas (useWindowManager) |
+| [layers/0-base/CLAUDE.md](layers/0-base/CLAUDE.md) | Fundação, UI, shadcn-vue, utils, sistema de janelas |
 | [layers/2-home/CLAUDE.md](layers/2-home/CLAUDE.md) | Página inicial (design MX) |
 | [layers/3-auth/CLAUDE.md](layers/3-auth/CLAUDE.md) | Autenticação (BFF, cookies) |
 | [tests/CLAUDE.md](tests/CLAUDE.md) | Vitest, Playwright, mocking |

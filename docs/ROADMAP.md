@@ -4,7 +4,7 @@ Este documento define a ordem de implementação das features do Tucuxi WebApp.
 
 ## Fase 1: Fundação (Concluído)
 
-- [x] Estrutura de layers (0-base, 1-desktop)
+- [x] Estrutura de layers (0-base)
 - [x] Configuração Kubb (tipos e schemas da API)
 - [x] Sistema de janelas (workspace do analista)
 - [x] Componentes shadcn-vue base
@@ -72,7 +72,7 @@ Implementar motor de busca para o analista encontrar clientes.
 
 ### Páginas/Janelas
 
-- [ ] Janela de busca no workspace (1-desktop)
+- [ ] Janela de busca no workspace (0-base)
 
 ---
 

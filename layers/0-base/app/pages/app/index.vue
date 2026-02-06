@@ -71,16 +71,31 @@ const userName = computed(() => {
 
 // Abre janela de boas-vindas ao entrar no workspace
 onMounted(() => {
-  // Verifica se não há janelas abertas (primeira visita)
-  if (windowManager.windows.value.length === 0) {
+  const dismissed = localStorage.getItem('welcome-dismissed')
+  if (!dismissed && windowManager.windows.value.length === 0) {
+    const w = 550
+    const h = 480
     windowManager.open({
       id: 'welcome',
       title: 'Bem-vindo ao Tucuxi',
-      position: { x: 150, y: 80 },
-      size: { width: 550, height: 480 }
+      position: {
+        x: Math.max(0, (window.innerWidth - w) / 2),
+        y: Math.max(0, (window.innerHeight - h) / 2)
+      },
+      size: { width: w, height: h }
     })
   }
 })
+
+// Persiste quando o usuário fecha a janela de boas-vindas
+watch(
+  () => windowManager.windows.value.some(w => w.id === 'welcome'),
+  (exists, existed) => {
+    if (existed && !exists) {
+      localStorage.setItem('welcome-dismissed', '1')
+    }
+  }
+)
 
 // Carrega usuários quando a janela de gerenciamento é aberta
 watch(
