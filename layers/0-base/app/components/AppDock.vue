@@ -13,16 +13,7 @@
  * - INATIVO: background primary (escuro)
  */
 import type { FunctionalComponent } from 'vue'
-import {
-  GitCompare,
-  Link,
-  FileBarChart,
-  Settings,
-  Bell,
-  ExternalLink,
-  Pin,
-  Trash2
-} from 'lucide-vue-next'
+import { GitCompare, Link, FileBarChart, Settings, Bell } from 'lucide-vue-next'
 
 /** Configuração para abrir uma janela */
 interface WindowConfig {
@@ -248,62 +239,27 @@ function hasOpenWindow(item: NavItem): boolean {
     >
 
       <!-- ========== NAVEGAÇÃO PRINCIPAL ========== -->
-      <nav class="group/nav flex flex-col items-center gap-2">
+      <nav class="flex flex-col items-center gap-1.5">
         <TooltipProvider :delay-duration="0">
           <template v-for="item in navItems" :key="item.id">
             <Tooltip>
               <TooltipTrigger as-child>
-                <DropdownMenu>
-                  <DropdownMenuTrigger as-child>
-                    <!--
-                      Botão de navegação (modelo híbrido)
-                      - h-10 w-10: tamanho 40x40px
-                      - rounded-lg: bordas 8px
+                <button
+                  class="dock-nav-icon relative flex h-10 w-10 items-center justify-center rounded-xl transition-colors duration-150 focus:outline-none"
+                  :data-active="isActive(item)"
+                  @click="handleNavClick(item)"
+                >
+                  <component
+                    :is="item.icon"
+                    class="h-5 w-5"
+                    :stroke-width="1.75"
+                  />
 
-                      Estados de cor (via data-active):
-                      - ATIVO: bg-primary (destaque)
-                      - INATIVO: bg-gray-200 (sutil)
-                    -->
-                    <button
-                      class="dock-nav-icon relative flex h-10 w-10 items-center justify-center rounded-lg transition-all duration-200 hover:scale-90 hover:z-10 focus:outline-none"
-                      :data-active="isActive(item)"
-                      @click="handleNavClick(item)"
-                      @contextmenu.prevent
-                    >
-                      <!-- Ícone (Lucide) -->
-                      <component :is="item.icon" class="h-4 w-4" />
-
-                      <!--
-                        Indicador de janela aberta (só para type: 'window')
-                        - Ponto no canto superior direito
-                        - Verde para contrastar com qualquer fundo
-                      -->
-                      <span
-                        v-if="hasOpenWindow(item)"
-                        class="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-green-500 ring-2 ring-white"
-                      />
-                    </button>
-                  </DropdownMenuTrigger>
-
-                  <!-- Menu de contexto (clique direito) -->
-                  <DropdownMenuContent side="right" align="start" class="w-48">
-                    <DropdownMenuLabel>{{ item.label }}</DropdownMenuLabel>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem>
-                      <ExternalLink class="mr-2 h-4 w-4" />
-                      Abrir em nova aba
-                    </DropdownMenuItem>
-                    <DropdownMenuItem>
-                      <Pin class="mr-2 h-4 w-4" />
-                      Fixar no dock
-                    </DropdownMenuItem>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuItem class="text-destructive">
-                      <Trash2 class="mr-2 h-4 w-4" />
-                      Remover do dock
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
+                  <span
+                    v-if="hasOpenWindow(item)"
+                    class="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-green-500 ring-2 ring-sidebar"
+                  />
+                </button>
               </TooltipTrigger>
               <TooltipContent side="right">
                 <p>{{ item.label }}</p>
@@ -321,9 +277,9 @@ function hasOpenWindow(item: NavItem): boolean {
         <Tooltip>
           <TooltipTrigger as-child>
             <button
-              class="relative flex h-10 w-10 items-center justify-center rounded-xl text-muted-foreground transition-all hover:scale-105 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
+              class="relative flex h-10 w-10 items-center justify-center rounded-xl text-muted-foreground transition-colors duration-150 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
             >
-              <Bell class="h-4 w-4" />
+              <Bell class="h-5 w-5" :stroke-width="1.75" />
               <span class="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-destructive" />
             </button>
           </TooltipTrigger>
@@ -338,9 +294,7 @@ function hasOpenWindow(item: NavItem): boolean {
 </template>
 
 <style scoped>
-/* Ícones de navegação da dock */
-
-/* Estado ATIVO - preto (destaque) */
+/* Estado ATIVO */
 .dock-nav-icon[data-active="true"] {
   background-color: var(--primary);
   color: var(--primary-foreground);
@@ -348,16 +302,17 @@ function hasOpenWindow(item: NavItem): boolean {
 
 .dock-nav-icon[data-active="true"]:hover {
   background-color: var(--primary);
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
-/* Estado INATIVO - cinza (sutil) */
+/* Estado INATIVO */
 .dock-nav-icon[data-active="false"] {
-  background-color: #e5e7eb; /* gray-200 */
-  color: var(--foreground);
+  background-color: var(--muted);
+  color: var(--muted-foreground);
 }
 
 .dock-nav-icon[data-active="false"]:hover {
-  background-color: #d1d5db; /* gray-300 */
+  background-color: var(--border);
+  color: var(--foreground);
 }
 </style>
