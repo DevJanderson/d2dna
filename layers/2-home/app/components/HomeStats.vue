@@ -139,7 +139,7 @@ onUnmounted(() => {
   <section
     ref="sectionRef"
     aria-labelledby="stats-heading"
-    class="relative z-20 my-10 md:my-16 max-w-5xl mx-auto px-6"
+    class="py-12 md:py-20 max-w-5xl mx-auto px-6"
   >
     <h2 id="stats-heading" class="sr-only">Estatísticas</h2>
 

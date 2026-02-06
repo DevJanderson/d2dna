@@ -97,16 +97,8 @@ onUnmounted(() => {
 
 <template>
   <section class="relative overflow-hidden">
-    <!-- Gradiente sutil — canto inferior direito -->
-    <div class="absolute inset-0 -z-10">
-      <div class="absolute inset-0 bg-background" />
-      <div
-        class="absolute bottom-0 right-0 h-[70%] w-[50%] bg-linear-to-tl from-sky-100/50 via-blue-50/30 to-transparent dark:from-sky-950/20 dark:via-blue-950/10 dark:to-transparent"
-      />
-    </div>
-
     <!-- Hero principal — duas colunas -->
-    <div class="mx-auto max-w-7xl px-6 pt-12 pb-20 md:pt-20 md:pb-28">
+    <div class="mx-auto max-w-7xl px-6 pt-16 pb-12 md:pt-24 md:pb-20">
       <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
         <!-- Esquerda: Headline técnica + CTA -->
         <div
@@ -172,8 +164,6 @@ onUnmounted(() => {
             <div
               class="terminal-outer relative z-30 overflow-hidden rounded-2xl shadow-[0_20px_70px_-10px_rgba(0,0,0,0.5)]"
             >
-              <!-- Blur glow element — luz localizada -->
-              <div class="terminal-glow-blur" />
               <!-- Inner content — margem revela o outer como "borda" -->
               <div class="relative z-[1] m-[3px] rounded-[13px] bg-[#09090b]">
                 <!-- Header do terminal -->
@@ -291,19 +281,6 @@ onUnmounted(() => {
     rgb(16, 185, 129),
     rgb(14, 165, 233)
   );
-}
-
-/* Blur glow — luz localizada no canto superior esquerdo */
-.terminal-glow-blur {
-  position: absolute;
-  width: 250px;
-  height: 250px;
-  background: rgba(14, 165, 233, 0.6);
-  border-radius: 50%;
-  filter: blur(60px);
-  top: -20%;
-  left: -10%;
-  z-index: 0;
 }
 
 /* Cursor piscando do terminal */

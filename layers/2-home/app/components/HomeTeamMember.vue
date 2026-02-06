@@ -24,7 +24,7 @@ const colorClasses = {
 </script>
 
 <template>
-  <div class="relative z-20 group flex flex-col items-center text-center py-8">
+  <div class="group flex flex-col items-center text-center py-8">
     <!-- Avatar -->
     <div
       class="w-20 h-20 rounded-full overflow-hidden ring-2 ring-offset-2 ring-offset-background mb-4 transition-shadow duration-300 group-hover:ring-4"

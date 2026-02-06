@@ -20,25 +20,25 @@ useIntersectionObserver(
 
 const teamMembers = [
   {
-    name: 'Deney Araújo',
+    name: 'Dr. Deney Araújo',
     role: 'CEO & Dev',
     image: 'https://d2dna.com/wp-content/uploads/2024/04/Deney.png',
     color: 'green' as const
   },
   {
-    name: 'Helder Nakaya',
+    name: 'Dr. Helder Nakaya',
     role: 'CSO',
     image: 'https://d2dna.com/wp-content/uploads/2024/04/helder.png',
     color: 'blue' as const
   },
   {
-    name: 'Jorge Kalil',
+    name: 'Dr. Jorge Kalil',
     role: 'Consultor Sênior',
     image: 'https://d2dna.com/wp-content/uploads/2024/04/Jorge.png',
     color: 'amber' as const
   },
   {
-    name: 'Joana Azevedo',
+    name: 'Dra. Joana Azevedo',
     role: 'Bioinformata',
     image: 'https://d2dna.com/wp-content/uploads/2024/04/Joana.png',
     color: 'fuchsia' as const
@@ -61,11 +61,11 @@ const teamMembers = [
 <template>
   <div
     ref="sectionRef"
-    class="max-w-5xl mx-auto px-6 py-10 md:py-16 transition-all duration-700 ease-out"
+    class="max-w-5xl mx-auto px-6 py-12 md:py-20 transition-all duration-700 ease-out"
     :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
   >
     <h2 class="text-2xl font-bold text-foreground mb-4 text-center">Quem Está por Trás</h2>
-    <p class="text-center text-muted-foreground mb-10 text-sm">Cientistas, médicos e engenheiros. A mesma equipe que criou o algoritmo, mantém a plataforma.</p>
+    <p class="text-center text-muted-foreground mb-10 text-sm">Quem fez ciência, constrói a tecnologia.</p>
 
     <!-- Grid de membros -->
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">

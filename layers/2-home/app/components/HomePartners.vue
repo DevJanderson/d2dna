@@ -35,7 +35,7 @@ const partners = [
   <section
     ref="sectionRef"
     aria-labelledby="partners-heading"
-    class="my-10 md:my-16 transition-all duration-700 ease-out"
+    class="py-12 md:py-20 transition-all duration-700 ease-out"
     :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
   >
     <h2 id="partners-heading" class="text-2xl font-bold text-foreground mb-4 text-center">Quem Confia na D2DNA</h2>
@@ -46,7 +46,7 @@ const partners = [
       <div
         v-for="partner in partners"
         :key="partner.name"
-        class="relative z-20 group flex flex-col items-center justify-center gap-3 p-6 md:p-8 bg-background hover:bg-muted/20 transition-colors"
+        class="group flex flex-col items-center justify-center gap-3 p-6 md:p-8 bg-background hover:bg-muted/20 transition-colors"
       >
         <NuxtImg
           :src="partner.logo"
