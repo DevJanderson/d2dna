@@ -373,7 +373,6 @@ onUnmounted(() => {
   border-radius: 1rem;
   background: #18181b;
   border: 1px solid rgba(255, 255, 255, 0.06);
-  transition: all 0.3s ease-out;
 }
 
 .terminal-ghost-middle {
@@ -394,10 +393,10 @@ onUnmounted(() => {
 .terminal-outer {
   background: linear-gradient(
     135deg,
-    rgba(14, 165, 233, 0.7),
-    rgba(14, 165, 233, 0.2),
-    rgba(16, 185, 129, 0.5),
-    rgba(14, 165, 233, 0.2)
+    rgb(14, 165, 233),
+    rgb(14, 165, 233),
+    rgb(16, 185, 129),
+    rgb(14, 165, 233)
   );
 }
 
@@ -438,5 +437,6 @@ onUnmounted(() => {
   .terminal-cursor {
     animation: none;
   }
+
 }
 </style>
