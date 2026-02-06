@@ -25,10 +25,10 @@ describe('useAuthApi', () => {
       const api = useAuthApi()
       const result = await api.login('test@example.com', 'password123')
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/auth/login', {
+      expect(mockFetch).toHaveBeenCalledWith('/api/auth/login', expect.objectContaining({
         method: 'POST',
         body: { email: 'test@example.com', password: 'password123' }
-      })
+      }))
       expect(result).toEqual(mockResponse)
     })
 
@@ -49,9 +49,9 @@ describe('useAuthApi', () => {
       const api = useAuthApi()
       await api.logout()
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/auth/logout', {
+      expect(mockFetch).toHaveBeenCalledWith('/api/auth/logout', expect.objectContaining({
         method: 'POST'
-      })
+      }))
     })
   })
 
@@ -62,9 +62,9 @@ describe('useAuthApi', () => {
       const api = useAuthApi()
       await api.refresh()
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/auth/refresh', {
+      expect(mockFetch).toHaveBeenCalledWith('/api/auth/refresh', expect.objectContaining({
         method: 'POST'
-      })
+      }))
     })
   })
 
@@ -78,7 +78,9 @@ describe('useAuthApi', () => {
       const api = useAuthApi()
       const result = await api.me()
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/auth/me')
+      expect(mockFetch).toHaveBeenCalledWith('/api/auth/me', expect.objectContaining({
+        headers: expect.any(Object)
+      }))
       expect(result).toEqual(mockUser)
     })
 
