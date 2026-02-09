@@ -6,7 +6,13 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   // Nuxt Layers - ordem de prioridade (último sobrescreve)
-  extends: ['./layers/0-base', './layers/2-home', './layers/3-auth', './layers/4-reviews'],
+  extends: [
+    './layers/0-base',
+    './layers/2-home',
+    './layers/3-auth',
+    './layers/4-reviews',
+    './layers/5-docs'
+  ],
 
   // Performance - Experimental features
   experimental: {
@@ -68,6 +74,34 @@ export default defineNuxtConfig({
     'nuxt-security',
     '@nuxt/content'
   ],
+
+  // Nuxt Content - syntax highlight com Shiki
+  content: {
+    build: {
+      markdown: {
+        highlight: {
+          theme: {
+            default: 'github-dark',
+            dark: 'github-dark'
+          },
+          langs: [
+            'bash',
+            'css',
+            'diff',
+            'html',
+            'javascript',
+            'json',
+            'markdown',
+            'sql',
+            'typescript',
+            'vue',
+            'yaml',
+            'dotenv'
+          ]
+        }
+      }
+    }
+  },
 
   // Security - Headers e proteções
   security: {

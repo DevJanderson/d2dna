@@ -104,6 +104,9 @@ layers/                 # TUDO fica aqui (inclusive server/)
   0-base/               # Fundação + UI + sistema de janelas (Desktop, AppWindow, Dock)
   2-home/               # Página inicial (design MX, ASCII art)
   3-auth/               # Autenticação (BFF, cookies httpOnly)
+  4-reviews/            # Curadoria de dados (review de clientes)
+  5-docs/               # Site de documentação
+content/docs/           # Conteúdo markdown da documentação
 generated/              # Código gerado pelo Kubb (tipos, schemas)
 tests/                  # unit/, integration/, e2e/
 ```
@@ -117,7 +120,7 @@ tests/                  # unit/, integration/, e2e/
 ### Ordem de Prioridade (Layers)
 
 ```
-3-auth > 2-home > 0-base
+5-docs > 4-reviews > 3-auth > 2-home > 0-base
 ```
 
 Número maior = maior prioridade = sobrescreve layers anteriores.
@@ -221,6 +224,7 @@ Cada diretório principal tem seu próprio `CLAUDE.md` com instruções específ
 | [layers/0-base/CLAUDE.md](layers/0-base/CLAUDE.md) | Fundação, UI, shadcn-vue, utils, sistema de janelas |
 | [layers/2-home/CLAUDE.md](layers/2-home/CLAUDE.md) | Página inicial (design MX)                          |
 | [layers/3-auth/CLAUDE.md](layers/3-auth/CLAUDE.md) | Autenticação (BFF, cookies)                         |
+| [layers/5-docs/CLAUDE.md](layers/5-docs/CLAUDE.md) | Site de documentação                                |
 | [tests/CLAUDE.md](tests/CLAUDE.md)                 | Vitest, Playwright, mocking                         |
 
 ### Técnica (docs/)

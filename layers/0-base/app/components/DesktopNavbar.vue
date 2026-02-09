@@ -73,6 +73,7 @@ function openWindow(id: string, title: string) {
       </NuxtLink>
       <NuxtLink
         to="/docs"
+        target="_blank"
         class="text-sm font-bold text-muted-foreground transition-colors hover:text-foreground"
       >
         Docs
