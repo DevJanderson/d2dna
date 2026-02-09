@@ -58,7 +58,7 @@ function formatCpf(cpf?: string | null): string {
             class="cursor-pointer border-b transition-colors hover:bg-muted/50"
             @click="emit('select', review)"
           >
-            <td class="max-w-[120px] truncate px-2 py-1.5">{{ review.nome }}</td>
+            <td class="max-w-30 truncate px-2 py-1.5">{{ review.nome }}</td>
             <td class="whitespace-nowrap px-2 py-1.5 font-mono">
               {{ formatDate(review.data_nascimento) }}
             </td>

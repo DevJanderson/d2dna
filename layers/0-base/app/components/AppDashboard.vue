@@ -224,7 +224,7 @@ const tools = [
               <TooltipTrigger as-child>
                 <div class="flex h-full cursor-default flex-col overflow-hidden rounded-xl border bg-card shadow-sm">
                   <!-- Área visual com ASCII art -->
-                  <div class="flex h-48 flex-shrink-0 items-center justify-center overflow-hidden rounded-t-xl border-b bg-background">
+                  <div class="flex h-48 shrink-0 items-center justify-center overflow-hidden rounded-t-xl border-b bg-background">
                     <pre class="select-none font-mono text-[10px] leading-[1.4] text-primary/50"><template v-for="(line, i) in tool.ascii" :key="i">{{ line }}
 </template></pre>
                   </div>

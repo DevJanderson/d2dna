@@ -10,7 +10,7 @@ const authStore = useAuthStore()
 
 async function handleLogout() {
   await authStore.logout()
-  navigateTo('/login')
+  navigateTo('/')
 }
 
 const windowManager = useWindowManager()

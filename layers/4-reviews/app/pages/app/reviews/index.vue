@@ -89,7 +89,7 @@ function handleAction() {
       </div>
 
       <!-- Split: Cards + Timeline -->
-      <div class="grid min-h-[520px] grid-cols-[400px_1fr] gap-5">
+      <div class="grid min-h-130 grid-cols-[400px_1fr] gap-5">
         <!-- Cards (esquerda) -->
         <div class="rounded-lg border bg-card">
           <ReviewCardList
