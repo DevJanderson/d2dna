@@ -95,10 +95,10 @@ npm run test:e2e
 
 ## Mocking de Auto-Imports
 
-O Nuxt resolve auto-imports em tempo de compilação, o que significa que funções como `navigateTo`, `useRoute`, `useFetch` e outras **nao estao disponíveis via `globalThis`** no ambiente de teste.
+O Nuxt resolve auto-imports em tempo de compilação, o que significa que funções como `navigateTo`, `useRoute`, `useFetch` e outras **não estão disponíveis via `globalThis`** no ambiente de teste.
 
 ::docs-warning
-**Nao use `vi.stubGlobal()`** para mockar auto-imports do Nuxt (como `navigateTo`, `useRoute`, `definePageMeta`, etc.) em testes com ambiente `nuxt`. O `vi.stubGlobal()` modifica `globalThis`, mas auto-imports do Nuxt sao resolvidos na compilacao e nao usam `globalThis`. O mock simplesmente nao terá efeito.
+**Não use `vi.stubGlobal()`** para mockar auto-imports do Nuxt (como `navigateTo`, `useRoute`, `definePageMeta`, etc.) em testes com ambiente `nuxt`. O `vi.stubGlobal()` modifica `globalThis`, mas auto-imports do Nuxt são resolvidos na compilação e não usam `globalThis`. O mock simplesmente não terá efeito.
 ::
 
 ### Abordagem correta: `mockNuxtImport`
@@ -121,7 +121,7 @@ mockNuxtImport('useRoute', () => mockUseRoute)
 
 ### Quando `vi.stubGlobal` funciona
 
-O `vi.stubGlobal` **ainda funciona** para utils auto-importados de layers (como `getInitials` de `0-base/app/utils/`), pois estes sao registrados de forma diferente dos auto-imports core do Nuxt.
+O `vi.stubGlobal` **ainda funciona** para utils auto-importados de layers (como `getInitials` de `0-base/app/utils/`), pois estes são registrados de forma diferente dos auto-imports core do Nuxt.
 
 ## Estrutura de Arquivos de Teste
 

@@ -1,28 +1,28 @@
 ---
-title: Seguranca
-description: Configuracoes de seguranca do Tucuxi-Blast, incluindo CSP, rate limiter, CSRF e protecoes contra XSS.
+title: Segurança
+description: Configurações de segurança do Tucuxi-Blast, incluindo CSP, rate limiter, CSRF e proteções contra XSS.
 order: 4
 ---
 
-# Seguranca
+# Segurança
 
-O Tucuxi-Blast usa o modulo [`nuxt-security`](https://nuxt-security.vercel.app) para headers de seguranca e protecoes em nivel de servidor, complementado pelo [`nuxt-csurf`](https://github.com/Morgbn/nuxt-csurf) para protecao CSRF.
+O Tucuxi-Blast usa o módulo [`nuxt-security`](https://nuxt-security.vercel.app) para headers de segurança e proteções em nível de servidor, complementado pelo [`nuxt-csurf`](https://github.com/Morgbn/nuxt-csurf) para proteção CSRF.
 
-## Resumo das Protecoes
+## Resumo das Proteções
 
-| Feature              | Configuracao                | Descricao                                                        |
+| Feature              | Configuração                | Descrição                                                        |
 | -------------------- | --------------------------- | ---------------------------------------------------------------- |
 | **CSP**              | Ativo em producao           | Controla origens permitidas para scripts, estilos, imagens, etc. |
 | **Rate Limiter**     | 150 requests / 5 min        | Previne abuso de endpoints                                       |
 | **CSRF**             | `nuxt-csurf`                | Protege POST/PUT/PATCH/DELETE com token                          |
 | **XSS Validator**    | Ativo                       | Sanitiza input contra XSS                                        |
-| **Request Size**     | 2 MB (body) / 8 MB (upload) | Limita tamanho de requisicoes                                    |
+| **Request Size**     | 2 MB (body) / 8 MB (upload) | Limita tamanho de requisições                                    |
 | **COEP**             | `require-corp` em producao  | Cross-Origin Embedder Policy                                     |
 | **Cookies httpOnly** | Todos os tokens             | Tokens JWT inacessiveis por Javascript no browser                |
 
 ## Content Security Policy (CSP)
 
-O CSP e **desabilitado em desenvolvimento** e **ativo em producao**:
+O CSP é **desabilitado em desenvolvimento** e **ativo em produção**:
 
 ```typescript
 // nuxt.config.ts
@@ -41,10 +41,10 @@ contentSecurityPolicy: process.env.NODE_ENV === 'development'
     }
 ```
 
-**Por que desabilitado em dev?** O Vite usa HMR via WebSocket para hot reload. Quando o app e acessado por IP de rede (ex: celular na mesma Wi-Fi), o CSP bloqueia o WebSocket e a pagina carrega sem estilos.
+**Por que desabilitado em dev?** O Vite usa HMR via WebSocket para hot reload. Quando o app é acessado por IP de rede (ex: celular na mesma Wi-Fi), o CSP bloqueia o WebSocket e a página carrega sem estilos.
 
 ::docs-warning{title="unsafe-eval no CSP"}
-A diretiva `script-src` inclui `'unsafe-eval'` que e necessaria para o funcionamento do Vue em producao. Idealmente, essa diretiva deve ser removida quando possivel. Monitore atualizacoes do Nuxt e Vue que possam eliminar essa necessidade.
+A diretiva `script-src` inclui `'unsafe-eval'` que é necessária para o funcionamento do Vue em produção. Idealmente, essa diretiva deve ser removida quando possível. Monitore atualizações do Nuxt e Vue que possam eliminar essa necessidade.
 ::
 
 ### Diretivas CSP
@@ -53,17 +53,17 @@ A diretiva `script-src` inclui `'unsafe-eval'` que e necessaria para o funcionam
 | ----------------- | -------------------------------------- | ------------------------------------------------ |
 | `default-src`     | `'self'`                               | Raramente — fallback para outras diretivas     |
 | `script-src`      | `'self' 'unsafe-inline' 'unsafe-eval'` | Remover `unsafe-eval` se possivel                |
-| `style-src`       | `'self' 'unsafe-inline'`               | `unsafe-inline` necessario para Nuxt/Vue         |
+| `style-src`       | `'self' 'unsafe-inline'`               | `unsafe-inline` necessário para Nuxt/Vue         |
 | `img-src`         | `'self' data: https:`                  | Restringir se imagens vem de dominios conhecidos |
 | `font-src`        | `'self'`                               | Adicionar CDNs de fontes se usadas               |
 | `connect-src`     | `'self'`                               | Adicionar dominios de APIs externas              |
 | `frame-ancestors` | `'none'`                               | Previne embedding via iframe (clickjacking)      |
 | `base-uri`        | `'self'`                               | Previne ataques de base tag injection            |
-| `form-action`     | `'self'`                               | Restringir destino de formularios                |
+| `form-action`     | `'self'`                               | Restringir destino de formulários                |
 
-### Adicionar Dominio Externo
+### Adicionar Domínio Externo
 
-Para permitir requisicoes ou recursos de um dominio externo, adicione-o a diretiva correspondente:
+Para permitir requisições ou recursos de um domínio externo, adicione-o a diretiva correspondente:
 
 ```typescript
 // nuxt.config.ts — dentro de security.headers.contentSecurityPolicy
@@ -73,39 +73,39 @@ Para permitir requisicoes ou recursos de um dominio externo, adicione-o a direti
 
 ## Rate Limiter
 
-Limita o numero de requisicoes por cliente para prevenir abuso:
+Limita o número de requisições por cliente para prevenir abuso:
 
 ```typescript
 rateLimiter: {
-  tokensPerInterval: 150,  // 150 requisicoes
+  tokensPerInterval: 150,  // 150 requisições
   interval: 300000          // a cada 5 minutos (300.000ms)
 }
 ```
 
 ::docs-info
-Rotas do Nuxt Content (`/__nuxt_content/**` e `/api/_content/**`) tem o rate limiter desabilitado para nao interferir na navegacao da documentacao.
+Rotas do Nuxt Content (`/__nuxt_content/**` e `/api/_content/**`) têm o rate limiter desabilitado para não interferir na navegação da documentação.
 ::
 
 ## CSRF (Cross-Site Request Forgery)
 
-O modulo `nuxt-csurf` protege automaticamente metodos que alteram dados:
+O módulo `nuxt-csurf` protege automaticamente métodos que alteram dados:
 
-- **Metodos protegidos**: POST, PUT, PATCH, DELETE
-- **Metodos livres**: GET, HEAD, OPTIONS
-- **Funcionamento**: Um token CSRF e gerado no server e incluido automaticamente nas requisicoes pelo composable `useCsrf()`
+- **Métodos protegidos**: POST, PUT, PATCH, DELETE
+- **Métodos livres**: GET, HEAD, OPTIONS
+- **Funcionamento**: Um token CSRF é gerado no server e incluído automaticamente nas requisições pelo composable `useCsrf()`
 
 ## XSS Validator
 
-O validador de XSS esta ativo e sanitiza automaticamente inputs recebidos pelo servidor, removendo tags e atributos potencialmente perigosos.
+O validador de XSS está ativo e sanitiza automaticamente inputs recebidos pelo servidor, removendo tags e atributos potencialmente perigosos.
 
 ```typescript
 xssValidator: {
-} // Configuracao padrao ativa
+} // Configuração padrão ativa
 ```
 
 ## Request Size Limiter
 
-Limita o tamanho de requisicoes para prevenir ataques de payload excessivo:
+Limita o tamanho de requisições para prevenir ataques de payload excessivo:
 
 ```typescript
 requestSizeLimiter: {
@@ -122,18 +122,18 @@ crossOriginEmbedderPolicy: process.env.NODE_ENV === 'development'
   : 'require-corp' // Restritivo em producao
 ```
 
-Em producao, `require-corp` exige que todos os recursos cross-origin tenham headers CORP/CORS adequados.
+Em produção, `require-corp` exige que todos os recursos cross-origin tenham headers CORP/CORS adequados.
 
-## Boas Praticas
+## Boas Práticas
 
 1. **Tokens em cookies httpOnly**: Nunca armazene tokens em `localStorage` ou `sessionStorage`
-2. **Validacao com Zod no server**: Sempre valide entrada do usuario com `schema.safeParse(body)`
-3. **BFF como proxy**: O client nunca faz requisicoes diretas a API externa
-4. **Principio do menor privilegio**: So adicione dominios ao CSP quando estritamente necessario
+2. **Validação com Zod no server**: Sempre valide entrada do usuário com `schema.safeParse(body)`
+3. **BFF como proxy**: O client nunca faz requisições diretas a API externa
+4. **Princípio do menor privilégio**: Só adicione domínios ao CSP quando estritamente necessário
 
-## Referencias
+## Referências
 
-- [nuxt-security — Documentacao](https://nuxt-security.vercel.app)
+- [nuxt-security — Documentação](https://nuxt-security.vercel.app)
 - [nuxt-security — FAQ](https://nuxt-security.vercel.app/advanced/faq)
 - [nuxt-security — CSP](https://nuxt-security.vercel.app/headers/csp)
 - [nuxt-csurf — GitHub](https://github.com/Morgbn/nuxt-csurf)

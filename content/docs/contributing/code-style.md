@@ -133,7 +133,7 @@ export const useExampleStore = defineStore('example', () => {
 | Método     | Quando usar                           | SSR |
 | ---------- | ------------------------------------- | --- |
 | `useFetch` | Carregamento inicial (páginas)        | Sim |
-| `$fetch`   | Eventos do usuário (cliques, submits) | Nao |
+| `$fetch`   | Eventos do usuário (cliques, submits) | Não |
 
 Use `useFetch` em páginas para carregamento inicial com suporte a SSR. Use `$fetch` em handlers de eventos do usuário (cliques, submissões de formulário).
 

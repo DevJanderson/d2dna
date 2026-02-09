@@ -1,16 +1,16 @@
 ---
 title: Curadoria de Dados
-description: Sistema de revisao humana dos resultados de linkage, com interface de curadoria para aprovar, rejeitar ou corrigir registros.
+description: Sistema de revisão humana dos resultados de linkage, com interface de curadoria para aprovar, rejeitar ou corrigir registros.
 order: 2
 ---
 
 # Curadoria de Dados
 
-O sistema de curadoria permite que analistas revisem os resultados do record linkage, garantindo que decisoes criticas sobre unificacao de registros passem por supervisao humana. A curadoria e essencial para a "zona cinzenta" -- matches com score entre 75% e 95% que nao sao automaticamente classificados.
+O sistema de curadoria permite que analistas revisem os resultados do record linkage, garantindo que decisões críticas sobre unificação de registros passem por supervisão humana. A curadoria é essencial para a "zona cinzenta" -- matches com score entre 75% e 95% que não são automaticamente classificados.
 
 ## Layer 4-reviews
 
-A funcionalidade de curadoria esta implementada na layer `4-reviews`, que segue a arquitetura de layers do Nuxt:
+A funcionalidade de curadoria está implementada na layer `4-reviews`, que segue a arquitetura de layers do Nuxt:
 
 ```
 layers/4-reviews/
@@ -24,28 +24,28 @@ layers/4-reviews/
     └── utils/             # reviewFetch helper
 ```
 
-## Paginas
+## Páginas
 
-A curadoria possui duas paginas principais:
+A curadoria possui duas páginas principais:
 
 ### Lista de clientes (`/app/reviews`)
 
-Exibe todos os clientes pendentes de revisao com:
+Exibe todos os clientes pendentes de revisão com:
 
 - **Filtros** por nome, CPF, CNS e data de nascimento
-- **Paginacao cursor** para navegacao eficiente em grandes volumes
+- **Paginação cursor** para navegação eficiente em grandes volumes
 - **Barra de estatisticas** com totais por status
 - **Tabela** com dados resumidos de cada cliente
 
 ### Detalhe do cliente (`/app/reviews/[uuid]`)
 
-Exibe informacoes completas de um cliente especifico:
+Exibe informações completas de um cliente específico:
 
 - Dados pessoais (nome, CPF, CNS, data de nascimento, nome da mae)
-- Historico de revisoes anteriores
+- Histórico de revisões anteriores
 - Timeline de acoes
-- Botoes de acao (aprovar, rejeitar, corrigir)
-- Campo de observacao para justificativa
+- Botões de ação (aprovar, rejeitar, corrigir)
+- Campo de observação para justificativa
 
 ## Status dos Reviews
 
@@ -53,27 +53,27 @@ Cada registro pode ter um dos seguintes status:
 
 | Status        | Cor      | Descricao                                         |
 | ------------- | -------- | ------------------------------------------------- |
-| **pendente**  | Cinza    | Aguardando revisao de um analista                 |
+| **pendente**  | Cinza    | Aguardando revisão de um analista                 |
 | **aprovado**  | Verde    | Dados confirmados como corretos                   |
 | **rejeitado** | Vermelho | Dados identificados como incorretos ou duplicados |
-| **corrigido** | Amarelo  | Dados foram ajustados durante a revisao           |
+| **corrigido** | Amarelo  | Dados foram ajustados durante a revisão           |
 
 ## Endpoints BFF
 
-A layer expoe os seguintes endpoints via BFF (Backend for Frontend):
+A layer expõe os seguintes endpoints via BFF (Backend for Frontend):
 
-| Rota                          | Metodo | Descricao                           |
+| Rota                          | Método | Descrição                           |
 | ----------------------------- | ------ | ----------------------------------- |
-| `/api/review`                 | GET    | Listar clientes para revisao        |
-| `/api/review/registro`        | POST   | Registrar uma revisao               |
-| `/api/review/relatorio`       | GET    | Obter relatorio de revisoes         |
-| `/api/review/estatisticas`    | GET    | Estatisticas por status             |
-| `/api/review/historico/:uuid` | GET    | Historico de revisoes de um cliente |
-| `/api/review/reverter/:id`    | POST   | Reverter uma revisao registrada     |
+| `/api/review`                 | GET    | Listar clientes para revisão        |
+| `/api/review/registro`        | POST   | Registrar uma revisão               |
+| `/api/review/relatorio`       | GET    | Obter relatório de revisões         |
+| `/api/review/estatisticas`    | GET    | Estatísticas por status             |
+| `/api/review/historico/:uuid` | GET    | Histórico de revisões de um cliente |
+| `/api/review/reverter/:id`    | POST   | Reverter uma revisão registrada     |
 
-## Integracao com Autenticacao
+## Integração com Autenticação
 
-O BFF da layer `4-reviews` reutiliza a infraestrutura de autenticacao da layer `3-auth`:
+O BFF da layer `4-reviews` reutiliza a infraestrutura de autenticação da layer `3-auth`:
 
 ```typescript
 // server/utils/review-api.ts
@@ -86,7 +86,7 @@ export async function reviewFetch<T>(event: H3Event, endpoint: string, options =
 }
 ```
 
-As funcoes `getAccessToken` e `getApiBaseUrl` sao importadas automaticamente do server utils da layer `3-auth`, garantindo que todas as requisicoes a API externa (`api.d2dna.com`) sejam autenticadas.
+As funções `getAccessToken` e `getApiBaseUrl` são importadas automaticamente do server utils da layer `3-auth`, garantindo que todas as requisições à API externa (`api.d2dna.com`) sejam autenticadas.
 
 ## Fluxo de Curadoria
 
@@ -95,9 +95,9 @@ As funcoes `getAccessToken` e `getApiBaseUrl` sao importadas automaticamente do 
 2. Aplica filtros (opcional)
 3. Seleciona um cliente da lista
 4. Visualiza dados completos em /app/reviews/:uuid
-5. Analisa historico e informacoes
+5. Analisa histórico e informações
 6. Decide: aprovar, rejeitar ou corrigir
-7. Adiciona observacao (obrigatoria para rejeicao)
-8. Submete a decisao via POST /api/review/registro
-9. Sistema registra a acao com timestamp e usuario
+7. Adiciona observação (obrigatória para rejeição)
+8. Submete a decisão via POST /api/review/registro
+9. Sistema registra a ação com timestamp e usuário
 ```

@@ -1,58 +1,58 @@
 ---
-title: Autenticacao
-description: Fluxo de autenticacao BFF com JWT, refresh token automatico e middleware de protecao de rotas.
+title: Autenticação
+description: Fluxo de autenticação BFF com JWT, refresh token automático e middleware de proteção de rotas.
 order: 2
 ---
 
-# Autenticacao
+# Autenticação
 
-A autenticacao do Tucuxi segue o padrao **BFF (Backend for Frontend)**, onde os tokens JWT sao armazenados em cookies httpOnly no servidor Nuxt. O client nunca tem acesso direto aos tokens.
+A autenticação do Tucuxi segue o padrão **BFF (Backend for Frontend)**, onde os tokens JWT são armazenados em cookies httpOnly no servidor Nuxt. O client nunca tem acesso direto aos tokens.
 
 ## Fluxo de Login
 
 ```
-1. Usuario digita email e senha no formulario
+1. Usuário digita email e senha no formulário
 2. Client envia POST /api/auth/login
 3. BFF valida dados com Zod (loginSchemaSchema)
 4. BFF chama API externa: POST api.d2dna.com/api/v1/usuarios/login
 5. API retorna access_token + refresh_token
 6. BFF salva tokens em cookies httpOnly
-7. BFF busca dados do usuario: GET /api/v1/usuarios/logado
-8. Retorna dados do usuario para o client (sem tokens)
+7. BFF busca dados do usuário: GET /api/v1/usuarios/logado
+8. Retorna dados do usuário para o client (sem tokens)
 ```
 
-### Cookies de Autenticacao
+### Cookies de Autenticação
 
-| Cookie          | Duracao | Descricao                                     |
+| Cookie          | Duração | Descrição                                     |
 | --------------- | ------- | --------------------------------------------- |
-| `access_token`  | 1 hora  | Token de acesso para requisicoes autenticadas |
+| `access_token`  | 1 hora  | Token de acesso para requisições autenticadas |
 | `refresh_token` | 7 dias  | Token para renovar o access token             |
 
-Ambos os cookies sao configurados com:
+Ambos os cookies são configurados com:
 
 ```typescript
 {
-  httpOnly: true,          // Inacessivel ao JavaScript
-  secure: true,            // Apenas HTTPS (em producao)
-  sameSite: 'strict',      // Protecao contra CSRF
-  path: '/'                // Disponivel em todas as rotas
+  httpOnly: true,          // Inacessível ao JavaScript
+  secure: true,            // Apenas HTTPS (em produção)
+  sameSite: 'strict',      // Proteção contra CSRF
+  path: '/'                // Disponível em todas as rotas
 }
 ```
 
 ## Refresh Token Automatico
 
-Quando o access token expira, o sistema tenta renova-lo automaticamente:
+Quando o access token expira, o sistema tenta renová-lo automaticamente:
 
 ```
-1. Requisicao retorna 401 (token expirado)
+1. Requisição retorna 401 (token expirado)
 2. Middleware detecta a falha
 3. Envia POST /api/auth/refresh
 4. BFF usa refresh_token para obter novo access_token
-5. Novos tokens sao salvos nos cookies
-6. Requisicao original e repetida
+5. Novos tokens são salvos nos cookies
+6. Requisição original é repetida
 ```
 
-Se o refresh token tambem estiver expirado ou invalido, o BFF limpa todos os cookies e o usuario e redirecionado para a pagina de login.
+Se o refresh token também estiver expirado ou inválido, o BFF limpa todos os cookies e o usuário é redirecionado para a página de login.
 
 ```typescript
 // server/api/auth/refresh.post.ts
@@ -65,7 +65,7 @@ try {
   setRefreshToken(event, response.refresh_token)
 } catch {
   clearAuthTokens(event)
-  throw createError({ statusCode: 401, message: 'Sessao expirada' })
+  throw createError({ statusCode: 401, message: 'Sessão expirada' })
 }
 ```
 
@@ -80,11 +80,11 @@ O logout limpa os cookies locais e notifica a API externa:
 4. Retorna { success: true }
 ```
 
-A chamada a API externa e feita em modo "best effort" -- se falhar, o logout local ainda acontece.
+A chamada a API externa é feita em modo "best effort" -- se falhar, o logout local ainda acontece.
 
-## Middleware de Autenticacao
+## Middleware de Autenticação
 
-O middleware `auth` protege rotas que exigem autenticacao:
+O middleware `auth` protege rotas que exigem autenticação:
 
 ```vue
 <script setup>
@@ -102,7 +102,7 @@ export default defineNuxtRouteMiddleware(async to => {
 
   const auth = useAuthStore()
 
-  // Verifica se ja esta autenticado
+  // Verifica se já está autenticado
   if (auth.isAuthenticated) return
 
   // Tenta verificar via cookie
@@ -117,16 +117,16 @@ export default defineNuxtRouteMiddleware(async to => {
 })
 ```
 
-O middleware executa a seguinte sequencia:
+O middleware executa a seguinte sequência:
 
-1. Verifica se ha usuario em memoria (store Pinia)
-2. Se nao, tenta verificar autenticacao via cookie (`GET /api/auth/me`)
+1. Verifica se há usuário em memória (store Pinia)
+2. Se não, tenta verificar autenticação via cookie (`GET /api/auth/me`)
 3. Se falhar, tenta renovar o token (`POST /api/auth/refresh`)
 4. Se tudo falhar, redireciona para `/login`
 
-## Store de Autenticacao
+## Store de Autenticação
 
-O estado de autenticacao e gerenciado pelo store Pinia `useAuthStore`:
+O estado de autenticação é gerenciado pelo store Pinia `useAuthStore`:
 
 ```typescript
 const auth = useAuthStore()
@@ -134,7 +134,7 @@ const auth = useAuthStore()
 // Login
 await auth.login(email, password)
 
-// Verificar autenticacao
+// Verificar autenticação
 if (auth.isAuthenticated) {
   console.log(auth.user?.nome)
 }
@@ -143,13 +143,13 @@ if (auth.isAuthenticated) {
 await auth.logout()
 ```
 
-## Paginas Publicas
+## Páginas Públicas
 
-As seguintes paginas nao exigem autenticacao:
+As seguintes páginas não exigem autenticação:
 
-| Rota               | Descricao                     |
+| Rota               | Descrição                     |
 | ------------------ | ----------------------------- |
-| `/login`           | Formulario de login           |
-| `/forgot-password` | Solicitacao de reset de senha |
+| `/login`           | Formulário de login           |
+| `/forgot-password` | Solicitação de reset de senha |
 
-O middleware `guest` impede que usuarios ja autenticados acessem essas paginas, redirecionando-os para a area logada.
+O middleware `guest` impede que usuários já autenticados acessem essas páginas, redirecionando-os para a área logada.

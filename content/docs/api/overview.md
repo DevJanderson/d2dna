@@ -1,16 +1,16 @@
 ---
-title: Visao Geral da API
-description: Arquitetura da API externa, padrao BFF e organizacao dos endpoints por feature.
+title: Visão Geral da API
+description: Arquitetura da API externa, padrão BFF e organização dos endpoints por feature.
 order: 1
 ---
 
-# Visao Geral da API
+# Visão Geral da API
 
-O Tucuxi-Webapp se comunica com a API externa hospedada em `api.d2dna.com`. Toda comunicacao entre o frontend e a API passa por um **BFF (Backend for Frontend)** implementado nas server routes do Nuxt.
+O Tucuxi-Webapp se comunica com a API externa hospedada em `api.d2dna.com`. Toda comunicação entre o frontend e a API passa por um **BFF (Backend for Frontend)** implementado nas server routes do Nuxt.
 
 ## Arquitetura BFF
 
-O client (browser) **nunca** se comunica diretamente com a API externa. Todas as requisicoes passam pelo servidor Nuxt:
+O client (browser) **nunca** se comunica diretamente com a API externa. Todas as requisições passam pelo servidor Nuxt:
 
 ```
 Browser → Nuxt Server (BFF) → api.d2dna.com
@@ -21,20 +21,20 @@ Browser → Nuxt Server (BFF) → api.d2dna.com
 
 ### Por que usar BFF?
 
-| Beneficio         | Descricao                                                           |
+| Benefício         | Descrição                                                            |
 | ----------------- | ------------------------------------------------------------------- |
-| **Seguranca**     | Tokens JWT ficam em cookies httpOnly, inacessiveis ao JavaScript    |
+| **Segurança**     | Tokens JWT ficam em cookies httpOnly, inacessíveis ao JavaScript    |
 | **Controle**      | Servidor valida dados com Zod antes de enviar a API                 |
-| **Simplificacao** | Client usa rotas simples (`/api/auth/login`), BFF traduz para a API |
-| **Privacidade**   | URL da API externa nao e exposta ao browser                         |
+| **Simplificação** | Client usa rotas simples (`/api/auth/login`), BFF traduz para a API |
+| **Privacidade**   | URL da API externa não é exposta ao browser                         |
 
 ## Endpoints Organizados por Feature
 
-Cada layer do Nuxt expoe seus proprios endpoints BFF:
+Cada layer do Nuxt expõe seus próprios endpoints BFF:
 
-### Autenticacao (layer 3-auth)
+### Autenticação (layer 3-auth)
 
-| Rota BFF                    | Metodo | API Externa                             |
+| Rota BFF                    | Método | API Externa                             |
 | --------------------------- | ------ | --------------------------------------- |
 | `/api/auth/login`           | POST   | `POST /api/v1/usuarios/login`           |
 | `/api/auth/logout`          | POST   | `POST /api/v1/usuarios/logout`          |
@@ -53,34 +53,34 @@ Cada layer do Nuxt expoe seus proprios endpoints BFF:
 | `/api/review/historico/:uuid` | GET    | `GET /api/v1/review/historico/:uuid` |
 | `/api/review/reverter/:id`    | POST   | `POST /api/v1/review/reverter/:id`   |
 
-## Autenticacao via JWT
+## Autenticação via JWT
 
-Os tokens JWT sao gerenciados inteiramente pelo BFF:
+Os tokens JWT são gerenciados inteiramente pelo BFF:
 
 1. **Login**: BFF recebe credenciais, autentica na API e armazena tokens em cookies httpOnly
-2. **Requisicoes**: BFF extrai o token do cookie e adiciona no header `Authorization: Bearer <token>`
+2. **Requisições**: BFF extrai o token do cookie e adiciona no header `Authorization: Bearer <token>`
 3. **Refresh**: BFF renova o access token automaticamente usando o refresh token
 4. **Logout**: BFF limpa os cookies e notifica a API
 
-O client nunca tem acesso direto aos tokens. Ele envia requisicoes para as rotas BFF e os cookies sao incluidos automaticamente pelo browser.
+O client nunca tem acesso direto aos tokens. Ele envia requisições para as rotas BFF e os cookies são incluídos automaticamente pelo browser.
 
-## Validacao de Dados
+## Validação de Dados
 
-Todas as requisicoes ao BFF sao validadas com schemas Zod antes de serem encaminhadas a API:
+Todas as requisições ao BFF são validadas com schemas Zod antes de serem encaminhadas à API:
 
 ```typescript
 // server/api/auth/login.post.ts
 const result = loginSchemaSchema.safeParse(body)
 if (!result.success) {
-  throw createError({ statusCode: 400, message: 'Email e senha sao obrigatorios' })
+  throw createError({ statusCode: 400, message: 'Email e senha são obrigatórios' })
 }
 ```
 
-Os schemas Zod sao gerados automaticamente pelo Kubb a partir do OpenAPI spec da API. Veja [Integracao Kubb](/docs/api/kubb-integration) para detalhes.
+Os schemas Zod são gerados automaticamente pelo Kubb a partir do OpenAPI spec da API. Veja [Integração Kubb](/docs/api/kubb-integration) para detalhes.
 
-## Helper de Requisicao Autenticada
+## Helper de Requisição Autenticada
 
-Cada layer pode criar seu proprio helper para requisicoes autenticadas:
+Cada layer pode criar seu próprio helper para requisições autenticadas:
 
 ```typescript
 // server/utils/review-api.ts
@@ -94,4 +94,4 @@ export async function reviewFetch<T>(event: H3Event, endpoint: string, options =
 }
 ```
 
-As funcoes `getAccessToken` e `getApiBaseUrl` sao fornecidas pela layer `3-auth` e ficam disponiveis automaticamente via auto-import do Nitro.
+As funções `getAccessToken` e `getApiBaseUrl` são fornecidas pela layer `3-auth` e ficam disponíveis automaticamente via auto-import do Nitro.

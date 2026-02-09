@@ -1,20 +1,20 @@
 ---
-title: Integracao Kubb
-description: Geracao automatica de tipos TypeScript e schemas Zod a partir do OpenAPI spec da API Tucuxi.
+title: Integração Kubb
+description: Geração automática de tipos TypeScript e schemas Zod a partir do OpenAPI spec da API Tucuxi.
 order: 3
 ---
 
-# Integracao Kubb
+# Integração Kubb
 
-O [Kubb](https://kubb.dev/) e utilizado para gerar automaticamente tipos TypeScript e schemas Zod a partir da especificacao OpenAPI da API Tucuxi. Isso garante que o frontend e o BFF estejam sempre sincronizados com o contrato da API.
+O [Kubb](https://kubb.dev/) é utilizado para gerar automaticamente tipos TypeScript e schemas Zod a partir da especificação OpenAPI da API Tucuxi. Isso garante que o frontend e o BFF estejam sempre sincronizados com o contrato da API.
 
-## Comando de Geracao
+## Comando de Geração
 
 ```bash
 npm run api:generate
 ```
 
-Este comando le o arquivo `openapi/tucuxi-api.json` e gera codigo em `generated/tucuxi/`.
+Este comando lê o arquivo `openapi/tucuxi-api.json` e gera código em `generated/tucuxi/`.
 
 ## Estrutura Gerada
 
@@ -36,9 +36,9 @@ generated/tucuxi/
 └── index.ts                  # Export principal
 ```
 
-## Configuracao
+## Configuração
 
-A configuracao do Kubb fica em `kubb.config.ts`:
+A configuração do Kubb fica em `kubb.config.ts`:
 
 ```typescript
 import { defineConfig } from '@kubb/core'
@@ -62,7 +62,7 @@ export default defineConfig({
 })
 ```
 
-Os tipos sao agrupados por **tag** da especificacao OpenAPI (ex: `LinkageTypes`, `ClientesTypes`, `Review & Qualidade de DadosTypes`).
+Os tipos são agrupados por **tag** da especificação OpenAPI (ex: `LinkageTypes`, `ClientesTypes`, `Review & Qualidade de DadosTypes`).
 
 ## Usando Tipos nas Composables
 
@@ -85,7 +85,7 @@ export type { LoginSchema, UsuarioLogadoSchema } from '~/generated/tucuxi/types'
 
 ## Usando Schemas Zod no BFF
 
-Os schemas Zod sao usados para validar dados no servidor antes de encaminhar a API:
+Os schemas Zod são usados para validar dados no servidor antes de encaminhar à API:
 
 ```typescript
 // server/api/auth/login.post.ts
@@ -98,7 +98,7 @@ export default defineEventHandler(async event => {
   if (!result.success) {
     throw createError({
       statusCode: 400,
-      message: 'Dados invalidos'
+      message: 'Dados inválidos'
     })
   }
 
@@ -108,9 +108,9 @@ export default defineEventHandler(async event => {
 })
 ```
 
-## Cliente HTTP: NAO Usar
+## Cliente HTTP: NÃO Usar
 
-O Kubb pode gerar clientes HTTP, mas o Tucuxi **nao utiliza** essa funcionalidade. Todas as chamadas a API sao feitas via `$fetch` no BFF:
+O Kubb pode gerar clientes HTTP, mas o Tucuxi **não utiliza** essa funcionalidade. Todas as chamadas à API são feitas via `$fetch` no BFF:
 
 ```typescript
 // CORRETO: usar $fetch via BFF
@@ -118,26 +118,26 @@ const response = await $fetch(`${getApiBaseUrl()}/api/v1/review/`, {
   headers: { Authorization: `Bearer ${token}` }
 })
 
-// INCORRETO: nao usar cliente HTTP gerado pelo Kubb
+// INCORRETO: não usar cliente HTTP gerado pelo Kubb
 // import { listClientes } from '~/generated/tucuxi/client'
 ```
 
 Isso garante que:
 
 - Tokens JWT nunca sejam expostos ao browser
-- Toda validacao passe pelo BFF
-- A URL da API externa nao seja visivel no client
+- Toda validação passe pelo BFF
+- A URL da API externa não seja visível no client
 
-## Fluxo de Atualizacao
+## Fluxo de Atualização
 
 Quando a API externa muda:
 
 1. Obtenha o novo arquivo OpenAPI spec
 2. Substitua `openapi/tucuxi-api.json`
 3. Execute `npm run api:generate`
-4. Verifique se ha breaking changes nos tipos
-5. Atualize composables e server routes conforme necessario
+4. Verifique se há breaking changes nos tipos
+5. Atualize composables e server routes conforme necessário
 
 ::docs-warning
-Os warnings de lint exibidos em arquivos dentro de `generated/` sao normais e esperados. Esses arquivos sao gerados automaticamente pelo Kubb e nao devem ser editados manualmente. Os warnings nao afetam o funcionamento da aplicacao.
+Os warnings de lint exibidos em arquivos dentro de `generated/` são normais e esperados. Esses arquivos são gerados automaticamente pelo Kubb e não devem ser editados manualmente. Os warnings não afetam o funcionamento da aplicação.
 ::

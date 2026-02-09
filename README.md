@@ -76,10 +76,13 @@ npm run typecheck    # Verificar tipos TypeScript
 npm run quality      # Rodar todas as verificações
 npm run quality:fix  # Corrigir lint + formatar
 
-# Testes
-npm run test         # Testes unitários (watch)
-npm run test:run     # Testes unitários (uma vez)
-npm run test:e2e     # Testes E2E (Playwright)
+# Testes (Vitest - dois projetos: unit + nuxt)
+npm run test              # Testes unitários (watch)
+npm run test:run          # Testes unitários (uma execução)
+npm run test:coverage     # Com cobertura
+npm run test:ui           # Interface visual
+npm run test:e2e          # Testes E2E (Playwright)
+npm run test:e2e:install  # Instala browsers (primeiro uso)
 ```
 
 ## Qualidade de Código
@@ -163,16 +166,20 @@ medblast/
 │   │   ├── app/components/ui/      # Componentes shadcn-vue
 │   │   └── app/utils/              # Funções utilitárias
 │   ├── 2-home/                     # Página inicial (design MX)
-│   └── 3-auth/                     # Autenticação (BFF, cookies httpOnly)
+│   ├── 3-auth/                     # Autenticação (BFF, cookies httpOnly)
+│   ├── 4-reviews/                  # Curadoria de dados (review de clientes)
+│   └── 5-docs/                     # Site de documentação
 │
-├── tests/                          # Testes (unit, integration, e2e)
-└── docs/                           # Documentação (PRD, specs)
+├── content/docs/                   # Conteúdo markdown (Nuxt Content v3)
+├── generated/                      # Código gerado pelo Kubb (tipos, schemas)
+├── tests/                          # Testes (unit, nuxt, e2e)
+└── docs/                           # Documentação técnica (PRD, segurança)
 ```
 
 ### Ordem de Prioridade (Layers)
 
 ```
-3-auth > 2-home > 0-base
+5-docs > 4-reviews > 3-auth > 2-home > 0-base
 ```
 
 Número maior = maior prioridade = sobrescreve layers anteriores.
@@ -245,7 +252,7 @@ JWT_SECRET=sua-chave-secreta
 ## Documentação
 
 - [PRD - Product Requirements Document](docs/PRD.md)
-- [Git Flow - Estratégia de Branches](docs/GIT_FLOW.md)
+- [Segurança](docs/SECURITY.md)
 - [Instruções para Claude Code](CLAUDE.md)
 
 ## Licença

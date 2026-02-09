@@ -10,13 +10,13 @@ O Tucuxi-Blast usa uma arquitetura **layers-only** do Nuxt 4. Não existe pasta 
 
 ## Ordem de Prioridade
 
-As layers sao numeradas por prioridade. Uma layer com numero maior **sobrescreve** configuracoes e componentes de layers anteriores:
+As layers são numeradas por prioridade. Uma layer com número maior **sobrescreve** configurações e componentes de layers anteriores:
 
 ```
 0-base < 2-home < 3-auth < 4-reviews < 5-docs
 ```
 
-Essa ordem e definida no `nuxt.config.ts` raiz:
+Essa ordem é definida no `nuxt.config.ts` raiz:
 
 ```typescript
 extends: [
@@ -76,34 +76,34 @@ Site de documentação (este que você está lendo):
 
 ## Estrutura de uma Feature Layer
 
-Cada nova feature segue esta estrutura padrao:
+Cada nova feature segue esta estrutura padrão:
 
 ```
 layers/{N}-{feature}/
-├── nuxt.config.ts              # Obrigatorio (pode ser vazio)
+├── nuxt.config.ts              # Obrigatório (pode ser vazio)
 ├── app/
 │   ├── components/             # Prefixar: {Feature}Card.vue
 │   ├── composables/
-│   │   ├── types.ts            # Interfaces e re-exportacao de tipos Kubb
+│   │   ├── types.ts            # Interfaces e re-exportação de tipos Kubb
 │   │   ├── use{Feature}Api.ts  # Service ($fetch para /api/{feature}/*)
 │   │   └── use{Feature}Store.ts # Pinia store (Composition API)
-│   ├── pages/{feature}/        # Paginas da feature
-│   └── middleware/              # Guards de rota (se necessario)
+│   ├── pages/{feature}/        # Páginas da feature
+│   └── middleware/              # Guards de rota (se necessário)
 └── server/
     ├── api/{feature}/          # Endpoints BFF
     └── utils/                  # Helpers do server
 ```
 
-### Convencoes
+### Convenções
 
 - **Componentes**: Prefixar com o nome da feature (ex: `ReviewList.vue`, `AuthLoginForm.vue`)
-- **Composables**: Seguir padrao `use{Feature}Api.ts` e `use{Feature}Store.ts`
-- **Paginas**: Ficam em `app/pages/` seguindo a convencao de rotas do Nuxt
+- **Composables**: Seguir padrão `use{Feature}Api.ts` e `use{Feature}Store.ts`
+- **Páginas**: Ficam em `app/pages/` seguindo a convenção de rotas do Nuxt
 - **Server**: Endpoints BFF em `server/api/`, helpers em `server/utils/`
 
 ## Caminhos e Aliases
 
-Use `~/layers/...` (alias da raiz) para referenciar arquivos em `nuxt.config.ts` de layers. Caminhos relativos como `./app/...` **nao funcionam** corretamente em layers.
+Use `~/layers/...` (alias da raiz) para referenciar arquivos em `nuxt.config.ts` de layers. Caminhos relativos como `./app/...` **não funcionam** corretamente em layers.
 
 ```typescript
 // Correto
@@ -117,13 +117,13 @@ shadcn: {
 }
 ```
 
-::docs-warning{title="Renumeracao de Layers"}
-Ao renumerar layers (ex: adicionar uma nova entre 2 e 3), varios arquivos precisam ser atualizados: `nuxt.config.ts` raiz, `CLAUDE.md` de cada layer, testes que referenciam paths, `docs/ARCHITECTURE.md`, `docs/ROADMAP.md` e `README.md`. Use Grep para buscar todas as referencias antes de renumerar.
+::docs-warning{title="Renumeração de Layers"}
+Ao renumerar layers (ex: adicionar uma nova entre 2 e 3), vários arquivos precisam ser atualizados: `nuxt.config.ts` raiz, `CLAUDE.md` de cada layer, testes que referenciam paths e `README.md`. Use Grep para buscar todas as referências antes de renumerar.
 ::
 
 ## Criando uma Nova Layer
 
 1. Crie a pasta `layers/{N}-{feature}/` com a estrutura acima
-2. Adicione um `nuxt.config.ts` (minimo: `export default defineNuxtConfig({})`)
-3. Registre a layer no `nuxt.config.ts` raiz, na posicao correta de prioridade
+2. Adicione um `nuxt.config.ts` (mínimo: `export default defineNuxtConfig({})`)
+3. Registre a layer no `nuxt.config.ts` raiz, na posição correta de prioridade
 4. Crie um `CLAUDE.md` documentando a estrutura e endpoints da layer
