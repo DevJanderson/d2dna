@@ -12,7 +12,7 @@ Sempre responda em Português Brasileiro (pt-BR).
 - Mensagens de commit em português (Conventional Commits)
 - Branch principal de trabalho: `develop`
 - Fluxo: `feature/*` → `develop` → `staging` → `main`
-- Commitlint: `subject-case: lower-case`, max 72 chars no subject
+- Commitlint: `subject-case: lower-case`, max 72 chars no subject, `body-max-line-length: 100`
 
 ## Comandos
 
@@ -106,7 +106,7 @@ layers/                 # TUDO fica aqui (inclusive server/)
   3-auth/               # Autenticação (BFF, cookies httpOnly)
   4-reviews/            # Curadoria de dados (review de clientes)
   5-docs/               # Site de documentação
-content/docs/           # Conteúdo markdown da documentação
+content/docs/           # Conteúdo markdown (Nuxt Content v3, collection definida em content.config.ts)
 generated/              # Código gerado pelo Kubb (tipos, schemas)
 tests/                  # unit/, integration/, e2e/
 ```
@@ -186,6 +186,18 @@ export const useExampleStore = defineStore('example', () => {
 - **Utils** (`layers/0-base/app/utils/`): Funções puras, sem estado Vue
 - **Composables** (`layers/{N}-{feature}/app/composables/`): Lógica com `ref`, `computed`
 
+## Testes — Mocking de Auto-Imports
+
+`vi.stubGlobal()` **NÃO funciona** para auto-imports do Nuxt (`navigateTo`, `useRoute`, etc.) em testes com ambiente `nuxt`. Auto-imports são resolvidos na compilação. Usar `mockNuxtImport`:
+
+```typescript
+import { mockNuxtImport } from '@nuxt/test-utils/runtime'
+const { mockNavigateTo } = vi.hoisted(() => ({ mockNavigateTo: vi.fn() }))
+mockNuxtImport('navigateTo', () => mockNavigateTo)
+```
+
+`vi.stubGlobal` funciona para utils auto-importados de layers (ex: `getInitials`).
+
 ## Segurança
 
 Módulos `nuxt-security` e `nuxt-csurf` já configurados.
@@ -211,7 +223,7 @@ npm run api:generate    # Gera tipos e schemas do OpenAPI
 - **Schemas Zod**: usar para validação no BFF
 - **Cliente HTTP**: NÃO usar (usar $fetch via BFF)
 
-Ver [docs/KUBB.md](docs/KUBB.md) para implementação completa.
+Conteúdo gerado fica em `generated/` (não editar manualmente, warnings de lint nessa pasta são esperados).
 
 ## Documentação
 
@@ -221,17 +233,16 @@ Cada diretório principal tem seu próprio `CLAUDE.md` com instruções específ
 
 | Documento                                          | Conteúdo                                            |
 | -------------------------------------------------- | --------------------------------------------------- |
-| [layers/0-base/CLAUDE.md](layers/0-base/CLAUDE.md) | Fundação, UI, shadcn-vue, utils, sistema de janelas |
-| [layers/2-home/CLAUDE.md](layers/2-home/CLAUDE.md) | Página inicial (design MX)                          |
-| [layers/3-auth/CLAUDE.md](layers/3-auth/CLAUDE.md) | Autenticação (BFF, cookies)                         |
-| [layers/5-docs/CLAUDE.md](layers/5-docs/CLAUDE.md) | Site de documentação                                |
-| [tests/CLAUDE.md](tests/CLAUDE.md)                 | Vitest, Playwright, mocking                         |
+| [layers/0-base/CLAUDE.md](layers/0-base/CLAUDE.md)       | Fundação, UI, shadcn-vue, utils, sistema de janelas |
+| [layers/2-home/CLAUDE.md](layers/2-home/CLAUDE.md)       | Página inicial (design MX)                          |
+| [layers/3-auth/CLAUDE.md](layers/3-auth/CLAUDE.md)       | Autenticação (BFF, cookies)                         |
+| [layers/4-reviews/CLAUDE.md](layers/4-reviews/CLAUDE.md) | Curadoria de dados (review de clientes)             |
+| [layers/5-docs/CLAUDE.md](layers/5-docs/CLAUDE.md)       | Site de documentação                                |
+| [tests/CLAUDE.md](tests/CLAUDE.md)                       | Vitest, Playwright, mocking                         |
 
 ### Técnica (docs/)
 
-| Documento                                    | Conteúdo                               |
-| -------------------------------------------- | -------------------------------------- |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Visão geral, fluxo BFF, layers futuras |
-| [docs/SECURITY.md](docs/SECURITY.md)         | nuxt-security, CSP, rate limiter, CSRF |
-| [docs/KUBB.md](docs/KUBB.md)                 | Integração API, tipos, schemas Zod     |
-| [docs/ROADMAP.md](docs/ROADMAP.md)           | Fases do projeto e prioridades         |
+| Documento                                | Conteúdo                               |
+| ---------------------------------------- | -------------------------------------- |
+| [docs/SECURITY.md](docs/SECURITY.md)    | nuxt-security, CSP, rate limiter, CSRF |
+| [docs/PRD.md](docs/PRD.md)              | Product Requirements Document          |

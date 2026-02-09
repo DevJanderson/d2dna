@@ -51,5 +51,5 @@ layers/2-home/
 ## Prioridade
 
 ```
-0-base < 2-home < 3-auth
+0-base < 2-home < 3-auth < 4-reviews < 5-docs
 ```

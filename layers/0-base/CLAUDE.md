@@ -142,5 +142,5 @@ windowManager.open({
 Esta é a layer com **menor prioridade** (0). Todas as outras layers podem sobrescrever seus arquivos.
 
 ```
-0-base < 2-home < 3-auth
+0-base < 2-home < 3-auth < 4-reviews < 5-docs
 ```
