@@ -12,6 +12,7 @@ import type {
   SnapZone
 } from '../types/window'
 import { DEFAULT_WINDOW_CONFIG } from '../types/window'
+import { getParentRect } from '../utils/dom'
 
 export interface UseWindowSnapOptions {
   /** Ref do elemento da janela */
@@ -38,12 +39,6 @@ export function useWindowSnap(options: UseWindowSnapOptions) {
   const isSnapped = ref(false)
   const preSnapState = ref<WindowGeometry | null>(null)
 
-  /** Obtém o retângulo do container pai */
-  function getParentRect(): DOMRect | null {
-    const parent = windowEl.value?.parentElement
-    return parent?.getBoundingClientRect() || null
-  }
-
   /** Detecta zona de snap baseado na posição do mouse */
   function detectSnapZone(mouseX: number, containerWidth: number): SnapZone {
     if (mouseX <= config.snapZone) {
@@ -56,7 +51,7 @@ export function useWindowSnap(options: UseWindowSnapOptions) {
 
   /** Atualiza a zona de snap durante o arrasto */
   function updateSnapZone(mouseX: number) {
-    const parentRect = getParentRect()
+    const parentRect = getParentRect(windowEl)
     if (!parentRect) {
       snapZone.value = null
       return
@@ -85,7 +80,7 @@ export function useWindowSnap(options: UseWindowSnapOptions) {
 
   /** Aplica o snap para a zona especificada */
   function applySnap(zone: 'left' | 'right') {
-    const parentRect = getParentRect()
+    const parentRect = getParentRect(windowEl)
     if (!parentRect) return
 
     // Guardar estado antes do snap para poder restaurar
@@ -121,7 +116,7 @@ export function useWindowSnap(options: UseWindowSnapOptions) {
       return false
     }
 
-    const parentRect = getParentRect()
+    const parentRect = getParentRect(windowEl)
     if (!parentRect) return false
 
     // Calcular posição do mouse relativa à janela antes de restaurar
@@ -147,7 +142,7 @@ export function useWindowSnap(options: UseWindowSnapOptions) {
   const snapPreviewStyle = computed(() => {
     if (!snapZone.value || !windowEl.value) return null
 
-    const parentRect = getParentRect()
+    const parentRect = getParentRect(windowEl)
     if (!parentRect) return null
 
     const snapState = calculateSnapDimensions(snapZone.value, parentRect)

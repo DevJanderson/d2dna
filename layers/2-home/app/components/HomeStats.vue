@@ -75,10 +75,7 @@ function formatValue(current: number, stat: Stat): string {
   return Math.round(current).toString()
 }
 
-function prefersReducedMotion(): boolean {
-  if (typeof window === 'undefined') return false
-  return window.matchMedia('(prefers-reduced-motion: reduce)').matches
-}
+const { prefersReducedMotion: reducedMotionRef } = usePrefersReducedMotion()
 
 function showFinalValues() {
   displayValues.value = stats.map((stat) => formatValue(stat.value, stat))
@@ -90,7 +87,7 @@ function startCountUp() {
   if (hasAnimated.value) return
   hasAnimated.value = true
 
-  if (prefersReducedMotion()) {
+  if (reducedMotionRef.value) {
     showFinalValues()
     return
   }
@@ -154,7 +151,7 @@ onUnmounted(() => {
         ]"
         :style="{
           transitionDelay:
-            hasAnimated || prefersReducedMotion() ? '0ms' : `${index * 150}ms`,
+            hasAnimated || reducedMotionRef ? '0ms' : `${index * 150}ms`,
         }"
       >
         <!-- ASCII decorativo -->

@@ -101,11 +101,11 @@ const emit = defineEmits<{
 
 // ============ CONFIGURAÇÃO ============
 
-const containerConfig: WindowContainerConfig = {
+const containerConfig = computed<WindowContainerConfig>(() => ({
   padding: props.containerPadding,
   snapZone: props.snapZoneSize,
   dragThreshold: DEFAULT_WINDOW_CONFIG.dragThreshold
-}
+}))
 
 // ============ WINDOW MANAGER ============
 
@@ -124,7 +124,7 @@ const snap = useWindowSnap({
   windowEl,
   position,
   size,
-  config: containerConfig,
+  config: containerConfig.value,
   onSnap: (_zone, state) => {
     emit('update:position', state.position)
     emit('update:size', state.size)
@@ -141,7 +141,7 @@ const drag = useWindowDrag({
   position,
   size,
   enabled: computed(() => props.draggable && !props.maximized),
-  config: containerConfig,
+  config: containerConfig.value,
   onDragStart: () => {
     // Nada especial no início
   },
@@ -172,7 +172,7 @@ const resize = useWindowResize({
   size,
   enabled: computed(() => props.resizable && !props.maximized && !snap.isSnapped.value),
   sizeLimits: { minWidth: props.minWidth, minHeight: props.minHeight },
-  config: containerConfig,
+  config: containerConfig.value,
   onResizeEnd: (newSize, newPosition) => {
     emit('update:size', newSize)
     emit('update:position', newPosition)
@@ -196,10 +196,10 @@ const windowStyle = computed(() => {
   if (props.maximized) {
     return {
       position: 'absolute' as const,
-      left: `${containerConfig.padding}px`,
-      top: `${containerConfig.padding}px`,
-      width: `calc(100% - ${containerConfig.padding * 2}px)`,
-      height: `calc(100% - ${containerConfig.padding * 2}px)`,
+      left: `${containerConfig.value.padding}px`,
+      top: `${containerConfig.value.padding}px`,
+      width: `calc(100% - ${containerConfig.value.padding * 2}px)`,
+      height: `calc(100% - ${containerConfig.value.padding * 2}px)`,
       zIndex: props.zIndex
     }
   }
@@ -263,13 +263,21 @@ function handleTitleBarMouseDown(event: MouseEvent) {
     // Registrar o início do drag
     drag.startDrag(event)
 
-    // Configurar para restaurar quando mover além do threshold
-    const originalOnDrag = drag.hasMovedPastThreshold
+    // Capturar posição atual do mouse para restauração correta
+    let lastMouseEvent = event
 
-    const unwatch = watch(originalOnDrag, moved => {
+    function trackMouse(e: MouseEvent) {
+      lastMouseEvent = e
+    }
+
+    document.addEventListener('mousemove', trackMouse)
+
+    // Configurar para restaurar quando mover além do threshold
+    const unwatch = watch(drag.hasMovedPastThreshold, (moved) => {
       if (moved && snap.isSnapped.value) {
-        snap.restoreFromSnap(event)
-        drag.updateDragOffset(event)
+        document.removeEventListener('mousemove', trackMouse)
+        snap.restoreFromSnap(lastMouseEvent)
+        drag.updateDragOffset(lastMouseEvent)
         unwatch()
       }
     })
@@ -329,13 +337,15 @@ watch(
 
 // ============ LIFECYCLE ============
 
+const handleWindowResize = () => drag.clampToContainer()
+
 onMounted(() => {
   nextTick(() => drag.clampToContainer())
-  window.addEventListener('resize', () => drag.clampToContainer())
+  window.addEventListener('resize', handleWindowResize)
 })
 
 onUnmounted(() => {
-  window.removeEventListener('resize', () => drag.clampToContainer())
+  window.removeEventListener('resize', handleWindowResize)
 })
 </script>
 

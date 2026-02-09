@@ -15,10 +15,22 @@ withDefaults(defineProps<Props>(), {
   isLoading: false
 })
 
-function padParts(n: number, len = 4): { zeros: string; value: string } {
+interface PadParts {
+  zeros: string
+  value: string
+}
+
+function padParts(n: number, len = 4): PadParts {
   const str = String(n)
   const padLen = Math.max(0, len - str.length)
   return { zeros: '0'.repeat(padLen), value: str }
+}
+
+function rateParts(s: ReviewStats): PadParts {
+  const revisados = s.aprovados + s.rejeitados + s.corrigidos
+  if (revisados === 0) return { zeros: '——.—', value: '%' }
+  const rate = ((s.aprovados / revisados) * 100).toFixed(1)
+  return { zeros: '', value: `${rate}%` }
 }
 
 const cards = computed(() => {
@@ -56,11 +68,7 @@ const cards = computed(() => {
       icon: TrendingUp,
       color: 'text-blue-600',
       bgColor: 'bg-blue-500/10',
-      value: (s: ReviewStats) => {
-        const revisados = s.aprovados + s.rejeitados + s.corrigidos
-        if (revisados === 0) return '——.—%'
-        return `${((s.aprovados / revisados) * 100).toFixed(1)}%`
-      }
+      value: (s: ReviewStats) => rateParts(s)
     }
   ]
 })
@@ -88,9 +96,6 @@ const cards = computed(() => {
         <p class="mt-2 font-mono text-xl font-semibold">
           <template v-if="!stats">
             <span class="opacity-20">0000</span>
-          </template>
-          <template v-else-if="typeof card.value(stats) === 'string'">
-            <span :class="card.color">{{ card.value(stats) }}</span>
           </template>
           <template v-else>
             <span class="opacity-20">{{ card.value(stats).zeros }}</span><span :class="card.color">{{ card.value(stats).value }}</span>

@@ -21,11 +21,6 @@ const emit = defineEmits<{
   action: []
 }>()
 
-function formatDate(date?: string | null): string {
-  if (!date) return '—'
-  return new Date(date).toLocaleDateString('pt-BR')
-}
-
 function statusIcon(status?: string | null) {
   switch (status) {
     case 'aprovado':
@@ -36,32 +31,6 @@ function statusIcon(status?: string | null) {
       return Pencil
     default:
       return Clock
-  }
-}
-
-function statusColor(status?: string | null): string {
-  switch (status) {
-    case 'aprovado':
-      return 'text-green-500 bg-green-500/15'
-    case 'rejeitado':
-      return 'text-red-500 bg-red-500/15'
-    case 'corrigido':
-      return 'text-yellow-500 bg-yellow-500/15'
-    default:
-      return 'text-muted-foreground bg-muted'
-  }
-}
-
-function statusLineColor(status?: string | null): string {
-  switch (status) {
-    case 'aprovado':
-      return 'bg-green-500/30'
-    case 'rejeitado':
-      return 'bg-red-500/30'
-    case 'corrigido':
-      return 'bg-yellow-500/30'
-    default:
-      return 'bg-border'
   }
 }
 </script>

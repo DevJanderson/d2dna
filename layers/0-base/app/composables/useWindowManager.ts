@@ -4,21 +4,22 @@
  */
 
 import type { Component } from 'vue'
+import type { WindowPosition, WindowSize } from '../types/window'
 
 export interface WindowState {
   id: string
   title: string
   component?: Component
   props?: Record<string, unknown>
-  position: { x: number; y: number }
-  size: { width: number; height: number }
+  position: WindowPosition
+  size: WindowSize
   zIndex: number
   minimized: boolean
   maximized: boolean
   // Guarda posição/tamanho antes de maximizar para restaurar
   preMaximizeState?: {
-    position: { x: number; y: number }
-    size: { width: number; height: number }
+    position: WindowPosition
+    size: WindowSize
   }
 }
 
@@ -27,8 +28,8 @@ export interface OpenWindowConfig {
   title: string
   component?: Component
   props?: Record<string, unknown>
-  position?: { x: number; y: number }
-  size?: { width: number; height: number }
+  position?: WindowPosition
+  size?: WindowSize
 }
 
 const BASE_Z_INDEX = 10
@@ -52,7 +53,7 @@ export function useWindowManager() {
 
   // Gerar ID único
   function generateId(): string {
-    return `window-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
+    return `window-${Date.now()}-${Math.random().toString(36).slice(2, 11)}`
   }
 
   // Abrir nova janela
@@ -183,7 +184,7 @@ export function useWindowManager() {
   }
 
   // Atualizar posição da janela
-  function updatePosition(id: string, position: { x: number; y: number }): void {
+  function updatePosition(id: string, position: WindowPosition): void {
     const window = windows.value.find(w => w.id === id)
     if (window && !window.maximized) {
       window.position = position
@@ -191,7 +192,7 @@ export function useWindowManager() {
   }
 
   // Atualizar tamanho da janela
-  function updateSize(id: string, size: { width: number; height: number }): void {
+  function updateSize(id: string, size: WindowSize): void {
     const window = windows.value.find(w => w.id === id)
     if (window && !window.maximized) {
       window.size = size

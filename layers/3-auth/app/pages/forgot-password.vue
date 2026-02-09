@@ -2,8 +2,11 @@
 import { Check, Loader2 } from 'lucide-vue-next'
 
 definePageMeta({
-  layout: 'default'
+  layout: 'default',
+  middleware: 'guest'
 })
+
+useHead({ title: 'Recuperar Senha - Tucuxi' })
 
 const email = ref('')
 const isLoading = ref(false)

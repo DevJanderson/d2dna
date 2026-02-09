@@ -98,7 +98,8 @@ export default defineNuxtConfig({
     requestSizeLimiter: {
       maxRequestSizeInBytes: 2000000,
       maxUploadFileRequestInBytes: 8000000
-    }
+    },
+    csrf: true
   },
 
   // VeeValidate - validação de formulários

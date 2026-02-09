@@ -1,47 +1,35 @@
 <script setup lang="ts">
 /**
- * AppDock - Sidebar de navegação estilo dock (modelo HÍBRIDO)
+ * AppDock - Sidebar de navegação estilo dock
  *
  * Tipos de navegação:
- * - route: navega para uma rota (ex: /, /dashboard)
- * - window: abre/foca uma janela no workspace
+ * - route: navega para uma rota (ex: /app/reviews)
  * - action: executa uma função (ex: logout)
  *
  * Estados visuais:
- * - ROTA ATIVA: background cinza (estamos nessa rota)
- * - JANELA ABERTA: bolinha no canto (tem janela não minimizada)
- * - INATIVO: background primary (escuro)
+ * - ROTA ATIVA: background primary (estamos nessa rota)
+ * - DESABILITADO: opacidade reduzida (feature futura)
+ * - INATIVO: background muted
  */
 import type { FunctionalComponent } from 'vue'
 import { GitCompare, Link, FileBarChart, Settings, Bell } from 'lucide-vue-next'
 
-/** Configuração para abrir uma janela */
-interface WindowConfig {
-  id: string
-  title: string
-  position?: { x: number; y: number }
-  size?: { width: number; height: number }
-}
-
-/** Interface para itens de navegação (modelo híbrido) */
+/** Interface para itens de navegação */
 interface NavItem {
   id: string
   label: string
   icon: FunctionalComponent
-  type: 'route' | 'window' | 'action'
+  type: 'route' | 'action'
   /** Para type: 'route' - rota de destino */
   href?: string
-  /** Para type: 'window' - configuração da janela principal */
-  windowConfig?: WindowConfig
-  /** IDs de janelas relacionadas (para indicador de ativo/aberta) */
-  relatedWindowIds?: string[]
   /** Para type: 'action' - função a executar */
   action?: () => void
+  /** Item desabilitado (feature futura) */
+  disabled?: boolean
 }
 
 const route = useRoute()
 const router = useRouter()
-const windowManager = useWindowManager()
 
 /** Itens do menu de navegação — cada um representa uma layer */
 const navItems: NavItem[] = [
@@ -54,76 +42,42 @@ const navItems: NavItem[] = [
   },
   {
     id: 'linkage',
-    label: 'Linkage',
+    label: 'Linkage (em breve)',
     icon: Link,
-    type: 'window',
-    windowConfig: {
-      id: 'linkage',
-      title: 'Linkage',
-      position: { x: 100, y: 50 },
-      size: { width: 500, height: 400 }
-    },
-    relatedWindowIds: ['linkage']
+    type: 'route',
+    href: '/app/linkage',
+    disabled: true
   },
   {
     id: 'reports',
-    label: 'Relatórios',
+    label: 'Relatórios (em breve)',
     icon: FileBarChart,
-    type: 'window',
-    windowConfig: {
-      id: 'reports',
-      title: 'Relatórios',
-      position: { x: 150, y: 80 },
-      size: { width: 600, height: 450 }
-    },
-    relatedWindowIds: ['reports']
+    type: 'route',
+    href: '/app/reports',
+    disabled: true
   },
   {
     id: 'settings',
-    label: 'Configurações',
+    label: 'Configurações (em breve)',
     icon: Settings,
-    type: 'window',
-    windowConfig: {
-      id: 'settings',
-      title: 'Configurações',
-      position: { x: 200, y: 100 },
-      size: { width: 500, height: 450 }
-    },
-    relatedWindowIds: ['settings']
+    type: 'route',
+    href: '/app/settings',
+    disabled: true
   }
 ]
 
 /**
  * Lida com clique no item de navegação
  * - route: navega para a rota
- * - window: abre ou foca a janela (navega para /app se não estiver lá)
  * - action: executa a função
  */
 function handleNavClick(item: NavItem) {
+  if (item.disabled) return
+
   switch (item.type) {
     case 'route':
       if (item.href) {
         router.push(item.href)
-      }
-      break
-
-    case 'window':
-      if (item.windowConfig) {
-        // Se não estiver no workspace, navega primeiro
-        if (route.path !== '/app') {
-          router.push('/app')
-        }
-        // Verifica se a janela já existe
-        const existing = windowManager.windows.value.find(
-          w => w.id === item.windowConfig!.id
-        )
-        if (existing) {
-          // Foca a janela existente
-          windowManager.focus(item.windowConfig.id)
-        } else {
-          // Abre nova janela
-          windowManager.open(item.windowConfig)
-        }
       }
       break
 
@@ -136,77 +90,11 @@ function handleNavClick(item: NavItem) {
 /** Rota atual (reativo) */
 const currentPath = computed(() => route.path)
 
-/** ID da janela ativa (reativo) */
-const activeWindowId = computed(() => windowManager.activeWindowId.value)
-
-/**
- * Calcula estado ativo para cada item (reativo)
- *
- * Lógica:
- * - route: ativo quando na rota exata
- * - window: ativo quando ALGUMA janela relacionada está em FOCO
- * - action: nunca ativo
- */
-const activeStates = computed(() => {
-  const states: Record<string, boolean> = {}
-
-  for (const item of navItems) {
-    let result = false
-
-    switch (item.type) {
-      case 'route':
-        if (!item.href) {
-          result = false
-        } else if (item.href === '/') {
-          result = currentPath.value === '/'
-        } else {
-          result = currentPath.value.startsWith(item.href)
-        }
-        break
-
-      case 'window':
-        // Ativo se ALGUMA janela relacionada está em FOCO
-        if (item.relatedWindowIds?.length) {
-          result = item.relatedWindowIds.includes(activeWindowId.value ?? '')
-        } else if (item.windowConfig) {
-          result = activeWindowId.value === item.windowConfig.id
-        }
-        break
-
-      case 'action':
-        result = false
-        break
-    }
-
-    states[item.id] = result
-  }
-
-  return states
-})
-
-/** Retorna se o item está ativo */
+/** Retorna se o item está ativo (rota atual corresponde) */
 function isActive(item: NavItem): boolean {
-  return activeStates.value[item.id] ?? false
-}
-
-/**
- * Verifica se há janela aberta para este item
- * Usa relatedWindowIds se disponível, senão usa windowConfig.id
- */
-function hasOpenWindow(item: NavItem): boolean {
-  if (item.type !== 'window') return false
-
-  const windowIds = item.relatedWindowIds?.length
-    ? item.relatedWindowIds
-    : item.windowConfig
-      ? [item.windowConfig.id]
-      : []
-
-  if (!windowIds.length) return false
-
-  return windowIds.some(id =>
-    windowManager.windows.value.some(w => w.id === id && !w.minimized)
-  )
+  if (item.disabled || !item.href) return false
+  if (item.href === '/') return currentPath.value === '/'
+  return currentPath.value.startsWith(item.href)
 }
 </script>
 
@@ -240,18 +128,15 @@ function hasOpenWindow(item: NavItem): boolean {
               <TooltipTrigger as-child>
                 <button
                   class="dock-nav-icon relative flex h-10 w-10 items-center justify-center rounded-xl transition-colors duration-150 focus:outline-none"
+                  :class="{ 'opacity-40 cursor-not-allowed': item.disabled }"
                   :data-active="isActive(item)"
+                  :disabled="item.disabled"
                   @click="handleNavClick(item)"
                 >
                   <component
                     :is="item.icon"
                     class="h-5 w-5"
                     :stroke-width="1.75"
-                  />
-
-                  <span
-                    v-if="hasOpenWindow(item)"
-                    class="absolute -top-0.5 -right-0.5 h-2 w-2 rounded-full bg-green-500 ring-2 ring-sidebar"
                   />
                 </button>
               </TooltipTrigger>
@@ -274,7 +159,6 @@ function hasOpenWindow(item: NavItem): boolean {
               class="relative flex h-10 w-10 items-center justify-center rounded-xl text-muted-foreground transition-colors duration-150 hover:bg-sidebar-accent hover:text-sidebar-accent-foreground"
             >
               <Bell class="h-5 w-5" :stroke-width="1.75" />
-              <span class="absolute right-1.5 top-1.5 h-2 w-2 rounded-full bg-destructive" />
             </button>
           </TooltipTrigger>
           <TooltipContent side="right">

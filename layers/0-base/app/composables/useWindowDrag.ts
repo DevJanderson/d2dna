@@ -6,6 +6,7 @@
 import type { Ref } from 'vue'
 import type { WindowPosition, WindowSize, WindowContainerConfig } from '../types/window'
 import { DEFAULT_WINDOW_CONFIG } from '../types/window'
+import { getParentRect } from '../utils/dom'
 
 export interface UseWindowDragOptions {
   /** Ref do elemento da janela */
@@ -45,17 +46,12 @@ export function useWindowDrag(options: UseWindowDragOptions) {
   const dragOffset = ref<WindowPosition>({ x: 0, y: 0 })
   const dragStartMouse = ref<WindowPosition>({ x: 0, y: 0 })
   const hasMovedPastThreshold = ref(false)
+  let rafId: number | null = null
 
   /** Verifica se o drag está habilitado */
   const isEnabled = computed(() => {
     return typeof enabled === 'boolean' ? enabled : enabled.value
   })
-
-  /** Obtém o retângulo do container pai */
-  function getParentRect(): DOMRect | null {
-    const parent = windowEl.value?.parentElement
-    return parent?.getBoundingClientRect() || null
-  }
 
   /** Calcula os limites de posição */
   function getPositionLimits(parentRect: DOMRect) {
@@ -83,7 +79,7 @@ export function useWindowDrag(options: UseWindowDragOptions) {
     // Não iniciar drag se clicar em botões
     if ((event.target as HTMLElement).closest('button')) return
 
-    const parentRect = getParentRect()
+    const parentRect = getParentRect(windowEl)
     if (!parentRect) return
 
     const offsetX = parentRect.left
@@ -105,44 +101,56 @@ export function useWindowDrag(options: UseWindowDragOptions) {
     document.addEventListener('mouseup', stopDrag)
   }
 
-  /** Processa o movimento durante o arrasto */
+  /** Processa o movimento durante o arrasto (envolvido em rAF) */
   function handleDrag(event: MouseEvent) {
     if (!isDragging.value) return
 
-    const parentRect = getParentRect()
-    if (!parentRect) return
-
-    // Verificar se moveu além do threshold
+    // Verificar threshold antes do rAF (leitura leve, sem layout)
     if (!hasMovedPastThreshold.value) {
       const deltaX = Math.abs(event.clientX - dragStartMouse.value.x)
       const deltaY = Math.abs(event.clientY - dragStartMouse.value.y)
 
       if (deltaX <= config.dragThreshold && deltaY <= config.dragThreshold) {
-        return // Ainda não moveu o suficiente
+        return
       }
       hasMovedPastThreshold.value = true
     }
 
-    const offsetX = parentRect.left
-    const offsetY = parentRect.top
+    if (rafId !== null) cancelAnimationFrame(rafId)
 
-    // Calcular nova posição
-    const rawPosition: WindowPosition = {
-      x: event.clientX - offsetX - dragOffset.value.x,
-      y: event.clientY - offsetY - dragOffset.value.y
-    }
+    rafId = requestAnimationFrame(() => {
+      rafId = null
+      if (!isDragging.value) return
 
-    // Limitar aos bounds do container
-    const newPosition = clampPosition(rawPosition, parentRect)
-    position.value = newPosition
+      const parentRect = getParentRect(windowEl)
+      if (!parentRect) return
 
-    // Callback com posição do mouse para detecção de snap
-    const mouseX = event.clientX - parentRect.left
-    onDrag?.(newPosition, mouseX)
+      const offsetX = parentRect.left
+      const offsetY = parentRect.top
+
+      // Calcular nova posição
+      const rawPosition: WindowPosition = {
+        x: event.clientX - offsetX - dragOffset.value.x,
+        y: event.clientY - offsetY - dragOffset.value.y
+      }
+
+      // Limitar aos bounds do container
+      const newPosition = clampPosition(rawPosition, parentRect)
+      position.value = newPosition
+
+      // Callback com posição do mouse para detecção de snap
+      const mouseX = event.clientX - parentRect.left
+      onDrag?.(newPosition, mouseX)
+    })
   }
 
   /** Para o arrasto */
   function stopDrag() {
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId)
+      rafId = null
+    }
+
     if (isDragging.value) {
       isDragging.value = false
       onDragEnd?.(position.value)
@@ -154,7 +162,7 @@ export function useWindowDrag(options: UseWindowDragOptions) {
 
   /** Atualiza o offset do drag (usado quando restaura do snap) */
   function updateDragOffset(event: MouseEvent) {
-    const parentRect = getParentRect()
+    const parentRect = getParentRect(windowEl)
     if (!parentRect) return
 
     dragOffset.value = {
@@ -165,7 +173,7 @@ export function useWindowDrag(options: UseWindowDragOptions) {
 
   /** Valida e ajusta a posição para caber no container */
   function clampToContainer() {
-    const parentRect = getParentRect()
+    const parentRect = getParentRect(windowEl)
     if (!parentRect) return
 
     const clampedPosition = clampPosition(position.value, parentRect)
@@ -177,6 +185,10 @@ export function useWindowDrag(options: UseWindowDragOptions) {
 
   // Cleanup
   onUnmounted(() => {
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId)
+      rafId = null
+    }
     document.removeEventListener('mousemove', handleDrag)
     document.removeEventListener('mouseup', stopDrag)
   })
@@ -193,7 +205,6 @@ export function useWindowDrag(options: UseWindowDragOptions) {
     updateDragOffset,
 
     // Utilitários
-    getParentRect,
     getPositionLimits
   }
 }

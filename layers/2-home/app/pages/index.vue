@@ -3,23 +3,11 @@
  * Pagina inicial - Tucuxi
  * Design: MX (Machine Experience) + semi-brutalismo
  */
-const auth = useAuthStore()
-
-onMounted(() => {
-  auth.checkAuth()
-})
-
 // Estado compartilhado para animações de entrada
 const isVisible = ref(false)
-const prefersReducedMotion = ref(false)
+const { prefersReducedMotion } = usePrefersReducedMotion()
 
 onMounted(() => {
-  if (typeof window !== 'undefined') {
-    prefersReducedMotion.value = window.matchMedia(
-      '(prefers-reduced-motion: reduce)',
-    ).matches
-  }
-
   requestAnimationFrame(() => {
     isVisible.value = true
   })

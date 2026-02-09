@@ -11,6 +11,8 @@ definePageMeta({
   middleware: 'auth'
 })
 
+useHead({ title: 'Curadoria - Tucuxi' })
+
 const router = useRouter()
 const reviewStore = useReviewStore()
 const windowManager = useWindowManager()
@@ -21,7 +23,9 @@ function openRelatorio() {
   windowManager.open({
     id: 'review-relatorio',
     title: 'Documentação',
-    component: resolveComponent('ReviewRelatorio'),
+    component: defineAsyncComponent(
+      () => import('~/layers/4-reviews/app/components/ReviewRelatorio.vue')
+    ),
     position: { x: Math.round((window.innerWidth - w) / 2), y: Math.round((window.innerHeight - h) / 2) },
     size: { width: w, height: h }
   })

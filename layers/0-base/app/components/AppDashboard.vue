@@ -64,9 +64,10 @@ function showFinalValues() {
 
 let animationFrameId: number | null = null
 
+const { prefersReducedMotion } = usePrefersReducedMotion()
+
 onMounted(() => {
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-  if (reduced) {
+  if (prefersReducedMotion.value) {
     showFinalValues()
     hasAnimated.value = true
     return

@@ -17,6 +17,13 @@ const reviewStore = useReviewStore()
 
 const uuid = computed(() => route.params.uuid as string)
 
+useHead({
+  title: computed(() => {
+    const name = reviewStore.selectedReview?.nome
+    return name ? `Review ${name} - Tucuxi` : `Review #${uuid.value} - Tucuxi`
+  })
+})
+
 // Se não tem review selecionado, busca pela API
 onMounted(async () => {
   if (!reviewStore.selectedReview || reviewStore.selectedReview.uuid_cliente !== uuid.value) {
@@ -40,11 +47,6 @@ async function handleSubmitReview(data: ReviewCreateSchema) {
 async function handleRevert(id: number) {
   await reviewStore.revertReview(id)
   await reviewStore.fetchHistory(uuid.value)
-}
-
-function formatDate(date?: string | null): string {
-  if (!date) return '—'
-  return new Date(date).toLocaleDateString('pt-BR')
 }
 </script>
 

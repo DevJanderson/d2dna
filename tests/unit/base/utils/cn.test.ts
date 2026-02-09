@@ -16,7 +16,8 @@ describe('cn', () => {
   })
 
   it('should handle conditional classes via clsx', () => {
-    const result = cn('base', false && 'hidden', 'visible')
+    const condition = false
+    const result = cn('base', condition && 'hidden', 'visible')
     expect(result).toBe('base visible')
   })
 

@@ -23,29 +23,6 @@ const emit = defineEmits<{
   'next-page': []
   'prev-page': []
 }>()
-
-function formatDate(date?: string | null): string {
-  if (!date) return '—'
-  return new Date(date).toLocaleDateString('pt-BR')
-}
-
-function statusLabel(status?: string | null): string {
-  if (!status) return 'pendente'
-  return status
-}
-
-function statusColor(status?: string | null): string {
-  switch (status) {
-    case 'aprovado':
-      return 'bg-green-500/15 text-green-600'
-    case 'rejeitado':
-      return 'bg-red-500/15 text-red-600'
-    case 'corrigido':
-      return 'bg-yellow-500/15 text-yellow-600'
-    default:
-      return 'bg-muted text-muted-foreground'
-  }
-}
 </script>
 
 <template>

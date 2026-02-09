@@ -8,6 +8,8 @@ definePageMeta({
   middleware: 'auth'
 })
 
+useHead({ title: 'Workspace - Tucuxi' })
+
 const windowManager = useWindowManager()
 const hasWindows = computed(() => windowManager.visibleWindows.value.length > 0)
 </script>

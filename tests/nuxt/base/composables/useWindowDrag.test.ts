@@ -1,4 +1,4 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ref } from 'vue'
 import { useWindowDrag } from '~/layers/0-base/app/composables/useWindowDrag'
 
@@ -22,22 +22,6 @@ function createMockWindowEl(parentWidth = 1200, parentHeight = 800) {
   } as unknown as HTMLElement)
 }
 
-function createMouseEvent(
-  type: string,
-  options: { clientX?: number; clientY?: number; target?: HTMLElement } = {}
-) {
-  const div = options.target || document.createElement('div')
-  return new MouseEvent(type, {
-    clientX: options.clientX ?? 0,
-    clientY: options.clientY ?? 0,
-    bubbles: true
-  }) as MouseEvent & { target: HTMLElement }
-  // O target nao pode ser definido no construtor, mas para startDrag o
-  // composable usa event.target.closest('button'). Com um MouseEvent padrao
-  // o target sera o document (dispatch) ou nulo. Para testes de startDrag,
-  // fazemos manualmente abaixo.
-}
-
 describe('useWindowDrag', () => {
   let position: ReturnType<typeof ref<{ x: number; y: number }>>
   let size: ReturnType<typeof ref<{ width: number; height: number }>>
@@ -58,25 +42,6 @@ describe('useWindowDrag', () => {
     it('should start with hasMovedPastThreshold false', () => {
       const drag = useWindowDrag({ windowEl, position, size })
       expect(drag.hasMovedPastThreshold.value).toBe(false)
-    })
-  })
-
-  describe('getParentRect', () => {
-    it('should return parent bounding rect', () => {
-      const drag = useWindowDrag({ windowEl, position, size })
-      const rect = drag.getParentRect()
-
-      expect(rect).not.toBeNull()
-      expect(rect!.width).toBe(1200)
-      expect(rect!.height).toBe(800)
-    })
-
-    it('should return null when windowEl is null', () => {
-      const nullEl = ref(null)
-      const drag = useWindowDrag({ windowEl: nullEl, position, size })
-      const rect = drag.getParentRect()
-
-      expect(rect).toBeNull()
     })
   })
 

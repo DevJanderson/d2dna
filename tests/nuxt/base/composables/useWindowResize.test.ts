@@ -1,6 +1,11 @@
-import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { ref } from 'vue'
 import { useWindowResize } from '~/layers/0-base/app/composables/useWindowResize'
+
+/** Aguarda o próximo requestAnimationFrame */
+function waitForRaf(): Promise<void> {
+  return new Promise((resolve) => requestAnimationFrame(() => resolve()))
+}
 
 function createMockWindowEl(parentWidth = 1200, parentHeight = 800) {
   const parentRect = {
@@ -31,12 +36,6 @@ describe('useWindowResize', () => {
     position = ref({ x: 100, y: 50 })
     size = ref({ width: 600, height: 400 })
     windowEl = createMockWindowEl()
-  })
-
-  afterEach(() => {
-    // Cleanup event listeners
-    document.removeEventListener('mousemove', () => {})
-    document.removeEventListener('mouseup', () => {})
   })
 
   describe('initial state', () => {
@@ -117,7 +116,7 @@ describe('useWindowResize', () => {
   })
 
   describe('resize via mousemove', () => {
-    it('should resize east (right edge)', () => {
+    it('should resize east (right edge)', async () => {
       const resize = useWindowResize({ windowEl, position, size })
 
       // Start resize from right edge
@@ -127,6 +126,7 @@ describe('useWindowResize', () => {
       // Simulate mouse move (drag right by 100px)
       const moveEvent = new MouseEvent('mousemove', { clientX: 800, clientY: 250 })
       document.dispatchEvent(moveEvent)
+      await waitForRaf()
 
       expect(size.value.width).toBe(700) // 600 + 100
       expect(position.value.x).toBe(100) // unchanged
@@ -134,7 +134,7 @@ describe('useWindowResize', () => {
       resize.stopResize()
     })
 
-    it('should resize south (bottom edge)', () => {
+    it('should resize south (bottom edge)', async () => {
       const resize = useWindowResize({ windowEl, position, size })
 
       const startEvent = new MouseEvent('mousedown', { clientX: 400, clientY: 450 })
@@ -142,6 +142,7 @@ describe('useWindowResize', () => {
 
       const moveEvent = new MouseEvent('mousemove', { clientX: 400, clientY: 550 })
       document.dispatchEvent(moveEvent)
+      await waitForRaf()
 
       expect(size.value.height).toBe(500) // 400 + 100
       expect(position.value.y).toBe(50) // unchanged
@@ -149,7 +150,7 @@ describe('useWindowResize', () => {
       resize.stopResize()
     })
 
-    it('should respect minimum size limits', () => {
+    it('should respect minimum size limits', async () => {
       const resize = useWindowResize({
         windowEl,
         position,
@@ -163,13 +164,14 @@ describe('useWindowResize', () => {
       // Try to shrink below minimum
       const moveEvent = new MouseEvent('mousemove', { clientX: 100, clientY: 250 })
       document.dispatchEvent(moveEvent)
+      await waitForRaf()
 
       expect(size.value.width).toBeGreaterThanOrEqual(200)
 
       resize.stopResize()
     })
 
-    it('should resize west (left edge) and adjust position', () => {
+    it('should resize west (left edge) and adjust position', async () => {
       const resize = useWindowResize({ windowEl, position, size })
 
       const startEvent = new MouseEvent('mousedown', { clientX: 100, clientY: 250 })
@@ -178,6 +180,7 @@ describe('useWindowResize', () => {
       // Move left by 50px
       const moveEvent = new MouseEvent('mousemove', { clientX: 50, clientY: 250 })
       document.dispatchEvent(moveEvent)
+      await waitForRaf()
 
       expect(size.value.width).toBe(650) // 600 + 50
       expect(position.value.x).toBe(50) // 100 - 50

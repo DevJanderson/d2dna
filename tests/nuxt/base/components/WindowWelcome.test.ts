@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { mountSuspended } from '@nuxt/test-utils/runtime'
-import { mockNuxtImport } from '@nuxt/test-utils/runtime'
+import { mountSuspended, mockNuxtImport  } from '@nuxt/test-utils/runtime'
 
 // Mock useAuthStore
 const { mockUseAuthStore } = vi.hoisted(() => ({

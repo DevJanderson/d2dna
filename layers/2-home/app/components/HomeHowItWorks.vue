@@ -64,11 +64,7 @@ useIntersectionObserver(
   { threshold: 0.15 },
 )
 
-const prefersReducedMotion = ref(false)
-
-onMounted(() => {
-  prefersReducedMotion.value = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-})
+const { prefersReducedMotion } = usePrefersReducedMotion()
 
 function stepDelay(index: number): string {
   if (prefersReducedMotion.value) return '0ms'

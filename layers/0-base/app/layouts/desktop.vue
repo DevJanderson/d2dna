@@ -5,11 +5,10 @@
  * O Desktop vive aqui para que janelas persistam entre navegações de páginas
  */
 
-const WindowWelcome = defineAsyncComponent(
+const windowManager = useWindowManager()
+const LazyWindowWelcomeComp = defineAsyncComponent(
   () => import('~/layers/0-base/app/components/WindowWelcome.vue')
 )
-
-const windowManager = useWindowManager()
 
 // Janela de boas-vindas na primeira visita
 onMounted(() => {
@@ -20,7 +19,7 @@ onMounted(() => {
     windowManager.open({
       id: 'welcome',
       title: 'Bem-vindo ao Tucuxi',
-      component: WindowWelcome,
+      component: LazyWindowWelcomeComp,
       position: {
         x: Math.max(0, (window.innerWidth - w) / 2),
         y: Math.max(0, (window.innerHeight - h) / 2)
@@ -42,11 +41,11 @@ watch(
 
 <template>
   <div class="relative h-screen bg-muted pt-2">
-    <!-- Navbar superior -->
-    <DesktopNavbar />
+    <!-- Navbar superior (h-12 = 48px + pt-2 = 8px = 56px total) -->
+    <DesktopNavbar class="h-12" />
 
     <!-- Área de trabalho -->
-    <div class="relative z-20 h-[calc(100vh-56px)]">
+    <div class="relative z-20 h-[calc(100vh-3rem-0.5rem)]">
       <!-- Dock flutuante -->
       <AppDock />
 

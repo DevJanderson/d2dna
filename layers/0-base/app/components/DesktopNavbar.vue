@@ -8,19 +8,16 @@ import { Search, Home, Menu, Settings, Users, UserCog, LogOut } from 'lucide-vue
 const router = useRouter()
 const authStore = useAuthStore()
 
+async function handleLogout() {
+  await authStore.logout()
+  navigateTo('/login')
+}
+
 const windowManager = useWindowManager()
 
 const user = computed(() => authStore.user)
 
-const userInitials = computed(() => {
-  if (!user.value?.nome) return '??'
-  const names = user.value.nome.trim().split(' ').filter((n) => n.length > 0)
-  if (names.length === 0) return '??'
-  const first = names[0] ?? ''
-  const last = names[names.length - 1] ?? ''
-  if (names.length === 1) return first.substring(0, 2).toUpperCase()
-  return ((first[0] ?? '') + (last[0] ?? '')).toUpperCase()
-})
+const userInitials = computed(() => getInitials(user.value?.nome ?? ''))
 
 const userName = computed(() => user.value?.nome || 'Usuário')
 const userRole = computed(() => user.value?.funcao || 'Analista')
@@ -151,7 +148,7 @@ function openWindow(id: string, title: string) {
             Gerenciar Usuários
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem class="text-destructive" @click="authStore.logout()">
+          <DropdownMenuItem class="text-destructive" @click="handleLogout">
             <LogOut class="mr-2 h-4 w-4" />
             Sair
           </DropdownMenuItem>

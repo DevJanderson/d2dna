@@ -21,32 +21,9 @@ const emit = defineEmits<{
   'prev-page': []
 }>()
 
-function formatDate(date?: string | null): string {
-  if (!date) return '—'
-  return new Date(date).toLocaleDateString('pt-BR')
-}
-
 function formatCpf(cpf?: string | null): string {
-  if (!cpf) return '—'
+  if (!cpf) return '\u2014'
   return cpf
-}
-
-function statusLabel(status?: string | null): string {
-  if (!status) return 'pendente'
-  return status
-}
-
-function statusClass(status?: string | null): string {
-  switch (status) {
-    case 'aprovado':
-      return 'text-green-500'
-    case 'rejeitado':
-      return 'text-red-500'
-    case 'corrigido':
-      return 'text-yellow-500'
-    default:
-      return 'text-muted-foreground'
-  }
 }
 </script>
 
@@ -88,7 +65,7 @@ function statusClass(status?: string | null): string {
             <td class="whitespace-nowrap px-2 py-1.5 font-mono">
               {{ formatCpf(review.cpf) }}
             </td>
-            <td class="px-2 py-1.5 font-mono" :class="statusClass(review.status)">
+            <td class="px-2 py-1.5 font-mono" :class="statusTextColor(review.status)">
               {{ statusLabel(review.status) }}
             </td>
           </tr>

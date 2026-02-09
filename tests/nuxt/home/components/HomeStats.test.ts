@@ -3,7 +3,7 @@ import { mount } from '@vue/test-utils'
 
 // Mock @vueuse/core useIntersectionObserver to simulate visibility
 const mockStop = vi.fn()
-let intersectionCallback: Function
+let intersectionCallback: (...args: unknown[]) => void
 
 vi.mock('@vueuse/core', () => ({
   useIntersectionObserver: vi.fn((_target, callback) => {

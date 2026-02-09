@@ -12,6 +12,7 @@ import type {
   ResizeDirection
 } from '../types/window'
 import { DEFAULT_WINDOW_CONFIG, DEFAULT_SIZE_LIMITS } from '../types/window'
+import { getParentRect } from '../utils/dom'
 
 export interface UseWindowResizeOptions {
   /** Ref do elemento da janela */
@@ -64,17 +65,12 @@ export function useWindowResize(options: UseWindowResizeOptions) {
     posX: 0,
     posY: 0
   })
+  let rafId: number | null = null
 
   /** Verifica se o resize está habilitado */
   const isEnabled = computed(() => {
     return typeof enabled === 'boolean' ? enabled : enabled.value
   })
-
-  /** Obtém o retângulo do container pai */
-  function getParentRect(): DOMRect | null {
-    const parent = windowEl.value?.parentElement
-    return parent?.getBoundingClientRect() || null
-  }
 
   /** Inicia o redimensionamento */
   function startResize(event: MouseEvent, direction: ResizeDirection) {
@@ -98,74 +94,86 @@ export function useWindowResize(options: UseWindowResizeOptions) {
     document.addEventListener('mouseup', stopResize)
   }
 
-  /** Processa o redimensionamento */
+  /** Processa o redimensionamento (envolvido em rAF) */
   function handleResize(event: MouseEvent) {
     if (!isResizing.value || !resizeDirection.value) return
 
-    const parentRect = getParentRect()
-    if (!parentRect) return
+    if (rafId !== null) cancelAnimationFrame(rafId)
 
-    const deltaX = event.clientX - resizeStart.value.x
-    const deltaY = event.clientY - resizeStart.value.y
+    rafId = requestAnimationFrame(() => {
+      rafId = null
+      if (!isResizing.value || !resizeDirection.value) return
 
-    let newWidth = resizeStart.value.width
-    let newHeight = resizeStart.value.height
-    let newX = resizeStart.value.posX
-    let newY = resizeStart.value.posY
+      const parentRect = getParentRect(windowEl)
+      if (!parentRect) return
 
-    const dir = resizeDirection.value
+      const deltaX = event.clientX - resizeStart.value.x
+      const deltaY = event.clientY - resizeStart.value.y
 
-    // Redimensionar pela direita (e, ne, se)
-    if (dir.includes('e')) {
-      newWidth = Math.max(sizeLimits.minWidth, resizeStart.value.width + deltaX)
-      // Limitar ao container
-      const maxWidth = parentRect.width - newX - config.padding
-      newWidth = Math.min(newWidth, sizeLimits.maxWidth ?? maxWidth, maxWidth)
-    }
+      let newWidth = resizeStart.value.width
+      let newHeight = resizeStart.value.height
+      let newX = resizeStart.value.posX
+      let newY = resizeStart.value.posY
 
-    // Redimensionar pela esquerda (w, nw, sw)
-    if (dir.includes('w')) {
-      const potentialWidth = resizeStart.value.width - deltaX
-      if (potentialWidth >= sizeLimits.minWidth) {
-        newWidth = potentialWidth
-        newX = resizeStart.value.posX + deltaX
+      const dir = resizeDirection.value
+
+      // Redimensionar pela direita (e, ne, se)
+      if (dir.includes('e')) {
+        newWidth = Math.max(sizeLimits.minWidth, resizeStart.value.width + deltaX)
         // Limitar ao container
-        if (newX < config.padding) {
-          newWidth -= config.padding - newX
-          newX = config.padding
+        const maxWidth = parentRect.width - newX - config.padding
+        newWidth = Math.min(newWidth, sizeLimits.maxWidth ?? maxWidth, maxWidth)
+      }
+
+      // Redimensionar pela esquerda (w, nw, sw)
+      if (dir.includes('w')) {
+        const potentialWidth = resizeStart.value.width - deltaX
+        if (potentialWidth >= sizeLimits.minWidth) {
+          newWidth = potentialWidth
+          newX = resizeStart.value.posX + deltaX
+          // Limitar ao container
+          if (newX < config.padding) {
+            newWidth -= config.padding - newX
+            newX = config.padding
+          }
         }
       }
-    }
 
-    // Redimensionar por baixo (s, se, sw)
-    if (dir.includes('s')) {
-      newHeight = Math.max(sizeLimits.minHeight, resizeStart.value.height + deltaY)
-      // Limitar ao container
-      const maxHeight = parentRect.height - newY - config.padding
-      newHeight = Math.min(newHeight, sizeLimits.maxHeight ?? maxHeight, maxHeight)
-    }
-
-    // Redimensionar por cima (n, ne, nw)
-    if (dir === 'n' || dir === 'ne' || dir === 'nw') {
-      const potentialHeight = resizeStart.value.height - deltaY
-      if (potentialHeight >= sizeLimits.minHeight) {
-        newHeight = potentialHeight
-        newY = resizeStart.value.posY + deltaY
+      // Redimensionar por baixo (s, se, sw)
+      if (dir.includes('s')) {
+        newHeight = Math.max(sizeLimits.minHeight, resizeStart.value.height + deltaY)
         // Limitar ao container
-        if (newY < config.padding) {
-          newHeight -= config.padding - newY
-          newY = config.padding
+        const maxHeight = parentRect.height - newY - config.padding
+        newHeight = Math.min(newHeight, sizeLimits.maxHeight ?? maxHeight, maxHeight)
+      }
+
+      // Redimensionar por cima (n, ne, nw)
+      if (dir === 'n' || dir === 'ne' || dir === 'nw') {
+        const potentialHeight = resizeStart.value.height - deltaY
+        if (potentialHeight >= sizeLimits.minHeight) {
+          newHeight = potentialHeight
+          newY = resizeStart.value.posY + deltaY
+          // Limitar ao container
+          if (newY < config.padding) {
+            newHeight -= config.padding - newY
+            newY = config.padding
+          }
         }
       }
-    }
 
-    // Aplicar novos valores
-    size.value = { width: newWidth, height: newHeight }
-    position.value = { x: newX, y: newY }
+      // Aplicar novos valores
+      size.value = { width: newWidth, height: newHeight }
+      position.value = { x: newX, y: newY }
+    })
   }
 
   /** Para o redimensionamento */
   function stopResize() {
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId)
+      rafId = null
+    }
+
     if (isResizing.value) {
       isResizing.value = false
       const dir = resizeDirection.value
@@ -182,6 +190,10 @@ export function useWindowResize(options: UseWindowResizeOptions) {
 
   // Cleanup
   onUnmounted(() => {
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId)
+      rafId = null
+    }
     document.removeEventListener('mousemove', handleResize)
     document.removeEventListener('mouseup', stopResize)
   })
