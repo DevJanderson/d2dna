@@ -44,6 +44,7 @@ npm run api:generate       # Gera tipos e schemas do OpenAPI → generated/
 ### Projetos Vitest
 
 O `vitest.config.ts` define dois projetos com ambientes diferentes:
+
 - **`tests/unit/`**: Ambiente Node puro (rápido) — funções puras, utils
 - **`tests/nuxt/`**: Ambiente Nuxt com happy-dom (mais lento) — composables, stores, componentes
 - **`tests/e2e/`**: Playwright (separado, não passa pelo Vitest)
@@ -81,6 +82,7 @@ Nuxt 4 + shadcn-vue + Tailwind CSS v4 + **Nuxt Layers**.
 ## Tailwind CSS v4
 
 Tailwind v4 **não usa `tailwind.config.js`** — toda configuração fica em CSS puro:
+
 - Config principal: `layers/0-base/app/assets/css/main.css`
 - Temas, fontes e variáveis via `@theme` e `:root` no CSS
 - Plugin via Vite: `@tailwindcss/vite` (configurado em `nuxt.config.ts`)
@@ -171,10 +173,10 @@ export const useExampleStore = defineStore('example', () => {
 
 ### Data Fetching
 
-| Método | Quando usar | SSR |
-|--------|-------------|-----|
+| Método     | Quando usar                    | SSR |
+| ---------- | ------------------------------ | --- |
 | `useFetch` | Carregamento inicial (páginas) | Sim |
-| `$fetch` | Eventos do usuário (cliques) | Não |
+| `$fetch`   | Eventos do usuário (cliques)   | Não |
 
 ### Utils vs Composables
 
@@ -214,18 +216,18 @@ Ver [docs/KUBB.md](docs/KUBB.md) para implementação completa.
 
 Cada diretório principal tem seu próprio `CLAUDE.md` com instruções específicas:
 
-| Documento | Conteúdo |
-|-----------|----------|
+| Documento                                          | Conteúdo                                            |
+| -------------------------------------------------- | --------------------------------------------------- |
 | [layers/0-base/CLAUDE.md](layers/0-base/CLAUDE.md) | Fundação, UI, shadcn-vue, utils, sistema de janelas |
-| [layers/2-home/CLAUDE.md](layers/2-home/CLAUDE.md) | Página inicial (design MX) |
-| [layers/3-auth/CLAUDE.md](layers/3-auth/CLAUDE.md) | Autenticação (BFF, cookies) |
-| [tests/CLAUDE.md](tests/CLAUDE.md) | Vitest, Playwright, mocking |
+| [layers/2-home/CLAUDE.md](layers/2-home/CLAUDE.md) | Página inicial (design MX)                          |
+| [layers/3-auth/CLAUDE.md](layers/3-auth/CLAUDE.md) | Autenticação (BFF, cookies)                         |
+| [tests/CLAUDE.md](tests/CLAUDE.md)                 | Vitest, Playwright, mocking                         |
 
 ### Técnica (docs/)
 
-| Documento | Conteúdo |
-|-----------|----------|
+| Documento                                    | Conteúdo                               |
+| -------------------------------------------- | -------------------------------------- |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Visão geral, fluxo BFF, layers futuras |
-| [docs/SECURITY.md](docs/SECURITY.md) | nuxt-security, CSP, rate limiter, CSRF |
-| [docs/KUBB.md](docs/KUBB.md) | Integração API, tipos, schemas Zod |
-| [docs/ROADMAP.md](docs/ROADMAP.md) | Fases do projeto e prioridades |
+| [docs/SECURITY.md](docs/SECURITY.md)         | nuxt-security, CSP, rate limiter, CSRF |
+| [docs/KUBB.md](docs/KUBB.md)                 | Integração API, tipos, schemas Zod     |
+| [docs/ROADMAP.md](docs/ROADMAP.md)           | Fases do projeto e prioridades         |

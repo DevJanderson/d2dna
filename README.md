@@ -13,13 +13,13 @@
 
 No sistema de saúde brasileiro, um mesmo paciente pode ter dezenas de cadastros diferentes espalhados por hospitais, clínicas e unidades de saúde:
 
-| Problema | Impacto |
-|----------|---------|
-| Pacientes duplicados | Mesmo paciente com múltiplos cadastros em sistemas diferentes |
-| Dados inconsistentes | Nomes escritos de formas diferentes, datas erradas |
-| Busca ineficiente | Sem CPF exato, encontrar o paciente pode levar minutos |
-| Histórico fragmentado | Médico não consegue ver exames de outras unidades |
-| Risco à vida | Alergias não registradas, medicamentos incompatíveis |
+| Problema              | Impacto                                                       |
+| --------------------- | ------------------------------------------------------------- |
+| Pacientes duplicados  | Mesmo paciente com múltiplos cadastros em sistemas diferentes |
+| Dados inconsistentes  | Nomes escritos de formas diferentes, datas erradas            |
+| Busca ineficiente     | Sem CPF exato, encontrar o paciente pode levar minutos        |
+| Histórico fragmentado | Médico não consegue ver exames de outras unidades             |
+| Risco à vida          | Alergias não registradas, medicamentos incompatíveis          |
 
 ## A Solução
 
@@ -40,15 +40,15 @@ O **MedBlast** utiliza tecnologia proprietária DNA (Digital Numeric Algorithm) 
 
 ## Stack Técnica
 
-| Categoria | Tecnologia |
-|-----------|------------|
-| Framework | Nuxt 4, Vue 3.5, TypeScript |
-| UI | Tailwind CSS 4, shadcn-vue |
-| State | Pinia |
-| Validação | Zod, VeeValidate |
-| Segurança | nuxt-security, nuxt-csurf, JWT |
+| Categoria | Tecnologia                          |
+| --------- | ----------------------------------- |
+| Framework | Nuxt 4, Vue 3.5, TypeScript         |
+| UI        | Tailwind CSS 4, shadcn-vue          |
+| State     | Pinia                               |
+| Validação | Zod, VeeValidate                    |
+| Segurança | nuxt-security, nuxt-csurf, JWT      |
 | Qualidade | ESLint, Prettier, Husky, Commitlint |
-| Testes | Vitest, Playwright |
+| Testes    | Vitest, Playwright                  |
 
 ## Início Rápido
 
@@ -85,6 +85,7 @@ npm run test:e2e     # Testes E2E (Playwright)
 ## Qualidade de Código
 
 O projeto utiliza ferramentas de qualidade pré-configuradas:
+
 - **ESLint** - Linting (módulo oficial @nuxt/eslint)
 - **Prettier** - Formatação
 - **Husky** - Git hooks
@@ -107,10 +108,10 @@ refactor: refatoração
 chore: tarefas de manutenção
 ```
 
-
 ## Testes
 
 Configuração completa para testes:
+
 - **Vitest** - Testes unitários e de integração
 - **Playwright** - Testes E2E (end-to-end)
 - **Testing Library** - Testes de componentes

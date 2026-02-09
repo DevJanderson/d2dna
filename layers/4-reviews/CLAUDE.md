@@ -34,26 +34,31 @@ layers/4-reviews/
 
 ## Endpoints BFF
 
-| Rota | Método | API Externa |
-|------|--------|-------------|
-| `/api/review` | GET | `GET /api/v1/review/` |
-| `/api/review/registro` | POST | `POST /api/v1/review/registro` |
-| `/api/review/relatorio` | GET | `GET /api/v1/review/relatorio` |
-| `/api/review/estatisticas` | GET | `GET /api/v1/review/estatisticas` |
-| `/api/review/historico/:uuid` | GET | `GET /api/v1/review/historico/:uuid` |
-| `/api/review/reverter/:id` | POST | `POST /api/v1/review/reverter/:id` |
+| Rota                          | Método | API Externa                          |
+| ----------------------------- | ------ | ------------------------------------ |
+| `/api/review`                 | GET    | `GET /api/v1/review/`                |
+| `/api/review/registro`        | POST   | `POST /api/v1/review/registro`       |
+| `/api/review/relatorio`       | GET    | `GET /api/v1/review/relatorio`       |
+| `/api/review/estatisticas`    | GET    | `GET /api/v1/review/estatisticas`    |
+| `/api/review/historico/:uuid` | GET    | `GET /api/v1/review/historico/:uuid` |
+| `/api/review/reverter/:id`    | POST   | `POST /api/v1/review/reverter/:id`   |
 
 ## Páginas
 
-| Rota | Descrição |
-|------|-----------|
-| `/app/reviews` | Lista de clientes com filtros e paginação cursor |
-| `/app/reviews/:uuid` | Detalhe do cliente com dados, histórico e ações |
+| Rota                 | Descrição                                        |
+| -------------------- | ------------------------------------------------ |
+| `/app/reviews`       | Lista de clientes com filtros e paginação cursor |
+| `/app/reviews/:uuid` | Detalhe do cliente com dados, histórico e ações  |
 
 ## Tipos Kubb
 
 ```typescript
-import type { ReviewSchema, ReviewCreateSchema, PaginatedResponseReviewSchema, PaginationMeta } from '~/generated/tucuxi/types'
+import type {
+  ReviewSchema,
+  ReviewCreateSchema,
+  PaginatedResponseReviewSchema,
+  PaginationMeta
+} from '~/generated/tucuxi/types'
 import { reviewCreateSchemaSchema } from '~/generated/tucuxi/zod'
 ```
 

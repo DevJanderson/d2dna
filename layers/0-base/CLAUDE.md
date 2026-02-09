@@ -45,26 +45,27 @@ layers/0-base/
 
 ## Responsabilidades
 
-| Item | Descrição |
-|------|-----------|
-| `app.vue` | Root component com `<NuxtLayout>` e `<NuxtPage>` |
-| `error.vue` | Página de erro global |
-| `main.css` | Tailwind v4, variáveis CSS, estilos MX (scanlines, cursor-blink) |
-| `components/ui/` | Componentes shadcn-vue (primitivos de UI) |
-| `components/common/` | Componentes globais reutilizáveis |
-| `Desktop.vue`, `AppWindow*.vue`, `AppDock.vue` | Sistema de janelas |
-| `layouts/default.vue` | Layout padrão da aplicação |
-| `layouts/desktop.vue` | Layout com dock para workspace |
-| `composables/useWindow*.ts` | Lógica de janelas (drag, resize, snap) |
-| `types/window.ts` | Tipos do sistema de janelas |
-| `utils/` | Funções utilitárias (cn, formatters) |
-| `shared/types/` | Tipos TypeScript compartilhados |
+| Item                                           | Descrição                                                        |
+| ---------------------------------------------- | ---------------------------------------------------------------- |
+| `app.vue`                                      | Root component com `<NuxtLayout>` e `<NuxtPage>`                 |
+| `error.vue`                                    | Página de erro global                                            |
+| `main.css`                                     | Tailwind v4, variáveis CSS, estilos MX (scanlines, cursor-blink) |
+| `components/ui/`                               | Componentes shadcn-vue (primitivos de UI)                        |
+| `components/common/`                           | Componentes globais reutilizáveis                                |
+| `Desktop.vue`, `AppWindow*.vue`, `AppDock.vue` | Sistema de janelas                                               |
+| `layouts/default.vue`                          | Layout padrão da aplicação                                       |
+| `layouts/desktop.vue`                          | Layout com dock para workspace                                   |
+| `composables/useWindow*.ts`                    | Lógica de janelas (drag, resize, snap)                           |
+| `types/window.ts`                              | Tipos do sistema de janelas                                      |
+| `utils/`                                       | Funções utilitárias (cn, formatters)                             |
+| `shared/types/`                                | Tipos TypeScript compartilhados                                  |
 
 ## Design MX (Machine Experience)
 
 Estilos globais do design MX ficam nesta layer (CSS, fontes). Componentes da home foram movidos para `layers/2-home/`.
 
 ### z-index para scanlines
+
 O efeito scanlines usa `z-index: 10`. Para elementos ficarem **acima** do efeito (sem as linhas), adicione `relative z-20`:
 
 ```vue
@@ -74,6 +75,7 @@ O efeito scanlines usa `z-index: 10`. Para elementos ficarem **acima** do efeito
 ```
 
 ### Espaçamento (8pt Grid)
+
 - Entre seções: 48-64px (Tailwind 12-16)
 - Dentro de seções: 32px (Tailwind 8)
 - Entre elementos: 24px (Tailwind 6)

@@ -30,6 +30,7 @@ layers/2-home/
 ## Design MX (Machine Experience)
 
 ### Elementos visuais
+
 - **ASCII Art Tucuxi**: Logo em blocos Unicode (estilo █████▄)
 - **Terminal interativo**: Typewriter com cenários de uso
 - **Cursor piscando**: Classe `.terminal-cursor` no terminal
@@ -37,14 +38,15 @@ layers/2-home/
 - **Fonte mono**: Space Mono para estética terminal
 
 ### Cores por profissão (equipe)
-| Cargo | Cor |
-|-------|-----|
-| CEO & Dev | green |
-| CSO | blue |
-| Consultor | amber |
-| Bioinformata | fuchsia |
-| Data Engineer | indigo |
-| Frontend & DevOps | orange |
+
+| Cargo             | Cor     |
+| ----------------- | ------- |
+| CEO & Dev         | green   |
+| CSO               | blue    |
+| Consultor         | amber   |
+| Bioinformata      | fuchsia |
+| Data Engineer     | indigo  |
+| Frontend & DevOps | orange  |
 
 ## Prioridade
 
