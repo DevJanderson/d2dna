@@ -4,7 +4,7 @@
  * Dados completos + histórico + ações (aprovar/rejeitar/corrigir)
  */
 import type { ReviewCreateSchema } from '~/layers/4-reviews/app/composables/types'
-import { ArrowLeft } from 'lucide-vue-next'
+import { ArrowLeft, AlertCircle } from 'lucide-vue-next'
 
 definePageMeta({
   layout: 'desktop',
@@ -55,13 +55,16 @@ async function handleRevert(id: number) {
     <div class="mx-auto flex max-w-7xl flex-col gap-5">
       <!-- Header -->
       <div class="flex items-center gap-3">
-        <Button variant="ghost" size="default" class="font-mono text-sm" @click="router.push('/app/reviews')">
+        <Button
+          variant="ghost"
+          size="default"
+          class="font-mono text-sm"
+          @click="router.push('/app/reviews')"
+        >
           <ArrowLeft class="mr-1.5 h-4 w-4" />
           Voltar
         </Button>
-        <h1 class="font-mono text-xl font-semibold">
-          &gt; review: {{ review?.nome || '...' }}_
-        </h1>
+        <h1 class="font-mono text-xl font-semibold">&gt; review: {{ review?.nome || '...' }}_</h1>
       </div>
 
       <div v-if="!review" class="py-10 text-center font-mono text-sm text-muted-foreground">
@@ -125,9 +128,7 @@ async function handleRevert(id: number) {
 
           <!-- Ações (sidebar direita) -->
           <div class="rounded-lg border bg-card p-5">
-            <h2 class="mb-4 font-mono text-sm font-semibold text-muted-foreground">
-              &gt; ação_
-            </h2>
+            <h2 class="mb-4 font-mono text-sm font-semibold text-muted-foreground">&gt; ação_</h2>
             <ReviewActions
               :uuid-cliente="review.uuid_cliente"
               :is-loading="reviewStore.isLoadingAction"
@@ -137,9 +138,11 @@ async function handleRevert(id: number) {
         </div>
       </template>
 
-      <div v-if="reviewStore.error" class="font-mono text-sm text-destructive">
-        [ERRO] {{ reviewStore.error }}
-      </div>
+      <Alert v-if="reviewStore.error" variant="destructive">
+        <AlertCircle class="h-4 w-4" />
+        <AlertTitle>Erro</AlertTitle>
+        <AlertDescription class="font-mono">{{ reviewStore.error }}</AlertDescription>
+      </Alert>
     </div>
   </div>
 </template>

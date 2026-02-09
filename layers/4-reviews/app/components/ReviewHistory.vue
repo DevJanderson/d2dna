@@ -19,6 +19,15 @@ const emit = defineEmits<{
   revert: [id: number]
 }>()
 
+const confirmRevertId = ref<number | null>(null)
+
+function confirmRevert() {
+  if (confirmRevertId.value !== null) {
+    emit('revert', confirmRevertId.value)
+    confirmRevertId.value = null
+  }
+}
+
 function statusClass(status?: string | null): string {
   switch (status) {
     case 'aprovado':
@@ -70,11 +79,30 @@ function statusClass(status?: string | null): string {
           class="ml-2 h-7 w-7 shrink-0 p-0"
           title="Reverter revisão"
           :disabled="isLoading"
-          @click="emit('revert', item.id)"
+          @click="confirmRevertId = item.id"
         >
           <RotateCcw class="h-4 w-4" />
         </Button>
       </div>
     </div>
+    <Dialog
+      :open="confirmRevertId !== null"
+      @update:open="
+        val => {
+          if (!val) confirmRevertId = null
+        }
+      "
+    >
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Reverter revisão?</DialogTitle>
+          <DialogDescription>Esta ação vai desfazer a revisão. Deseja continuar?</DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button variant="outline" @click="confirmRevertId = null">Cancelar</Button>
+          <Button variant="destructive" @click="confirmRevert">Reverter</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   </div>
 </template>

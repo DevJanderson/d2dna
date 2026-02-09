@@ -45,9 +45,7 @@ const emit = defineEmits<{
         v-else
         :key="review.id"
         class="flex w-full items-start gap-3 rounded-lg border p-3.5 text-left transition-colors"
-        :class="selectedId === review.id
-          ? 'border-primary bg-primary/5'
-          : 'hover:bg-muted/50'"
+        :class="selectedId === review.id ? 'border-primary bg-primary/5' : 'hover:bg-muted/50'"
         @click="emit('select', review)"
       >
         <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-muted">
@@ -56,12 +54,13 @@ const emit = defineEmits<{
         <div class="min-w-0 flex-1">
           <div class="flex items-center justify-between gap-2">
             <p class="truncate text-sm font-medium">{{ review.nome }}</p>
-            <span
-              class="shrink-0 rounded-full px-2.5 py-1 font-mono text-xs font-medium"
+            <Badge
+              variant="outline"
+              class="shrink-0 font-mono text-xs"
               :class="statusColor(review.status)"
             >
               {{ statusLabel(review.status) }}
-            </span>
+            </Badge>
           </div>
           <div class="mt-1 flex items-center gap-3 font-mono text-xs text-muted-foreground">
             <span>{{ formatDate(review.data_nascimento) }}</span>
@@ -70,10 +69,7 @@ const emit = defineEmits<{
             <span v-else-if="review.cns">CNS {{ review.cns }}</span>
             <span v-if="review.id_origem">org:{{ review.id_origem }}</span>
           </div>
-          <p
-            v-if="review.obs_review"
-            class="mt-1.5 truncate text-xs text-muted-foreground/70"
-          >
+          <p v-if="review.obs_review" class="mt-1.5 truncate text-xs text-muted-foreground/70">
             {{ review.obs_review }}
           </p>
         </div>

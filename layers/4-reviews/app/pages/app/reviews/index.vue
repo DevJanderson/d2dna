@@ -4,7 +4,7 @@
  * Stats + filtros + split view (cards | timeline)
  */
 import type { ReviewSchema } from '~/layers/4-reviews/app/composables/types'
-import { FileText } from 'lucide-vue-next'
+import { FileText, AlertCircle } from 'lucide-vue-next'
 
 definePageMeta({
   layout: 'desktop',
@@ -26,7 +26,10 @@ function openRelatorio() {
     component: defineAsyncComponent(
       () => import('~/layers/4-reviews/app/components/ReviewRelatorio.vue')
     ),
-    position: { x: Math.round((window.innerWidth - w) / 2), y: Math.round((window.innerHeight - h) / 2) },
+    position: {
+      x: Math.round((window.innerWidth - w) / 2),
+      y: Math.round((window.innerHeight - h) / 2)
+    },
     size: { width: w, height: h }
   })
 }
@@ -105,10 +108,7 @@ function handleAction() {
 
         <!-- Timeline (direita) -->
         <div class="rounded-lg border bg-card">
-          <div
-            v-if="!reviewStore.selectedReview"
-            class="flex h-full items-center justify-center"
-          >
+          <div v-if="!reviewStore.selectedReview" class="flex h-full items-center justify-center">
             <p class="font-mono text-sm text-muted-foreground">
               Selecione um cliente para ver a timeline
             </p>
@@ -125,9 +125,11 @@ function handleAction() {
         </div>
       </div>
 
-      <div v-if="reviewStore.error" class="font-mono text-sm text-destructive">
-        [ERRO] {{ reviewStore.error }}
-      </div>
+      <Alert v-if="reviewStore.error" variant="destructive">
+        <AlertCircle class="h-4 w-4" />
+        <AlertTitle>Erro</AlertTitle>
+        <AlertDescription class="font-mono">{{ reviewStore.error }}</AlertDescription>
+      </Alert>
     </div>
   </div>
 </template>

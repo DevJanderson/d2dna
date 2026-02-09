@@ -1,9 +1,5 @@
-import type {
-  ReviewSchema,
-  ReviewCreateSchema,
-  ReviewStats,
-  PaginationMeta
-} from './types'
+import type { ReviewSchema, ReviewCreateSchema, ReviewStats, PaginationMeta } from './types'
+import { toast } from 'vue-sonner'
 
 interface ReviewFilters {
   nome?: string | null
@@ -95,12 +91,14 @@ export const useReviewStore = defineStore('review', () => {
 
     try {
       await api.registro(body)
+      toast.success('Review registrado com sucesso')
       // Recarrega a lista após submissão
       await fetchReviews()
       return true
     } catch (e: unknown) {
       const err = e as { data?: { message?: string } }
       error.value = err.data?.message || 'Erro ao registrar review'
+      toast.error(error.value)
       return false
     } finally {
       isLoadingAction.value = false
@@ -147,6 +145,7 @@ export const useReviewStore = defineStore('review', () => {
 
     try {
       await api.reverter(id)
+      toast.success('Revisão revertida com sucesso')
       // Recarrega histórico do cliente selecionado
       if (selectedReview.value) {
         await fetchHistory(selectedReview.value.uuid_cliente)
@@ -155,6 +154,7 @@ export const useReviewStore = defineStore('review', () => {
     } catch (e: unknown) {
       const err = e as { data?: { message?: string } }
       error.value = err.data?.message || 'Erro ao reverter review'
+      toast.error(error.value)
       return false
     } finally {
       isLoadingAction.value = false

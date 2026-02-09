@@ -21,6 +21,15 @@ const emit = defineEmits<{
   action: []
 }>()
 
+const confirmRevertId = ref<number | null>(null)
+
+function confirmRevert() {
+  if (confirmRevertId.value !== null) {
+    emit('revert', confirmRevertId.value)
+    confirmRevertId.value = null
+  }
+}
+
 function statusIcon(status?: string | null) {
   switch (status) {
     case 'aprovado':
@@ -39,7 +48,9 @@ function statusIcon(status?: string | null) {
   <div class="flex h-full flex-col overflow-auto p-5">
     <!-- Dados do cliente -->
     <div class="mb-5">
-      <h3 class="mb-3 font-mono text-xs font-semibold text-muted-foreground">&gt; dados_cliente_</h3>
+      <h3 class="mb-3 font-mono text-xs font-semibold text-muted-foreground">
+        &gt; dados_cliente_
+      </h3>
       <div class="grid grid-cols-3 gap-x-5 gap-y-3">
         <div>
           <span class="font-mono text-xs text-muted-foreground">Nome</span>
@@ -87,11 +98,7 @@ function statusIcon(status?: string | null) {
     <div class="flex-1">
       <div class="mb-4 flex items-center justify-between">
         <h3 class="font-mono text-xs font-semibold text-muted-foreground">&gt; timeline_</h3>
-        <Button
-          size="default"
-          class="h-8 font-mono text-sm"
-          @click="emit('action')"
-        >
+        <Button size="default" class="h-8 font-mono text-sm" @click="emit('action')">
           Nova ação
         </Button>
       </div>
@@ -109,11 +116,7 @@ function statusIcon(status?: string | null) {
 
       <!-- Eventos da timeline -->
       <div v-else class="relative space-y-0">
-        <div
-          v-for="(item, index) in history"
-          :key="item.id"
-          class="relative flex gap-4 pb-6"
-        >
+        <div v-for="(item, index) in history" :key="item.id" class="relative flex gap-4 pb-6">
           <!-- Linha vertical -->
           <div class="flex flex-col items-center">
             <div
@@ -142,20 +145,36 @@ function statusIcon(status?: string | null) {
                 size="sm"
                 class="h-7 w-7 shrink-0 p-0 text-muted-foreground hover:text-foreground"
                 title="Reverter revisão"
-                @click="emit('revert', item.id)"
+                @click="confirmRevertId = item.id"
               >
                 <RotateCcw class="h-4 w-4" />
               </Button>
             </div>
-            <p
-              v-if="item.obs_review"
-              class="mt-1 text-sm text-muted-foreground"
-            >
+            <p v-if="item.obs_review" class="mt-1 text-sm text-muted-foreground">
               {{ item.obs_review }}
             </p>
           </div>
         </div>
       </div>
     </div>
+    <Dialog
+      :open="confirmRevertId !== null"
+      @update:open="
+        val => {
+          if (!val) confirmRevertId = null
+        }
+      "
+    >
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Reverter revisão?</DialogTitle>
+          <DialogDescription>Esta ação vai desfazer a revisão. Deseja continuar?</DialogDescription>
+        </DialogHeader>
+        <DialogFooter>
+          <Button variant="outline" @click="confirmRevertId = null">Cancelar</Button>
+          <Button variant="destructive" @click="confirmRevert">Reverter</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   </div>
 </template>
