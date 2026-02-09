@@ -10,9 +10,7 @@
       <p class="text-xs text-muted-foreground/60 font-mono">
         &copy; {{ new Date().getFullYear() }} D2DNA
       </p>
-      <p class="text-xs text-muted-foreground/40 font-mono">
-        v1.0
-      </p>
+      <p class="text-xs text-muted-foreground/40 font-mono">v1.0</p>
     </div>
   </footer>
 </template>

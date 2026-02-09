@@ -6,12 +6,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
 
   // Nuxt Layers - ordem de prioridade (último sobrescreve)
-  extends: [
-    './layers/0-base',
-    './layers/2-home',
-    './layers/3-auth',
-    './layers/4-reviews'
-  ],
+  extends: ['./layers/0-base', './layers/2-home', './layers/3-auth', './layers/4-reviews'],
 
   // Performance - Experimental features
   experimental: {
@@ -45,7 +40,10 @@ export default defineNuxtConfig({
         { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         { rel: 'preconnect', href: 'https://fonts.gstatic.com', crossorigin: '' },
-        { rel: 'stylesheet', href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap' }
+        {
+          rel: 'stylesheet',
+          href: 'https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap'
+        }
       ]
     }
   },
@@ -74,7 +72,8 @@ export default defineNuxtConfig({
   // Security - Headers e proteções
   security: {
     headers: {
-      crossOriginEmbedderPolicy: process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp',
+      crossOriginEmbedderPolicy:
+        process.env.NODE_ENV === 'development' ? 'unsafe-none' : 'require-corp',
       contentSecurityPolicy:
         process.env.NODE_ENV === 'development'
           ? false
@@ -133,7 +132,7 @@ export default defineNuxtConfig({
   runtimeConfig: {
     // Public (exposed to client)
     public: {
-      apiBaseUrl: import.meta.env.API_BASE_URL || '/api',
+      apiBaseUrl: import.meta.env.API_BASE_URL || '/api'
     }
   },
 
@@ -147,7 +146,7 @@ export default defineNuxtConfig({
       // Limite para inline de assets (4kb)
       assetsInlineLimit: 4096
     }
-  },
+  }
 
   // CSS global está em layers/0-base/
 })

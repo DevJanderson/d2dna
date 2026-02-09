@@ -12,7 +12,7 @@ interface RefreshResponse {
   token_type: string
 }
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const refreshToken = getRefreshToken(event)
 
   if (!refreshToken) {

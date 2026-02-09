@@ -21,9 +21,7 @@ vi.mock('~/layers/4-reviews/app/composables/useReviewApi', () => ({
 }))
 
 // Import after mocking
-const { useReviewStore } = await import(
-  '~/layers/4-reviews/app/composables/useReviewStore'
-)
+const { useReviewStore } = await import('~/layers/4-reviews/app/composables/useReviewStore')
 
 // Helpers
 function createMockReview(overrides = {}) {
@@ -106,15 +104,17 @@ describe('useReviewStore', () => {
       await store.fetchReviews()
 
       expect(store.reviews).toEqual(reviews)
-      expect(store.pagination).toEqual(expect.objectContaining({
-        has_next: false,
-        has_previous: false
-      }))
+      expect(store.pagination).toEqual(
+        expect.objectContaining({
+          has_next: false,
+          has_previous: false
+        })
+      )
     })
 
     it('deve setar isLoadingReviews durante carregamento', async () => {
       mockList.mockImplementation(
-        () => new Promise((resolve) => setTimeout(() => resolve(createPaginatedResponse([])), 50))
+        () => new Promise(resolve => setTimeout(() => resolve(createPaginatedResponse([])), 50))
       )
 
       const store = useReviewStore()
@@ -134,10 +134,12 @@ describe('useReviewStore', () => {
       store.filters = { nome: 'João', cpf: '123.456.789-00' }
       await store.fetchReviews()
 
-      expect(mockList).toHaveBeenCalledWith(expect.objectContaining({
-        nome: 'João',
-        cpf: '123.456.789-00'
-      }))
+      expect(mockList).toHaveBeenCalledWith(
+        expect.objectContaining({
+          nome: 'João',
+          cpf: '123.456.789-00'
+        })
+      )
     })
 
     it('deve enviar cursor para paginação', async () => {
@@ -146,9 +148,11 @@ describe('useReviewStore', () => {
       const store = useReviewStore()
       await store.fetchReviews('cursor-abc')
 
-      expect(mockList).toHaveBeenCalledWith(expect.objectContaining({
-        cursor: 'cursor-abc'
-      }))
+      expect(mockList).toHaveBeenCalledWith(
+        expect.objectContaining({
+          cursor: 'cursor-abc'
+        })
+      )
     })
 
     it('deve setar erro quando API falha', async () => {
@@ -193,10 +197,12 @@ describe('useReviewStore', () => {
       await store.setFilters({ nome: 'Maria', cns: '123456' })
 
       expect(store.filters).toEqual({ nome: 'Maria', cns: '123456' })
-      expect(mockList).toHaveBeenCalledWith(expect.objectContaining({
-        nome: 'Maria',
-        cns: '123456'
-      }))
+      expect(mockList).toHaveBeenCalledWith(
+        expect.objectContaining({
+          nome: 'Maria',
+          cns: '123456'
+        })
+      )
     })
   })
 
@@ -221,12 +227,16 @@ describe('useReviewStore', () => {
       const store = useReviewStore()
       await store.fetchReviews()
 
-      mockList.mockResolvedValueOnce(createPaginatedResponse([createMockReview({ id: 2 })], false, true))
+      mockList.mockResolvedValueOnce(
+        createPaginatedResponse([createMockReview({ id: 2 })], false, true)
+      )
       await store.nextPage()
 
-      expect(mockList).toHaveBeenLastCalledWith(expect.objectContaining({
-        cursor: 'next-cursor'
-      }))
+      expect(mockList).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          cursor: 'next-cursor'
+        })
+      )
     })
 
     it('não deve avançar página quando has_next é false', async () => {
@@ -251,9 +261,11 @@ describe('useReviewStore', () => {
       mockList.mockResolvedValueOnce(createPaginatedResponse([]))
       await store.prevPage()
 
-      expect(mockList).toHaveBeenLastCalledWith(expect.objectContaining({
-        cursor: 'prev-cursor'
-      }))
+      expect(mockList).toHaveBeenLastCalledWith(
+        expect.objectContaining({
+          cursor: 'prev-cursor'
+        })
+      )
     })
 
     it('não deve voltar página quando has_previous é false', async () => {
@@ -283,19 +295,19 @@ describe('useReviewStore', () => {
       })
 
       expect(result).toBe(true)
-      expect(mockRegistro).toHaveBeenCalledWith(expect.objectContaining({
-        uuid_cliente: 'uuid-abc',
-        acao: 'aprovação',
-        status: 'aprovado'
-      }))
+      expect(mockRegistro).toHaveBeenCalledWith(
+        expect.objectContaining({
+          uuid_cliente: 'uuid-abc',
+          acao: 'aprovação',
+          status: 'aprovado'
+        })
+      )
       // Deve recarregar a lista após submissão
       expect(mockList).toHaveBeenCalled()
     })
 
     it('deve setar isLoadingAction durante submissão', async () => {
-      mockRegistro.mockImplementation(
-        () => new Promise((resolve) => setTimeout(resolve, 50))
-      )
+      mockRegistro.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 50)))
       mockList.mockResolvedValue(createPaginatedResponse([]))
 
       const store = useReviewStore()
@@ -389,7 +401,7 @@ describe('useReviewStore', () => {
 
     it('deve setar isLoadingHistory durante carregamento', async () => {
       mockHistorico.mockImplementation(
-        () => new Promise((resolve) => setTimeout(() => resolve(createPaginatedResponse([])), 50))
+        () => new Promise(resolve => setTimeout(() => resolve(createPaginatedResponse([])), 50))
       )
 
       const store = useReviewStore()
@@ -440,9 +452,7 @@ describe('useReviewStore', () => {
     })
 
     it('deve setar isLoadingAction durante reversão', async () => {
-      mockReverter.mockImplementation(
-        () => new Promise((resolve) => setTimeout(resolve, 50))
-      )
+      mockReverter.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 50)))
 
       const store = useReviewStore()
       store.selectedReview = createMockReview() as any

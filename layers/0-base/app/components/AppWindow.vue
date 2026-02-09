@@ -273,7 +273,7 @@ function handleTitleBarMouseDown(event: MouseEvent) {
     document.addEventListener('mousemove', trackMouse)
 
     // Configurar para restaurar quando mover além do threshold
-    const unwatch = watch(drag.hasMovedPastThreshold, (moved) => {
+    const unwatch = watch(drag.hasMovedPastThreshold, moved => {
       if (moved && snap.isSnapped.value) {
         document.removeEventListener('mousemove', trackMouse)
         snap.restoreFromSnap(lastMouseEvent)

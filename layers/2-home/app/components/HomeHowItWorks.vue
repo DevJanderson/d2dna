@@ -23,7 +23,7 @@ const steps: Step[] = [
     description:
       'Conecte suas bases de dados — CSV, Excel ou API. O módulo Tucuxi-BW elimina duplicatas internas antes do cruzamento.',
     detail: 'Suporte a milhões de registros com uso mínimo de memória (0.4 GB)',
-    icon: CloudDownload,
+    icon: CloudDownload
   },
   {
     number: '02',
@@ -31,7 +31,7 @@ const steps: Step[] = [
     description:
       'Cada registro é convertido em uma sequência de nucleotídeos. Erros de digitação são tratados como mutações naturais de DNA.',
     detail: 'A codificação muda a cada execução, criptografando os dados automaticamente',
-    icon: Dna,
+    icon: Dna
   },
   {
     number: '03',
@@ -39,7 +39,7 @@ const steps: Step[] = [
     description:
       'BLASTn alinha as sequências e Random Forest classifica os matches — tolerando variações de nome, data e grafia.',
     detail: '5.69x mais rápido que o estado da arte com 98%+ de acurácia',
-    icon: GitCompareArrows,
+    icon: GitCompareArrows
   },
   {
     number: '04',
@@ -47,8 +47,8 @@ const steps: Step[] = [
     description:
       'Um cadastro consolidado e rastreável. Casos na zona cinzenta vão para curadoria humana via Tucuxi-Tail.',
     detail: 'Score > 95% resolve automaticamente — só o incerto precisa de revisão',
-    icon: UserCheck,
-  },
+    icon: UserCheck
+  }
 ]
 
 const sectionRef = ref<HTMLElement | null>(null)
@@ -56,12 +56,12 @@ const isVisible = ref(false)
 
 useIntersectionObserver(
   sectionRef,
-  (entries) => {
+  entries => {
     if (entries[0]?.isIntersecting) {
       isVisible.value = true
     }
   },
-  { threshold: 0.15 },
+  { threshold: 0.15 }
 )
 
 const { prefersReducedMotion } = usePrefersReducedMotion()
@@ -82,15 +82,20 @@ function stepDelay(index: number): string {
     <h2
       id="how-it-works-heading"
       class="text-2xl font-bold text-center mb-4 text-foreground transition-all duration-700 ease-out"
-      :class="isVisible || prefersReducedMotion ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+      :class="
+        isVisible || prefersReducedMotion ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+      "
     >
       Como Funciona
     </h2>
     <p
       class="text-center text-muted-foreground mb-12 text-sm max-w-xl mx-auto transition-all duration-700 ease-out delay-100"
-      :class="isVisible || prefersReducedMotion ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'"
+      :class="
+        isVisible || prefersReducedMotion ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+      "
     >
-      Bioinformática aplicada a record linkage. De dados fragmentados a um cadastro único em 4 etapas.
+      Bioinformática aplicada a record linkage. De dados fragmentados a um cadastro único em 4
+      etapas.
     </p>
 
     <ol class="how-steps">

@@ -10,12 +10,12 @@ const isVisible = ref(false)
 
 useIntersectionObserver(
   sectionRef,
-  (entries) => {
+  entries => {
     if (entries[0]?.isIntersecting) {
       isVisible.value = true
     }
   },
-  { threshold: 0.1 },
+  { threshold: 0.1 }
 )
 
 const teamMembers = [
@@ -66,8 +66,12 @@ const teamMembers = [
     class="max-w-5xl mx-auto px-6 py-12 md:py-20 transition-all duration-700 ease-out"
     :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
   >
-    <h2 id="team-heading" class="text-2xl font-bold text-foreground mb-4 text-center">Quem Está por Trás</h2>
-    <p class="text-center text-muted-foreground mb-10 text-sm">Quem fez ciência, constrói a tecnologia.</p>
+    <h2 id="team-heading" class="text-2xl font-bold text-foreground mb-4 text-center">
+      Quem Está por Trás
+    </h2>
+    <p class="text-center text-muted-foreground mb-10 text-sm">
+      Quem fez ciência, constrói a tecnologia.
+    </p>
 
     <!-- Grid de membros -->
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 md:gap-6">

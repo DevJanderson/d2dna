@@ -17,9 +17,7 @@ vi.mock('~/layers/3-auth/app/composables/useAuthApi', () => ({
 }))
 
 // Import after mocking
-const { useAuthStore } = await import(
-  '~/layers/3-auth/app/composables/useAuthStore'
-)
+const { useAuthStore } = await import('~/layers/3-auth/app/composables/useAuthStore')
 
 describe('useAuthStore', () => {
   beforeEach(() => {
@@ -61,9 +59,7 @@ describe('useAuthStore', () => {
     })
 
     it('should set isLoading during login', async () => {
-      mockLogin.mockImplementation(
-        () => new Promise((resolve) => setTimeout(resolve, 100))
-      )
+      mockLogin.mockImplementation(() => new Promise(resolve => setTimeout(resolve, 100)))
 
       const store = useAuthStore()
       const promise = store.login('test@example.com', 'password')

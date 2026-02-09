@@ -27,7 +27,8 @@ function handleSuccess() {
 ██   ██   █████╔╝   ██   ██  ██╔██╗ ██║ ███████║
 ██   ██  ██╔═══╝    ██   ██  ██║╚██╗██║ ██╔══██║
 █████▀   ███████╗   █████▀   ██║ ╚████║ ██║  ██║
-╚════╝   ╚══════╝   ╚════╝   ╚═╝  ╚═══╝ ╚═╝  ╚═╝</pre>
+╚════╝   ╚══════╝   ╚════╝   ╚═╝  ╚═══╝ ╚═╝  ╚═╝</pre
+        >
 
         <div class="space-y-2">
           <h1 class="text-2xl font-bold tracking-wider text-foreground">
@@ -40,7 +41,9 @@ function handleSuccess() {
       </header>
 
       <!-- Card de Login -->
-      <div class="relative z-20 bg-white dark:bg-card rounded-lg border border-border/50 shadow-sm p-6 space-y-4">
+      <div
+        class="relative z-20 bg-white dark:bg-card rounded-lg border border-border/50 shadow-sm p-6 space-y-4"
+      >
         <p class="text-xs text-muted-foreground text-center">
           <span class="text-muted-foreground/50">&gt;</span> autenticacao_requerida
         </p>
@@ -56,10 +59,7 @@ function handleSuccess() {
           >
             <span class="text-muted-foreground/50">&gt;</span> esqueci_senha
           </NuxtLink>
-          <NuxtLink
-            to="/"
-            class="text-muted-foreground hover:text-primary transition-colors"
-          >
+          <NuxtLink to="/" class="text-muted-foreground hover:text-primary transition-colors">
             <span class="text-muted-foreground/50">&gt;</span> voltar
           </NuxtLink>
         </div>
@@ -68,7 +68,8 @@ function handleSuccess() {
       <!-- Footer -->
       <footer class="text-center">
         <p class="text-xs text-muted-foreground/70">
-          <span class="text-muted-foreground/50">&gt;</span> copyright: {{ new Date().getFullYear() }} D2DNA
+          <span class="text-muted-foreground/50">&gt;</span> copyright:
+          {{ new Date().getFullYear() }} D2DNA
         </p>
       </footer>
     </div>

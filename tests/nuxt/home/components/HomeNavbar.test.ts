@@ -16,9 +16,7 @@ vi.mock('~/layers/3-auth/app/composables/useAuthStore', () => ({
   useAuthStore: () => mockStore
 }))
 
-const HomeNavbar = (
-  await import('~/layers/2-home/app/components/HomeNavbar.vue')
-).default
+const HomeNavbar = (await import('~/layers/2-home/app/components/HomeNavbar.vue')).default
 
 describe('HomeNavbar', () => {
   beforeEach(() => {

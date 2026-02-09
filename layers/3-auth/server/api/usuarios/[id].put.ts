@@ -4,7 +4,7 @@
  */
 import { authFetch } from '../../utils/auth-api'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const id = getRouterParam(event, 'id')
   const body = await readBody(event)
 

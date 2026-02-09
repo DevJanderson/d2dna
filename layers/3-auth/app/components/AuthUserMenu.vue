@@ -13,10 +13,7 @@ async function handleLogout() {
   <DropdownMenu v-if="auth.isAuthenticated">
     <DropdownMenuTrigger as-child>
       <button type="button" class="rounded-full p-1 hover:bg-accent focus:outline-none">
-        <div
-          v-if="auth.user?.foto_perfil"
-          class="h-8 w-8 overflow-hidden rounded-full"
-        >
+        <div v-if="auth.user?.foto_perfil" class="h-8 w-8 overflow-hidden rounded-full">
           <img
             :src="auth.user.foto_perfil"
             :alt="auth.user.nome"

@@ -16,9 +16,11 @@ onMounted(() => {
 // SEO: meta tags e Open Graph
 useSeoMeta({
   title: 'Tucuxi — Record Linkage com Bioinformática',
-  description: 'Plataforma de Record Linkage que usa técnicas genômicas para integrar bases de dados com 98%+ de acurácia. 300M+ registros cruzados.',
+  description:
+    'Plataforma de Record Linkage que usa técnicas genômicas para integrar bases de dados com 98%+ de acurácia. 300M+ registros cruzados.',
   ogTitle: 'Tucuxi — Record Linkage com Bioinformática',
-  ogDescription: 'Deduplique bases nacionais em horas, não meses. Algoritmo DNA-encoded com 98%+ de acurácia.',
+  ogDescription:
+    'Deduplique bases nacionais em horas, não meses. Algoritmo DNA-encoded com 98%+ de acurácia.',
   ogType: 'website',
   ogUrl: 'https://tucuxi.d2dna.com',
   ogImage: 'https://d2dna.com/wp-content/uploads/2024/04/og-tucuxi.png',
@@ -37,7 +39,8 @@ useHead({
         '@id': 'https://tucuxi.d2dna.com',
         name: 'Tucuxi',
         url: 'https://tucuxi.d2dna.com',
-        description: 'Plataforma de Record Linkage que usa técnicas genômicas para integrar bases de dados com 98%+ de acurácia',
+        description:
+          'Plataforma de Record Linkage que usa técnicas genômicas para integrar bases de dados com 98%+ de acurácia',
         applicationCategory: 'BusinessApplication',
         operatingSystem: 'Web',
         inLanguage: 'pt-BR',
@@ -54,8 +57,7 @@ useHead({
 
 <template>
   <main
-    class="relative min-h-screen bg-background font-mono
-           [--pattern-fg:oklch(0.59_0.19_241.02)]"
+    class="relative min-h-screen bg-background font-mono [--pattern-fg:oklch(0.59_0.19_241.02)]"
   >
     <!-- Faixas verticais hachuradas -->
     <div
@@ -63,8 +65,12 @@ useHead({
       :class="prefersReducedMotion || isVisible ? 'opacity-100' : 'opacity-0'"
       aria-hidden="true"
     >
-      <div class="absolute inset-y-0 left-0 w-10 -translate-x-px border-x border-x-(--pattern-fg)/5 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] bg-fixed opacity-12" />
-      <div class="absolute inset-y-0 right-0 w-10 translate-x-px border-x border-x-(--pattern-fg)/5 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] bg-fixed opacity-12" />
+      <div
+        class="absolute inset-y-0 left-0 w-10 -translate-x-px border-x border-x-(--pattern-fg)/5 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] bg-fixed opacity-12"
+      />
+      <div
+        class="absolute inset-y-0 right-0 w-10 translate-x-px border-x border-x-(--pattern-fg)/5 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] bg-fixed opacity-12"
+      />
     </div>
 
     <!-- Conteúdo -->

@@ -18,21 +18,21 @@ const stats: Stat[] = [
     value: 300,
     suffix: 'M+',
     label: 'registros cruzados',
-    ascii: '▁▂▃▅▇',
+    ascii: '▁▂▃▅▇'
   },
   {
     value: 5.69,
     suffix: 'x',
     label: 'mais rápido',
     decimals: 2,
-    ascii: '›››››',
+    ascii: '›››››'
   },
   {
     value: 98,
     suffix: '%',
     label: 'acurácia',
     prefix: '>',
-    ascii: '████████░░',
+    ascii: '████████░░'
   },
   {
     value: 0.4,
@@ -59,7 +59,7 @@ function formatValue(current: number, stat: Stat): string {
 }
 
 function showFinalValues() {
-  displayValues.value = stats.map((stat) => formatValue(stat.value, stat))
+  displayValues.value = stats.map(stat => formatValue(stat.value, stat))
 }
 
 let animationFrameId: number | null = null
@@ -81,7 +81,7 @@ onMounted(() => {
     const progress = Math.min(elapsed / DURATION, 1)
     const eased = easeOut(progress)
 
-    displayValues.value = stats.map((stat) => {
+    displayValues.value = stats.map(stat => {
       const current = eased * stat.value
       return formatValue(current, stat)
     })
@@ -222,10 +222,16 @@ const tools = [
           <div class="grid grid-cols-2 gap-6 xl:grid-cols-4">
             <Tooltip v-for="tool in tools" :key="tool.id">
               <TooltipTrigger as-child>
-                <div class="flex h-full cursor-default flex-col overflow-hidden rounded-xl border bg-card shadow-sm">
+                <div
+                  class="flex h-full cursor-default flex-col overflow-hidden rounded-xl border bg-card shadow-sm"
+                >
                   <!-- Área visual com ASCII art -->
-                  <div class="flex h-48 shrink-0 items-center justify-center overflow-hidden rounded-t-xl border-b bg-background">
-                    <pre class="select-none font-mono text-[10px] leading-[1.4] text-primary/50"><template v-for="(line, i) in tool.ascii" :key="i">{{ line }}
+                  <div
+                    class="flex h-48 shrink-0 items-center justify-center overflow-hidden rounded-t-xl border-b bg-background"
+                  >
+                    <pre
+                      class="select-none font-mono text-[10px] leading-[1.4] text-primary/50"
+                    ><template v-for="(line, i) in tool.ascii" :key="i">{{ line }}
 </template></pre>
                   </div>
 

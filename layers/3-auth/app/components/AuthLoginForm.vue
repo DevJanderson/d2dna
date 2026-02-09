@@ -71,16 +71,15 @@ async function handleSubmit() {
     </div>
 
     <!-- Mensagem de erro estilo terminal -->
-    <div v-if="auth.error" class="text-xs font-mono p-3 bg-destructive/10 border border-destructive/30 text-destructive">
+    <div
+      v-if="auth.error"
+      class="text-xs font-mono p-3 bg-destructive/10 border border-destructive/30 text-destructive"
+    >
       <span class="text-destructive/70">[ERRO]</span> {{ auth.error }}
     </div>
 
     <!-- Botão de submit -->
-    <Button
-      type="submit"
-      class="w-full font-mono tracking-wider"
-      :disabled="auth.isLoading"
-    >
+    <Button type="submit" class="w-full font-mono tracking-wider" :disabled="auth.isLoading">
       <Loader2 v-if="auth.isLoading" class="mr-2 h-4 w-4 animate-spin" />
       <span v-if="auth.isLoading">&gt; AUTENTICANDO...</span>
       <span v-else>&gt; AUTENTICAR</span>

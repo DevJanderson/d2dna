@@ -25,7 +25,7 @@ const stats: Stat[] = [
     context:
       'CadÚnico, SUS e bases estaduais reunidos. O maior teste de record linkage já publicado no Brasil.',
     ascii: '▁▂▃▅▇',
-    span: 'md:col-span-2',
+    span: 'md:col-span-2'
   },
   {
     value: 5.69,
@@ -35,7 +35,7 @@ const stats: Stat[] = [
     context:
       'Benchmarkado contra o Febrl, referência mundial. Mesma máquina, mesma base — quase 6x mais veloz.',
     ascii: '›››››',
-    span: '',
+    span: ''
   },
   {
     value: 98,
@@ -45,7 +45,7 @@ const stats: Stat[] = [
     context:
       'Cada match é validado por machine learning. Menos de 2% de erro — auditado com gold standard manual.',
     ascii: '████████░░',
-    span: '',
+    span: ''
   },
   {
     value: 23,
@@ -54,8 +54,8 @@ const stats: Stat[] = [
     context:
       '200 mil pessoas encontradas em 300 milhões de registros — em menos de um dia, num servidor comum. Sem cluster, sem cloud.',
     ascii: '⏱ 23:00',
-    span: 'md:col-span-2',
-  },
+    span: 'md:col-span-2'
+  }
 ]
 
 const DURATION = 1500
@@ -78,7 +78,7 @@ function formatValue(current: number, stat: Stat): string {
 const { prefersReducedMotion: reducedMotionRef } = usePrefersReducedMotion()
 
 function showFinalValues() {
-  displayValues.value = stats.map((stat) => formatValue(stat.value, stat))
+  displayValues.value = stats.map(stat => formatValue(stat.value, stat))
 }
 
 let animationFrameId: number | null = null
@@ -99,7 +99,7 @@ function startCountUp() {
     const progress = Math.min(elapsed / DURATION, 1)
     const eased = easeOut(progress)
 
-    displayValues.value = stats.map((stat) => {
+    displayValues.value = stats.map(stat => {
       const current = eased * stat.value
       return formatValue(current, stat)
     })
@@ -122,7 +122,7 @@ const { stop } = useIntersectionObserver(
       stop()
     }
   },
-  { threshold: 0.2 },
+  { threshold: 0.2 }
 )
 
 onUnmounted(() => {
@@ -145,13 +145,9 @@ onUnmounted(() => {
         v-for="(stat, index) in stats"
         :key="stat.label"
         class="relative overflow-hidden rounded-2xl border border-border/40 bg-card p-6 md:p-8 transition-all duration-500 ease-out"
-        :class="[
-          stat.span,
-          hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6',
-        ]"
+        :class="[stat.span, hasAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6']"
         :style="{
-          transitionDelay:
-            hasAnimated || reducedMotionRef ? '0ms' : `${index * 150}ms`,
+          transitionDelay: hasAnimated || reducedMotionRef ? '0ms' : `${index * 150}ms`
         }"
       >
         <!-- ASCII decorativo -->

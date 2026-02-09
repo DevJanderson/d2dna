@@ -30,7 +30,7 @@ onMounted(() => {
 })
 
 watch(
-  () => windowManager.windows.value.some((w) => w.id === 'welcome'),
+  () => windowManager.windows.value.some(w => w.id === 'welcome'),
   (exists, existed) => {
     if (existed && !exists) {
       localStorage.setItem('welcome-dismissed', '1')

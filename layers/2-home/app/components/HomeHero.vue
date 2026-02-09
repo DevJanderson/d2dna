@@ -16,8 +16,8 @@ const scenarios: TerminalScenario[] = [
       '[info] Convertendo para sequência DNA...',
       '[info] 3 registros em 2 bases (score: 0.997)',
       '',
-      '✓ Registro unificado',
-    ],
+      '✓ Registro unificado'
+    ]
   },
   {
     lines: [
@@ -26,8 +26,8 @@ const scenarios: TerminalScenario[] = [
       '[info] Busca fonética + DNA...',
       '[match] João da Silva Souza (score: 0.943)',
       '',
-      '✓ 1 correspondência encontrada',
-    ],
+      '✓ 1 correspondência encontrada'
+    ]
   },
   {
     lines: [
@@ -36,9 +36,9 @@ const scenarios: TerminalScenario[] = [
       '[warn] 12.847 duplicatas detectadas',
       '[fix] Resolvendo com algoritmo DNA...',
       '',
-      '✓ 12.847/12.847 resolvidas',
-    ],
-  },
+      '✓ 12.847/12.847 resolvidas'
+    ]
+  }
 ]
 
 // Estado do terminal
@@ -108,7 +108,7 @@ onUnmounted(() => {
               ? 'opacity-100'
               : isVisible
                 ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-8',
+                : 'opacity-0 translate-y-8'
           ]"
         >
           <h1
@@ -117,9 +117,7 @@ onUnmounted(() => {
             Registros duplicados custam milhões.<br />
             <span class="text-sky-500 dark:text-sky-400">Bioinformática resolve.</span>
           </h1>
-          <p
-            class="mt-6 max-w-lg font-sans text-lg text-muted-foreground leading-relaxed"
-          >
+          <p class="mt-6 max-w-lg font-sans text-lg text-muted-foreground leading-relaxed">
             O Tucuxi deduplica bases nacionais em horas — não meses.
           </p>
           <div
@@ -129,7 +127,7 @@ onUnmounted(() => {
                 ? 'opacity-100'
                 : isVisible
                   ? 'opacity-100 translate-y-0'
-                  : 'opacity-0 translate-y-4',
+                  : 'opacity-0 translate-y-4'
             ]"
           >
             <a
@@ -149,7 +147,7 @@ onUnmounted(() => {
               ? 'opacity-100'
               : isVisible
                 ? 'opacity-100 translate-y-0'
-                : 'opacity-0 translate-y-8',
+                : 'opacity-0 translate-y-8'
           ]"
           aria-hidden="true"
         >
@@ -167,12 +165,16 @@ onUnmounted(() => {
               <!-- Inner content — margem revela o outer como "borda" -->
               <div class="relative z-1 m-0.75 rounded-[13px] bg-[#09090b]">
                 <!-- Header do terminal -->
-                <div
-                  class="flex items-center gap-2 border-b border-white/8 px-4 py-3"
-                >
-                  <span class="h-2.5 w-2.5 rounded-full bg-zinc-700 group-hover:bg-red-500/80 transition-colors" />
-                  <span class="h-2.5 w-2.5 rounded-full bg-zinc-700 group-hover:bg-yellow-500/80 transition-colors" />
-                  <span class="h-2.5 w-2.5 rounded-full bg-zinc-700 group-hover:bg-green-500/80 transition-colors" />
+                <div class="flex items-center gap-2 border-b border-white/8 px-4 py-3">
+                  <span
+                    class="h-2.5 w-2.5 rounded-full bg-zinc-700 group-hover:bg-red-500/80 transition-colors"
+                  />
+                  <span
+                    class="h-2.5 w-2.5 rounded-full bg-zinc-700 group-hover:bg-yellow-500/80 transition-colors"
+                  />
+                  <span
+                    class="h-2.5 w-2.5 rounded-full bg-zinc-700 group-hover:bg-green-500/80 transition-colors"
+                  />
                   <span class="ml-auto font-mono text-[11px] text-zinc-600">tucuxi v2.0</span>
                 </div>
 
@@ -184,18 +186,13 @@ onUnmounted(() => {
                     class="terminal-line"
                   >
                     <span v-if="line === ''" class="block h-3.5" />
-                    <span
-                      v-else-if="line.startsWith('$')"
-                      class="text-zinc-300"
-                    >{{ line }}</span>
-                    <span
-                      v-else-if="line.startsWith('✓')"
-                      class="font-semibold text-emerald-400"
-                    >{{ line }}</span>
-                    <span
-                      v-else-if="line.startsWith('[warn]')"
-                      class="text-amber-400/90"
-                    >{{ line }}</span>
+                    <span v-else-if="line.startsWith('$')" class="text-zinc-300">{{ line }}</span>
+                    <span v-else-if="line.startsWith('✓')" class="font-semibold text-emerald-400">{{
+                      line
+                    }}</span>
+                    <span v-else-if="line.startsWith('[warn]')" class="text-amber-400/90">{{
+                      line
+                    }}</span>
                     <span
                       v-else-if="
                         line.startsWith('[fix]') ||
@@ -203,14 +200,14 @@ onUnmounted(() => {
                         line.startsWith('[match]')
                       "
                       class="text-sky-400"
-                    >{{ line }}</span>
+                      >{{ line }}</span
+                    >
                     <span v-else class="text-emerald-400/70">{{ line }}</span>
                   </div>
                   <!-- Cursor piscando -->
-                  <span
-                    v-if="showCursor"
-                    class="terminal-cursor inline-block text-emerald-400"
-                  >&#9610;</span>
+                  <span v-if="showCursor" class="terminal-cursor inline-block text-emerald-400"
+                    >&#9610;</span
+                  >
                 </div>
               </div>
             </div>
@@ -249,7 +246,7 @@ onUnmounted(() => {
 .terminal-ghost-bottom {
   z-index: 10;
   top: 28px;
-  transform: scale(0.90);
+  transform: scale(0.9);
   opacity: 0.4;
 }
 

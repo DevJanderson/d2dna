@@ -18,9 +18,8 @@ interface Props {
 const props = defineProps<Props>()
 
 // Buscar conteúdo usando a API do Nuxt Content v3
-const { data: content, status } = await useAsyncData(
-  `content-${props.path}`,
-  () => queryCollection('content').path(props.path).first()
+const { data: content, status } = await useAsyncData(`content-${props.path}`, () =>
+  queryCollection('content').path(props.path).first()
 )
 </script>
 

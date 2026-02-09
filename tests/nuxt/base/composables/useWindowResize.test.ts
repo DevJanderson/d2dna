@@ -4,7 +4,7 @@ import { useWindowResize } from '~/layers/0-base/app/composables/useWindowResize
 
 /** Aguarda o próximo requestAnimationFrame */
 function waitForRaf(): Promise<void> {
-  return new Promise((resolve) => requestAnimationFrame(() => resolve()))
+  return new Promise(resolve => requestAnimationFrame(() => resolve()))
 }
 
 function createMockWindowEl(parentWidth = 1200, parentHeight = 800) {

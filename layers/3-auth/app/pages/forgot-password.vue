@@ -37,9 +37,7 @@ async function handleSubmit() {
     <div class="w-full max-w-sm space-y-6">
       <div class="text-center">
         <h1 class="text-2xl font-bold tracking-tight">Esqueci minha senha</h1>
-        <p class="mt-1 text-sm text-muted-foreground">
-          Digite seu email para receber instrucoes
-        </p>
+        <p class="mt-1 text-sm text-muted-foreground">Digite seu email para receber instrucoes</p>
       </div>
 
       <div class="rounded-lg border bg-card p-6 shadow-sm">

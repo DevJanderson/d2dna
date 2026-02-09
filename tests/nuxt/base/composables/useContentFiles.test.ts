@@ -14,9 +14,7 @@ const { mockUseAsyncData, mockQueryCollection } = vi.hoisted(() => {
 mockNuxtImport('useAsyncData', () => mockUseAsyncData)
 mockNuxtImport('queryCollection', () => mockQueryCollection)
 
-const { useContentFiles } = await import(
-  '~/layers/0-base/app/composables/useContentFiles'
-)
+const { useContentFiles } = await import('~/layers/0-base/app/composables/useContentFiles')
 
 describe('useContentFiles', () => {
   describe('contentTree', () => {
@@ -50,7 +48,12 @@ describe('useContentFiles', () => {
     it('should organize files into folders', () => {
       mockUseAsyncData.mockReturnValue({
         data: ref([
-          { id: '1', title: 'Getting Started', path: '/docs/getting-started', stem: 'getting-started' },
+          {
+            id: '1',
+            title: 'Getting Started',
+            path: '/docs/getting-started',
+            stem: 'getting-started'
+          },
           { id: '2', title: 'API Reference', path: '/docs/api-reference', stem: 'api-reference' },
           { id: '3', title: 'About', path: '/about', stem: 'about' }
         ]),
@@ -137,9 +140,7 @@ describe('useContentFiles', () => {
 
     it('should use path as id fallback', () => {
       mockUseAsyncData.mockReturnValue({
-        data: ref([
-          { title: 'No ID', path: '/no-id', stem: 'no-id' }
-        ]),
+        data: ref([{ title: 'No ID', path: '/no-id', stem: 'no-id' }]),
         status: ref('success'),
         error: ref(null)
       })

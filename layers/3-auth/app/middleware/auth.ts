@@ -5,7 +5,7 @@
  * Uso:
  * definePageMeta({ middleware: 'auth' })
  */
-export default defineNuxtRouteMiddleware(async (to) => {
+export default defineNuxtRouteMiddleware(async to => {
   // Não aplicar na página de login
   if (to.path === '/login') {
     return

@@ -8,9 +8,7 @@ vi.stubGlobal('$fetch', mockFetch)
 vi.stubGlobal('useRequestHeaders', () => ({}))
 
 // Import after mocking
-const { useReviewApi } = await import(
-  '~/layers/4-reviews/app/composables/useReviewApi'
-)
+const { useReviewApi } = await import('~/layers/4-reviews/app/composables/useReviewApi')
 
 describe('useReviewApi', () => {
   beforeEach(() => {
@@ -28,10 +26,13 @@ describe('useReviewApi', () => {
       const api = useReviewApi()
       const result = await api.list()
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/review', expect.objectContaining({
-        params: {},
-        headers: {}
-      }))
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/review',
+        expect.objectContaining({
+          params: {},
+          headers: {}
+        })
+      )
       expect(result).toEqual(mockResponse)
     })
 
@@ -45,9 +46,12 @@ describe('useReviewApi', () => {
       const api = useReviewApi()
       await api.list({ nome: 'Maria', cpf: '123.456.789-00' })
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/review', expect.objectContaining({
-        params: { nome: 'Maria', cpf: '123.456.789-00' }
-      }))
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/review',
+        expect.objectContaining({
+          params: { nome: 'Maria', cpf: '123.456.789-00' }
+        })
+      )
     })
 
     it('deve enviar cursor para paginação', async () => {
@@ -60,9 +64,12 @@ describe('useReviewApi', () => {
       const api = useReviewApi()
       await api.list({ cursor: 'abc123', limit: 25 })
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/review', expect.objectContaining({
-        params: { cursor: 'abc123', limit: 25 }
-      }))
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/review',
+        expect.objectContaining({
+          params: { cursor: 'abc123', limit: 25 }
+        })
+      )
     })
 
     it('deve propagar erro da API', async () => {
@@ -72,9 +79,7 @@ describe('useReviewApi', () => {
       })
 
       const api = useReviewApi()
-      await expect(api.list()).rejects.toEqual(
-        expect.objectContaining({ statusCode: 401 })
-      )
+      await expect(api.list()).rejects.toEqual(expect.objectContaining({ statusCode: 401 }))
     })
   })
 
@@ -92,10 +97,13 @@ describe('useReviewApi', () => {
       const api = useReviewApi()
       const result = await api.registro(body as any)
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/review/registro', expect.objectContaining({
-        method: 'POST',
-        body
-      }))
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/review/registro',
+        expect.objectContaining({
+          method: 'POST',
+          body
+        })
+      )
       expect(result).toEqual(mockResponse)
     })
 
@@ -123,10 +131,13 @@ describe('useReviewApi', () => {
       const api = useReviewApi()
       const result = await api.relatorio()
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/review/relatorio', expect.objectContaining({
-        params: {},
-        headers: {}
-      }))
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/review/relatorio',
+        expect.objectContaining({
+          params: {},
+          headers: {}
+        })
+      )
       expect(result).toEqual(mockResponse)
     })
 
@@ -140,13 +151,16 @@ describe('useReviewApi', () => {
         data_fim: '2025-12-31'
       })
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/review/relatorio', expect.objectContaining({
-        params: {
-          status: 'aprovado',
-          data_inicio: '2025-01-01',
-          data_fim: '2025-12-31'
-        }
-      }))
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/review/relatorio',
+        expect.objectContaining({
+          params: {
+            status: 'aprovado',
+            data_inicio: '2025-01-01',
+            data_fim: '2025-12-31'
+          }
+        })
+      )
     })
   })
 
@@ -164,9 +178,12 @@ describe('useReviewApi', () => {
       const api = useReviewApi()
       const result = await api.estatisticas()
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/review/estatisticas', expect.objectContaining({
-        headers: {}
-      }))
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/review/estatisticas',
+        expect.objectContaining({
+          headers: {}
+        })
+      )
       expect(result).toEqual(mockStats)
     })
   })
@@ -185,10 +202,13 @@ describe('useReviewApi', () => {
       const api = useReviewApi()
       const result = await api.historico('uuid-abc')
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/review/historico/uuid-abc', expect.objectContaining({
-        params: {},
-        headers: {}
-      }))
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/review/historico/uuid-abc',
+        expect.objectContaining({
+          params: {},
+          headers: {}
+        })
+      )
       expect(result).toEqual(mockResponse)
     })
 
@@ -198,9 +218,12 @@ describe('useReviewApi', () => {
       const api = useReviewApi()
       await api.historico('uuid-abc', { cursor: 'next-page' })
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/review/historico/uuid-abc', expect.objectContaining({
-        params: { cursor: 'next-page' }
-      }))
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/review/historico/uuid-abc',
+        expect.objectContaining({
+          params: { cursor: 'next-page' }
+        })
+      )
     })
   })
 
@@ -211,10 +234,13 @@ describe('useReviewApi', () => {
       const api = useReviewApi()
       await api.reverter(42)
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/review/reverter/42', expect.objectContaining({
-        method: 'POST',
-        headers: {}
-      }))
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/review/reverter/42',
+        expect.objectContaining({
+          method: 'POST',
+          headers: {}
+        })
+      )
     })
 
     it('deve propagar erro ao reverter', async () => {
@@ -224,9 +250,7 @@ describe('useReviewApi', () => {
       })
 
       const api = useReviewApi()
-      await expect(api.reverter(999)).rejects.toEqual(
-        expect.objectContaining({ statusCode: 404 })
-      )
+      await expect(api.reverter(999)).rejects.toEqual(expect.objectContaining({ statusCode: 404 }))
     })
   })
 })

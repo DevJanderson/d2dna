@@ -1,10 +1,6 @@
 import { loginSchemaSchema } from '~/generated/tucuxi/zod'
 import type { UsuarioLogadoSchema } from '~/generated/tucuxi/types'
-import {
-  setAccessToken,
-  setRefreshToken,
-  getApiBaseUrl
-} from '../../utils/auth-api'
+import { setAccessToken, setRefreshToken, getApiBaseUrl } from '../../utils/auth-api'
 
 interface LoginResponse {
   access_token: string
@@ -12,7 +8,7 @@ interface LoginResponse {
   token_type: string
 }
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const body = await readBody(event)
 
   // Validação com Zod
@@ -28,27 +24,21 @@ export default defineEventHandler(async (event) => {
 
   try {
     // Chama API externa para login
-    const loginResponse = await $fetch<LoginResponse>(
-      `${getApiBaseUrl()}/api/v1/usuarios/login`,
-      {
-        method: 'POST',
-        body: { email, password }
-      }
-    )
+    const loginResponse = await $fetch<LoginResponse>(`${getApiBaseUrl()}/api/v1/usuarios/login`, {
+      method: 'POST',
+      body: { email, password }
+    })
 
     // Salva tokens em cookies httpOnly
     setAccessToken(event, loginResponse.access_token)
     setRefreshToken(event, loginResponse.refresh_token)
 
     // Busca dados do usuário logado
-    const user = await $fetch<UsuarioLogadoSchema>(
-      `${getApiBaseUrl()}/api/v1/usuarios/logado`,
-      {
-        headers: {
-          Authorization: `Bearer ${loginResponse.access_token}`
-        }
+    const user = await $fetch<UsuarioLogadoSchema>(`${getApiBaseUrl()}/api/v1/usuarios/logado`, {
+      headers: {
+        Authorization: `Bearer ${loginResponse.access_token}`
       }
-    )
+    })
 
     // Retorna apenas dados do usuário (sem tokens)
     return {

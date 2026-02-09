@@ -152,10 +152,13 @@ describe('useWindowSnap', () => {
 
       snap.applySnap('left')
 
-      expect(onSnap).toHaveBeenCalledWith('left', expect.objectContaining({
-        position: expect.any(Object),
-        size: expect.any(Object)
-      }))
+      expect(onSnap).toHaveBeenCalledWith(
+        'left',
+        expect.objectContaining({
+          position: expect.any(Object),
+          size: expect.any(Object)
+        })
+      )
     })
 
     it('should not overwrite pre-snap state if already snapped', () => {

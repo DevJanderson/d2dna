@@ -6,7 +6,7 @@ import { setActivePinia, createPinia } from 'pinia'
 vi.stubGlobal('getInitials', (name: string) =>
   name
     .split(' ')
-    .map((n) => n[0])
+    .map(n => n[0])
     .slice(0, 2)
     .join('')
     .toUpperCase()
@@ -30,9 +30,7 @@ vi.mock('~/layers/3-auth/app/composables/useAuthStore', () => ({
 }))
 
 // Import component after mocking
-const AuthUserMenu = (
-  await import('~/layers/3-auth/app/components/AuthUserMenu.vue')
-).default
+const AuthUserMenu = (await import('~/layers/3-auth/app/components/AuthUserMenu.vue')).default
 
 describe('AuthUserMenu', () => {
   beforeEach(() => {
@@ -67,9 +65,7 @@ describe('AuthUserMenu', () => {
     const wrapper = mount(AuthUserMenu)
 
     expect(wrapper.find('img').exists()).toBe(true)
-    expect(wrapper.find('img').attributes('src')).toBe(
-      'https://example.com/photo.jpg'
-    )
+    expect(wrapper.find('img').attributes('src')).toBe('https://example.com/photo.jpg')
   })
 
   it('should render trigger button when authenticated', () => {

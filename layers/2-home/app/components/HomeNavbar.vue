@@ -31,19 +31,21 @@ function scrollTo(href: string) {
           ? 'opacity-100'
           : isVisible
             ? 'opacity-100 translate-y-0'
-            : 'opacity-0 -translate-y-4',
+            : 'opacity-0 -translate-y-4'
       ]"
     >
       <nav class="mx-auto flex items-center justify-between px-5 py-2 md:px-6 md:py-3">
         <!-- Logo ASCII -->
         <pre
           class="select-none font-mono text-[3.5px] leading-none text-foreground/80 sm:text-[4.3px]"
-        >████████╗██╗   ██╗ ██████╗██╗   ██╗██╗  ██╗██╗
+        >
+████████╗██╗   ██╗ ██████╗██╗   ██╗██╗  ██╗██╗
 ╚══██╔══╝██║   ██║██╔════╝██║   ██║╚██╗██╔╝██║
    ██║   ██║   ██║██║     ██║   ██║ ╚███╔╝ ██║
    ██║   ██║   ██║██║     ██║   ██║ ██╔██╗ ██║
    ██║   ╚██████╔╝╚██████╗╚██████╔╝██╔╝ ██╗██║
-   ╚═╝    ╚═════╝  ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝</pre>
+   ╚═╝    ╚═════╝  ╚═════╝ ╚═════╝ ╚═╝  ╚═╝╚═╝</pre
+        >
 
         <!-- Links centrais (desktop) -->
         <div class="hidden items-center gap-8 md:flex">

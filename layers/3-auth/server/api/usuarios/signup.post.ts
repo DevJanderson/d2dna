@@ -4,7 +4,7 @@
  */
 import { getApiBaseUrl } from '../../utils/auth-api'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const body = await readBody(event)
 
   // Signup não precisa de autenticação, mas precisa da master_key

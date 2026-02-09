@@ -35,14 +35,14 @@ const userName = computed(() => {
 <template>
   <div class="flex h-full flex-col px-2">
     <div class="-mx-2 -mt-2 flex-shrink-0 overflow-hidden">
-      <pre class="select-none whitespace-pre font-mono text-[7px] leading-tight text-primary/70">{{ asciiTucuxi }}</pre>
+      <pre class="select-none whitespace-pre font-mono text-[7px] leading-tight text-primary/70">{{
+        asciiTucuxi
+      }}</pre>
     </div>
 
     <div class="-mt-2 flex-1 space-y-5">
       <div>
-        <h2 class="text-base font-semibold">
-          Olá, {{ userName }}!
-        </h2>
+        <h2 class="text-base font-semibold">Olá, {{ userName }}!</h2>
         <p class="mt-0.5 text-xs text-muted-foreground">
           Bem-vindo ao <strong>Tucuxi</strong> — Sistema de Record Linkage e Gestão de Dados.
         </p>

@@ -106,7 +106,6 @@ function isActive(item: NavItem): boolean {
     - flex items-center justify-center: centraliza a dock verticalmente
   -->
   <div class="absolute left-0 top-0 z-30 flex h-full w-20 items-center justify-center py-4">
-
     <!--
       Dock (aside)
       - rounded-2xl: bordas arredondadas 16px
@@ -119,7 +118,6 @@ function isActive(item: NavItem): boolean {
     <aside
       class="flex flex-col items-center gap-1 rounded-2xl border border-sidebar-border bg-sidebar/80 p-2 shadow-xl backdrop-blur-xl"
     >
-
       <!-- ========== NAVEGAÇÃO PRINCIPAL ========== -->
       <nav class="flex flex-col items-center gap-1.5">
         <TooltipProvider :delay-duration="0">
@@ -133,11 +131,7 @@ function isActive(item: NavItem): boolean {
                   :disabled="item.disabled"
                   @click="handleNavClick(item)"
                 >
-                  <component
-                    :is="item.icon"
-                    class="h-5 w-5"
-                    :stroke-width="1.75"
-                  />
+                  <component :is="item.icon" class="h-5 w-5" :stroke-width="1.75" />
                 </button>
               </TooltipTrigger>
               <TooltipContent side="right">
@@ -166,30 +160,29 @@ function isActive(item: NavItem): boolean {
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>
-
     </aside>
   </div>
 </template>
 
 <style scoped>
 /* Estado ATIVO */
-.dock-nav-icon[data-active="true"] {
+.dock-nav-icon[data-active='true'] {
   background-color: var(--primary);
   color: var(--primary-foreground);
 }
 
-.dock-nav-icon[data-active="true"]:hover {
+.dock-nav-icon[data-active='true']:hover {
   background-color: var(--primary);
   opacity: 0.85;
 }
 
 /* Estado INATIVO */
-.dock-nav-icon[data-active="false"] {
+.dock-nav-icon[data-active='false'] {
   background-color: var(--muted);
   color: var(--muted-foreground);
 }
 
-.dock-nav-icon[data-active="false"]:hover {
+.dock-nav-icon[data-active='false']:hover {
   background-color: var(--border);
   color: var(--foreground);
 }

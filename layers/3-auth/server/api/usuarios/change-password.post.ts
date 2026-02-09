@@ -4,7 +4,7 @@
  */
 import { authFetch } from '../../utils/auth-api'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const body = await readBody(event)
 
   return await authFetch(event, '/api/v1/usuarios/change-password', {

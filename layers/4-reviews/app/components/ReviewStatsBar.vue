@@ -76,11 +76,7 @@ const cards = computed(() => {
 
 <template>
   <div class="grid grid-cols-5 gap-4">
-    <div
-      v-for="card in cards"
-      :key="card.label"
-      class="rounded-lg border bg-card p-4"
-    >
+    <div v-for="card in cards" :key="card.label" class="rounded-lg border bg-card p-4">
       <div v-if="isLoading" class="animate-pulse space-y-3">
         <div class="h-4 w-20 rounded bg-muted" />
         <div class="h-7 w-14 rounded bg-muted" />
@@ -98,7 +94,8 @@ const cards = computed(() => {
             <span class="opacity-20">0000</span>
           </template>
           <template v-else>
-            <span class="opacity-20">{{ card.value(stats).zeros }}</span><span :class="card.color">{{ card.value(stats).value }}</span>
+            <span class="opacity-20">{{ card.value(stats).zeros }}</span
+            ><span :class="card.color">{{ card.value(stats).value }}</span>
           </template>
         </p>
       </template>

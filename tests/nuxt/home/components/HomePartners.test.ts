@@ -9,9 +9,7 @@ vi.mock('@vueuse/core', () => ({
   })
 }))
 
-const HomePartners = (
-  await import('~/layers/2-home/app/components/HomePartners.vue')
-).default
+const HomePartners = (await import('~/layers/2-home/app/components/HomePartners.vue')).default
 
 describe('HomePartners', () => {
   it('should render section heading', () => {

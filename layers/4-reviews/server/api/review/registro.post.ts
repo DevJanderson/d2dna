@@ -1,7 +1,7 @@
 import type { ReviewSchema } from '~/generated/tucuxi/types'
 import { reviewCreateSchemaSchema } from '~/generated/tucuxi/zod'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const body = await readBody(event)
 
   const result = reviewCreateSchemaSchema.safeParse(body)

@@ -15,9 +15,7 @@ vi.mock('~/layers/3-auth/app/composables/useAuthStore', () => ({
 }))
 
 // Import component after mocking
-const AuthLoginForm = (
-  await import('~/layers/3-auth/app/components/AuthLoginForm.vue')
-).default
+const AuthLoginForm = (await import('~/layers/3-auth/app/components/AuthLoginForm.vue')).default
 
 describe('AuthLoginForm', () => {
   beforeEach(() => {
@@ -94,9 +92,7 @@ describe('AuthLoginForm', () => {
     const wrapper = mount(AuthLoginForm)
 
     expect(wrapper.find('button[type="submit"]').text()).toContain('AUTENTICANDO')
-    expect(
-      wrapper.find('button[type="submit"]').attributes('disabled')
-    ).toBeDefined()
+    expect(wrapper.find('button[type="submit"]').attributes('disabled')).toBeDefined()
   })
 
   it('should disable inputs while loading', async () => {
@@ -104,12 +100,8 @@ describe('AuthLoginForm', () => {
 
     const wrapper = mount(AuthLoginForm)
 
-    expect(
-      wrapper.find('input[type="email"]').attributes('disabled')
-    ).toBeDefined()
-    expect(
-      wrapper.find('input[type="password"]').attributes('disabled')
-    ).toBeDefined()
+    expect(wrapper.find('input[type="email"]').attributes('disabled')).toBeDefined()
+    expect(wrapper.find('input[type="password"]').attributes('disabled')).toBeDefined()
   })
 
   it('should toggle password visibility', async () => {

@@ -1,6 +1,6 @@
 import type { PaginatedResponseReviewSchema } from '~/generated/tucuxi/types'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const uuid = getRouterParam(event, 'uuid')
 
   if (!uuid) {

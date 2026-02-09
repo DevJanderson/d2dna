@@ -1,6 +1,6 @@
 import { clearAuthTokens, getAccessToken, getApiBaseUrl } from '../../utils/auth-api'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const token = getAccessToken(event)
 
   // Tenta fazer logout na API externa (opcional, não bloqueia se falhar)

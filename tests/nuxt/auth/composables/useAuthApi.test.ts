@@ -5,9 +5,7 @@ const mockFetch = vi.fn()
 vi.stubGlobal('$fetch', mockFetch)
 
 // Import after mocking
-const { useAuthApi } = await import(
-  '~/layers/3-auth/app/composables/useAuthApi'
-)
+const { useAuthApi } = await import('~/layers/3-auth/app/composables/useAuthApi')
 
 describe('useAuthApi', () => {
   beforeEach(() => {
@@ -25,10 +23,13 @@ describe('useAuthApi', () => {
       const api = useAuthApi()
       const result = await api.login('test@example.com', 'password123')
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/auth/login', expect.objectContaining({
-        method: 'POST',
-        body: { email: 'test@example.com', password: 'password123' }
-      }))
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/auth/login',
+        expect.objectContaining({
+          method: 'POST',
+          body: { email: 'test@example.com', password: 'password123' }
+        })
+      )
       expect(result).toEqual(mockResponse)
     })
 
@@ -49,9 +50,12 @@ describe('useAuthApi', () => {
       const api = useAuthApi()
       await api.logout()
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/auth/logout', expect.objectContaining({
-        method: 'POST'
-      }))
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/auth/logout',
+        expect.objectContaining({
+          method: 'POST'
+        })
+      )
     })
   })
 
@@ -62,9 +66,12 @@ describe('useAuthApi', () => {
       const api = useAuthApi()
       await api.refresh()
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/auth/refresh', expect.objectContaining({
-        method: 'POST'
-      }))
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/auth/refresh',
+        expect.objectContaining({
+          method: 'POST'
+        })
+      )
     })
   })
 
@@ -78,9 +85,12 @@ describe('useAuthApi', () => {
       const api = useAuthApi()
       const result = await api.me()
 
-      expect(mockFetch).toHaveBeenCalledWith('/api/auth/me', expect.objectContaining({
-        headers: expect.any(Object)
-      }))
+      expect(mockFetch).toHaveBeenCalledWith(
+        '/api/auth/me',
+        expect.objectContaining({
+          headers: expect.any(Object)
+        })
+      )
       expect(result).toEqual(mockUser)
     })
 

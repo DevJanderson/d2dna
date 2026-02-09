@@ -6,7 +6,7 @@ const MAX_PAGES = 50
  * Agrega estatísticas iterando todas as páginas de clientes em revisão
  * Conta por status: pendente, aprovado, rejeitado, corrigido
  */
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const token = getAccessToken(event)
 
   if (!token) {
@@ -31,10 +31,10 @@ export default defineEventHandler(async (event) => {
     const query: Record<string, unknown> = { limit: 100 }
     if (cursor) query.cursor = cursor
 
-    const response = await $fetch<PaginatedResponseReviewSchema>(
-      `${baseUrl}/api/v1/review/`,
-      { headers, query }
-    )
+    const response = await $fetch<PaginatedResponseReviewSchema>(`${baseUrl}/api/v1/review/`, {
+      headers,
+      query
+    })
 
     for (const item of response.data) {
       total++

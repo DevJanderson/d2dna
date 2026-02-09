@@ -1,9 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 
-const HomeTeamMember = (
-  await import('~/layers/2-home/app/components/HomeTeamMember.vue')
-).default
+const HomeTeamMember = (await import('~/layers/2-home/app/components/HomeTeamMember.vue')).default
 
 describe('HomeTeamMember', () => {
   const defaultProps = {

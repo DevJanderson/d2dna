@@ -1,6 +1,6 @@
 import type { PaginatedResponseReviewRelatorioSchema } from '~/generated/tucuxi/types'
 
-export default defineEventHandler(async (event) => {
+export default defineEventHandler(async event => {
   const query = getQuery(event)
 
   return await reviewFetch<PaginatedResponseReviewRelatorioSchema>(

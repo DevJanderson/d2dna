@@ -1,5 +1,5 @@
 import { describe, it, expect, vi } from 'vitest'
-import { mountSuspended, mockNuxtImport  } from '@nuxt/test-utils/runtime'
+import { mountSuspended, mockNuxtImport } from '@nuxt/test-utils/runtime'
 
 // Mock useAuthStore
 const { mockUseAuthStore } = vi.hoisted(() => ({
@@ -8,9 +8,9 @@ const { mockUseAuthStore } = vi.hoisted(() => ({
 
 mockNuxtImport('useAuthStore', () => mockUseAuthStore)
 
-const WindowWelcome = await import(
-  '~/layers/0-base/app/components/WindowWelcome.vue'
-).then(m => m.default)
+const WindowWelcome = await import('~/layers/0-base/app/components/WindowWelcome.vue').then(
+  m => m.default
+)
 
 describe('WindowWelcome', () => {
   it('should display user first name when authenticated', async () => {

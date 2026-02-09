@@ -1,9 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { mount } from '@vue/test-utils'
 
-const HomeFooter = (
-  await import('~/layers/2-home/app/components/HomeFooter.vue')
-).default
+const HomeFooter = (await import('~/layers/2-home/app/components/HomeFooter.vue')).default
 
 describe('HomeFooter', () => {
   it('should render footer element', () => {

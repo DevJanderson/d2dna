@@ -24,7 +24,7 @@ const userRole = computed(() => user.value?.funcao || 'Analista')
 const isAdmin = computed(() => authStore.isAdmin)
 
 function openWindow(id: string, title: string) {
-  const existing = windowManager.windows.value.find((w) => w.id === id)
+  const existing = windowManager.windows.value.find(w => w.id === id)
   if (existing) {
     windowManager.focus(id)
   } else {
@@ -79,81 +79,72 @@ function openWindow(id: string, title: string) {
       </NuxtLink>
 
       <!-- Grupo de ações (estilo pill) -->
-      <div
-        class="flex items-center gap-1 rounded-full border border-border bg-background/80 p-1"
-      >
-      <!-- Menu -->
-      <DropdownMenu>
-        <DropdownMenuTrigger as-child>
-          <button
-            class="flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          >
-            <Menu class="h-4 w-4" />
-          </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" class="w-48">
-          <DropdownMenuLabel>Menu</DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem @click="router.push('/app')">
-            Dashboard
-          </DropdownMenuItem>
-          <DropdownMenuItem @click="router.push('/docs')">
-            Documentação
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <div class="flex items-center gap-1 rounded-full border border-border bg-background/80 p-1">
+        <!-- Menu -->
+        <DropdownMenu>
+          <DropdownMenuTrigger as-child>
+            <button
+              class="flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+            >
+              <Menu class="h-4 w-4" />
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" class="w-48">
+            <DropdownMenuLabel>Menu</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem @click="router.push('/app')"> Dashboard </DropdownMenuItem>
+            <DropdownMenuItem @click="router.push('/docs')"> Documentação </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
 
-      <!-- Home -->
-      <button
-        class="flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-        @click="router.push('/app')"
-      >
-        <Home class="h-4 w-4" />
-      </button>
+        <!-- Home -->
+        <button
+          class="flex h-8 w-8 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+          @click="router.push('/app')"
+        >
+          <Home class="h-4 w-4" />
+        </button>
 
-      <!-- Avatar do usuário (dropdown) -->
-      <DropdownMenu>
-        <DropdownMenuTrigger as-child>
-          <button class="rounded-full focus:outline-none">
-            <Avatar class="h-8 w-8">
-              <AvatarImage
-                v-if="user?.foto_perfil"
-                :src="user.foto_perfil"
-                :alt="userName"
-              />
-              <AvatarFallback
-                class="bg-primary text-primary-foreground text-xs font-semibold"
-              >
-                {{ userInitials }}
-              </AvatarFallback>
-            </Avatar>
-          </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end" class="w-56">
-          <div class="px-2 py-1.5">
-            <p class="text-sm font-medium">{{ userName }}</p>
-            <p class="text-xs text-muted-foreground">{{ userRole }}</p>
-          </div>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem @click="openWindow('user-profile', 'Perfil')">
-            <Users class="mr-2 h-4 w-4" />
-            Perfil
-          </DropdownMenuItem>
-          <DropdownMenuItem @click="openWindow('user-settings', 'Configurações')">
-            <Settings class="mr-2 h-4 w-4" />
-            Configurações
-          </DropdownMenuItem>
-          <DropdownMenuItem v-if="isAdmin" @click="openWindow('user-management', 'Gerenciar Usuários')">
-            <UserCog class="mr-2 h-4 w-4" />
-            Gerenciar Usuários
-          </DropdownMenuItem>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem class="text-destructive" @click="handleLogout">
-            <LogOut class="mr-2 h-4 w-4" />
-            Sair
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+        <!-- Avatar do usuário (dropdown) -->
+        <DropdownMenu>
+          <DropdownMenuTrigger as-child>
+            <button class="rounded-full focus:outline-none">
+              <Avatar class="h-8 w-8">
+                <AvatarImage v-if="user?.foto_perfil" :src="user.foto_perfil" :alt="userName" />
+                <AvatarFallback class="bg-primary text-primary-foreground text-xs font-semibold">
+                  {{ userInitials }}
+                </AvatarFallback>
+              </Avatar>
+            </button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" class="w-56">
+            <div class="px-2 py-1.5">
+              <p class="text-sm font-medium">{{ userName }}</p>
+              <p class="text-xs text-muted-foreground">{{ userRole }}</p>
+            </div>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem @click="openWindow('user-profile', 'Perfil')">
+              <Users class="mr-2 h-4 w-4" />
+              Perfil
+            </DropdownMenuItem>
+            <DropdownMenuItem @click="openWindow('user-settings', 'Configurações')">
+              <Settings class="mr-2 h-4 w-4" />
+              Configurações
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              v-if="isAdmin"
+              @click="openWindow('user-management', 'Gerenciar Usuários')"
+            >
+              <UserCog class="mr-2 h-4 w-4" />
+              Gerenciar Usuários
+            </DropdownMenuItem>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem class="text-destructive" @click="handleLogout">
+              <LogOut class="mr-2 h-4 w-4" />
+              Sair
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   </nav>

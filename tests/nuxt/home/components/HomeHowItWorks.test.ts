@@ -10,9 +10,7 @@ vi.mock('@vueuse/core', () => ({
   })
 }))
 
-const HomeHowItWorks = (
-  await import('~/layers/2-home/app/components/HomeHowItWorks.vue')
-).default
+const HomeHowItWorks = (await import('~/layers/2-home/app/components/HomeHowItWorks.vue')).default
 
 describe('HomeHowItWorks', () => {
   it('should render section heading', () => {
@@ -90,7 +88,7 @@ describe('HomeHowItWorks', () => {
     const wrapper = mount(HomeHowItWorks)
 
     const steps = wrapper.findAll('.how-step')
-    steps.forEach((step) => {
+    steps.forEach(step => {
       expect(step.classes()).toContain('how-step--visible')
     })
   })
