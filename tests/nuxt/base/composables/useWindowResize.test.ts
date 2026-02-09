@@ -53,7 +53,7 @@ describe('useWindowResize', () => {
   describe('startResize', () => {
     it('should set isResizing to true', () => {
       const resize = useWindowResize({ windowEl, position, size })
-      const event = new MouseEvent('mousedown', { clientX: 700, clientY: 450 })
+      const event = new PointerEvent('pointerdown', { clientX: 700, clientY: 450 })
 
       resize.startResize(event, 'e')
 
@@ -70,7 +70,7 @@ describe('useWindowResize', () => {
         size,
         enabled: false
       })
-      const event = new MouseEvent('mousedown', { clientX: 700, clientY: 450 })
+      const event = new PointerEvent('pointerdown', { clientX: 700, clientY: 450 })
 
       resize.startResize(event, 'e')
 
@@ -79,7 +79,7 @@ describe('useWindowResize', () => {
 
     it('should not start resize with null direction', () => {
       const resize = useWindowResize({ windowEl, position, size })
-      const event = new MouseEvent('mousedown', { clientX: 700, clientY: 450 })
+      const event = new PointerEvent('pointerdown', { clientX: 700, clientY: 450 })
 
       resize.startResize(event, null)
 
@@ -90,7 +90,7 @@ describe('useWindowResize', () => {
   describe('stopResize', () => {
     it('should set isResizing to false', () => {
       const resize = useWindowResize({ windowEl, position, size })
-      const event = new MouseEvent('mousedown', { clientX: 700, clientY: 450 })
+      const event = new PointerEvent('pointerdown', { clientX: 700, clientY: 450 })
 
       resize.startResize(event, 'e')
       expect(resize.isResizing.value).toBe(true)
@@ -103,7 +103,7 @@ describe('useWindowResize', () => {
     it('should call onResizeEnd callback', () => {
       const onResizeEnd = vi.fn()
       const resize = useWindowResize({ windowEl, position, size, onResizeEnd })
-      const event = new MouseEvent('mousedown', { clientX: 700, clientY: 450 })
+      const event = new PointerEvent('pointerdown', { clientX: 700, clientY: 450 })
 
       resize.startResize(event, 'e')
       resize.stopResize()
@@ -120,11 +120,11 @@ describe('useWindowResize', () => {
       const resize = useWindowResize({ windowEl, position, size })
 
       // Start resize from right edge
-      const startEvent = new MouseEvent('mousedown', { clientX: 700, clientY: 250 })
+      const startEvent = new PointerEvent('pointerdown', { clientX: 700, clientY: 250 })
       resize.startResize(startEvent, 'e')
 
       // Simulate mouse move (drag right by 100px)
-      const moveEvent = new MouseEvent('mousemove', { clientX: 800, clientY: 250 })
+      const moveEvent = new PointerEvent('pointermove', { clientX: 800, clientY: 250 })
       document.dispatchEvent(moveEvent)
       await waitForRaf()
 
@@ -137,10 +137,10 @@ describe('useWindowResize', () => {
     it('should resize south (bottom edge)', async () => {
       const resize = useWindowResize({ windowEl, position, size })
 
-      const startEvent = new MouseEvent('mousedown', { clientX: 400, clientY: 450 })
+      const startEvent = new PointerEvent('pointerdown', { clientX: 400, clientY: 450 })
       resize.startResize(startEvent, 's')
 
-      const moveEvent = new MouseEvent('mousemove', { clientX: 400, clientY: 550 })
+      const moveEvent = new PointerEvent('pointermove', { clientX: 400, clientY: 550 })
       document.dispatchEvent(moveEvent)
       await waitForRaf()
 
@@ -158,11 +158,11 @@ describe('useWindowResize', () => {
         sizeLimits: { minWidth: 200, minHeight: 150 }
       })
 
-      const startEvent = new MouseEvent('mousedown', { clientX: 700, clientY: 250 })
+      const startEvent = new PointerEvent('pointerdown', { clientX: 700, clientY: 250 })
       resize.startResize(startEvent, 'e')
 
       // Try to shrink below minimum
-      const moveEvent = new MouseEvent('mousemove', { clientX: 100, clientY: 250 })
+      const moveEvent = new PointerEvent('pointermove', { clientX: 100, clientY: 250 })
       document.dispatchEvent(moveEvent)
       await waitForRaf()
 
@@ -174,11 +174,11 @@ describe('useWindowResize', () => {
     it('should resize west (left edge) and adjust position', async () => {
       const resize = useWindowResize({ windowEl, position, size })
 
-      const startEvent = new MouseEvent('mousedown', { clientX: 100, clientY: 250 })
+      const startEvent = new PointerEvent('pointerdown', { clientX: 100, clientY: 250 })
       resize.startResize(startEvent, 'w')
 
       // Move left by 50px
-      const moveEvent = new MouseEvent('mousemove', { clientX: 50, clientY: 250 })
+      const moveEvent = new PointerEvent('pointermove', { clientX: 50, clientY: 250 })
       document.dispatchEvent(moveEvent)
       await waitForRaf()
 
@@ -194,7 +194,7 @@ describe('useWindowResize', () => {
       const enabled = ref(true)
       const resize = useWindowResize({ windowEl, position, size, enabled })
 
-      const event = new MouseEvent('mousedown', { clientX: 700, clientY: 450 })
+      const event = new PointerEvent('pointerdown', { clientX: 700, clientY: 450 })
       resize.startResize(event, 'e')
       expect(resize.isResizing.value).toBe(true)
       resize.stopResize()

@@ -6,11 +6,11 @@
 import type { ResizeDirection } from '../types/window'
 
 const emit = defineEmits<{
-  resize: [event: MouseEvent, direction: ResizeDirection]
+  resize: [event: PointerEvent, direction: ResizeDirection]
 }>()
 
 /** Inicia o resize na direção especificada */
-function handleResize(event: MouseEvent, direction: ResizeDirection) {
+function handleResize(event: PointerEvent, direction: ResizeDirection) {
   emit('resize', event, direction)
 }
 </script>
@@ -22,25 +22,25 @@ function handleResize(event: MouseEvent, direction: ResizeDirection) {
     <!-- Norte (topo) -->
     <div
       class="pointer-events-auto absolute -top-0.5 left-4 right-4 h-1.5 cursor-n-resize"
-      @mousedown="e => handleResize(e, 'n')"
+      @pointerdown="e => handleResize(e, 'n')"
     />
 
     <!-- Sul (baixo) -->
     <div
       class="pointer-events-auto absolute -bottom-0.5 left-4 right-4 h-1.5 cursor-s-resize"
-      @mousedown="e => handleResize(e, 's')"
+      @pointerdown="e => handleResize(e, 's')"
     />
 
     <!-- Oeste (esquerda) -->
     <div
       class="pointer-events-auto absolute -left-0.5 bottom-4 top-4 w-1.5 cursor-w-resize"
-      @mousedown="e => handleResize(e, 'w')"
+      @pointerdown="e => handleResize(e, 'w')"
     />
 
     <!-- Leste (direita) -->
     <div
       class="pointer-events-auto absolute -right-0.5 bottom-4 top-4 w-1.5 cursor-e-resize"
-      @mousedown="e => handleResize(e, 'e')"
+      @pointerdown="e => handleResize(e, 'e')"
     />
 
     <!-- Cantos (16px de área clicável para facilitar) -->
@@ -48,25 +48,25 @@ function handleResize(event: MouseEvent, direction: ResizeDirection) {
     <!-- Noroeste (topo esquerdo) -->
     <div
       class="pointer-events-auto absolute -left-0.5 -top-0.5 h-4 w-4 cursor-nw-resize"
-      @mousedown="e => handleResize(e, 'nw')"
+      @pointerdown="e => handleResize(e, 'nw')"
     />
 
     <!-- Nordeste (topo direito) -->
     <div
       class="pointer-events-auto absolute -right-0.5 -top-0.5 h-4 w-4 cursor-ne-resize"
-      @mousedown="e => handleResize(e, 'ne')"
+      @pointerdown="e => handleResize(e, 'ne')"
     />
 
     <!-- Sudoeste (baixo esquerdo) -->
     <div
       class="pointer-events-auto absolute -bottom-0.5 -left-0.5 h-4 w-4 cursor-sw-resize"
-      @mousedown="e => handleResize(e, 'sw')"
+      @pointerdown="e => handleResize(e, 'sw')"
     />
 
     <!-- Sudeste (baixo direito) -->
     <div
       class="pointer-events-auto absolute -bottom-0.5 -right-0.5 h-4 w-4 cursor-se-resize"
-      @mousedown="e => handleResize(e, 'se')"
+      @pointerdown="e => handleResize(e, 'se')"
     />
   </div>
 </template>

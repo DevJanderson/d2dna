@@ -3,11 +3,12 @@
  * AppWindow - Janela estilo desktop (Windows/macOS)
  *
  * Componente principal do sistema de janelas com suporte a:
- * - Arrastar (drag)
+ * - Arrastar (drag) via pointer events (mouse + touch)
  * - Redimensionar (resize)
- * - Snap nas bordas (metade da tela)
+ * - Snap nas bordas (7 zonas: left, right, top, cantos)
  * - Minimizar, maximizar, fechar
  * - Integração com WindowManager
+ * - Acessibilidade (ARIA role=dialog, Escape fecha)
  */
 import type { ResizeDirection, WindowContainerConfig } from '../types/window'
 import { DEFAULT_WINDOW_CONFIG, DEFAULT_SIZE_LIMITS } from '../types/window'
@@ -145,10 +146,10 @@ const drag = useWindowDrag({
   onDragStart: () => {
     // Nada especial no início
   },
-  onDrag: (_pos, mouseX) => {
+  onDrag: (_pos, mouseX, mouseY) => {
     // Só detectar snap se não estiver em snap
     if (!snap.isSnapped.value) {
-      snap.updateSnapZone(mouseX)
+      snap.updateSnapZone(mouseX, mouseY)
     }
   },
   onDragEnd: finalPosition => {
@@ -188,29 +189,30 @@ const isActive = computed(() => {
   return windowManager.activeWindowId.value === props.windowId
 })
 
-/** Parent element para Teleport do preview de snap */
+/** Parent element para Teleport do preview de snap e overlay */
 const parentEl = computed(() => windowEl.value?.parentElement || null)
 
-/** Estilo inline da janela */
+/** Estilo inline da janela — usa transform: translate3d para GPU acceleration */
 const windowStyle = computed(() => {
   if (props.maximized) {
     return {
       position: 'absolute' as const,
-      left: `${containerConfig.value.padding}px`,
-      top: `${containerConfig.value.padding}px`,
-      width: `calc(100% - ${containerConfig.value.padding * 2}px)`,
-      height: `calc(100% - ${containerConfig.value.padding * 2}px)`,
+      inset: `${containerConfig.value.padding}px`,
+      width: 'auto',
+      height: 'auto',
       zIndex: props.zIndex
     }
   }
 
   return {
     position: 'absolute' as const,
-    left: `${position.value.x}px`,
-    top: `${position.value.y}px`,
+    left: '0',
+    top: '0',
+    transform: `translate3d(${position.value.x}px, ${position.value.y}px, 0)`,
     width: `${size.value.width}px`,
     height: `${size.value.height}px`,
-    zIndex: props.zIndex
+    zIndex: props.zIndex,
+    willChange: drag.isDragging.value || resize.isResizing.value ? 'transform' : 'auto'
   }
 })
 
@@ -257,27 +259,27 @@ function handleClose() {
 }
 
 /** Handler de início de drag na barra de título */
-function handleTitleBarMouseDown(event: MouseEvent) {
+function handleTitleBarPointerDown(event: PointerEvent) {
   // Se estiver em snap, verificar se deve restaurar
   if (snap.isSnapped.value && snap.preSnapState.value) {
     // Registrar o início do drag
     drag.startDrag(event)
 
     // Capturar posição atual do mouse para restauração correta
-    let lastMouseEvent = event
+    let lastPointerEvent = event
 
-    function trackMouse(e: MouseEvent) {
-      lastMouseEvent = e
+    function trackPointer(e: PointerEvent) {
+      lastPointerEvent = e
     }
 
-    document.addEventListener('mousemove', trackMouse)
+    document.addEventListener('pointermove', trackPointer)
 
     // Configurar para restaurar quando mover além do threshold
     const unwatch = watch(drag.hasMovedPastThreshold, moved => {
       if (moved && snap.isSnapped.value) {
-        document.removeEventListener('mousemove', trackMouse)
-        snap.restoreFromSnap(lastMouseEvent)
-        drag.updateDragOffset(lastMouseEvent)
+        document.removeEventListener('pointermove', trackPointer)
+        snap.restoreFromSnap(lastPointerEvent)
+        drag.updateDragOffset(lastPointerEvent)
         unwatch()
       }
     })
@@ -289,7 +291,7 @@ function handleTitleBarMouseDown(event: MouseEvent) {
 }
 
 /** Handler de resize */
-function handleResize(event: MouseEvent, direction: ResizeDirection) {
+function handleResize(event: PointerEvent, direction: ResizeDirection) {
   resize.startResize(event, direction)
 }
 
@@ -310,6 +312,13 @@ function handleFileSelect(file: { id: string; title: string; path: string }) {
 
   // Caso contrário, propaga o evento para abrir nova janela
   emit('file:select', file)
+}
+
+/** Handler de teclado — Escape fecha a janela ativa */
+function handleKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape' && isActive.value) {
+    handleClose()
+  }
 }
 
 // ============ WATCHERS ============
@@ -342,23 +351,28 @@ const handleWindowResize = () => drag.clampToContainer()
 onMounted(() => {
   nextTick(() => drag.clampToContainer())
   window.addEventListener('resize', handleWindowResize)
+  windowEl.value?.addEventListener('keydown', handleKeydown)
 })
 
 onUnmounted(() => {
   window.removeEventListener('resize', handleWindowResize)
+  windowEl.value?.removeEventListener('keydown', handleKeydown)
 })
 </script>
 
 <template>
   <div
     ref="windowEl"
-    class="flex flex-col overflow-hidden rounded-xl border bg-card shadow-lg transition-shadow"
+    role="dialog"
+    :aria-label="title"
+    tabindex="-1"
+    class="flex flex-col overflow-hidden rounded-xl border bg-card shadow-lg transition-shadow [contain:strict]"
     :class="[
       isActive ? 'border-border shadow-xl' : 'border-border/50 shadow-md',
       { 'rounded-none': maximized }
     ]"
     :style="windowStyle"
-    @mousedown="handleFocus"
+    @pointerdown="handleFocus"
   >
     <!-- Barra de título -->
     <AppWindowTitleBar
@@ -371,7 +385,7 @@ onUnmounted(() => {
       :draggable="draggable"
       :is-dragging="drag.isDragging.value"
       :is-maximized="maximized"
-      @mousedown="handleTitleBarMouseDown"
+      @pointerdown="handleTitleBarPointerDown"
       @minimize="handleMinimize"
       @maximize="handleMaximize"
       @close="handleClose"
@@ -393,6 +407,11 @@ onUnmounted(() => {
       @resize="handleResize"
     />
   </div>
+
+  <!-- Overlay durante drag/resize para capturar pointer events (impede iframes) -->
+  <Teleport v-if="(drag.isDragging.value || resize.isResizing.value) && parentEl" :to="parentEl">
+    <div class="fixed inset-0 z-[9999]" style="touch-action: none" />
+  </Teleport>
 
   <!-- Preview de snap -->
   <Teleport v-if="snap.snapPreviewStyle.value && parentEl" :to="parentEl">

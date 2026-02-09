@@ -100,7 +100,7 @@ describe('useWindowDrag', () => {
         target,
         preventDefault: vi.fn(),
         stopPropagation: vi.fn()
-      } as unknown as MouseEvent
+      } as unknown as PointerEvent
 
       drag.startDrag(event)
 
@@ -118,7 +118,7 @@ describe('useWindowDrag', () => {
         clientX: 200,
         clientY: 100,
         target
-      } as unknown as MouseEvent
+      } as unknown as PointerEvent
 
       drag.startDrag(event)
 
@@ -135,7 +135,7 @@ describe('useWindowDrag', () => {
         clientX: 200,
         clientY: 100,
         target
-      } as unknown as MouseEvent
+      } as unknown as PointerEvent
 
       drag.startDrag(event)
 
@@ -150,7 +150,7 @@ describe('useWindowDrag', () => {
         clientX: 200,
         clientY: 100,
         target: button
-      } as unknown as MouseEvent
+      } as unknown as PointerEvent
 
       drag.startDrag(event)
 
@@ -168,7 +168,7 @@ describe('useWindowDrag', () => {
         clientX: 200,
         clientY: 100,
         target: span
-      } as unknown as MouseEvent
+      } as unknown as PointerEvent
 
       drag.startDrag(event)
 
@@ -185,7 +185,7 @@ describe('useWindowDrag', () => {
         clientX: 200,
         clientY: 100,
         target
-      } as unknown as MouseEvent
+      } as unknown as PointerEvent
 
       drag.startDrag(event)
       expect(drag.isDragging.value).toBe(true)
@@ -203,7 +203,7 @@ describe('useWindowDrag', () => {
         clientX: 200,
         clientY: 100,
         target
-      } as unknown as MouseEvent
+      } as unknown as PointerEvent
 
       drag.startDrag(event)
       drag.stopDrag()
@@ -230,12 +230,12 @@ describe('useWindowDrag', () => {
         clientX: 200,
         clientY: 100,
         target
-      } as unknown as MouseEvent
+      } as unknown as PointerEvent
 
       drag.startDrag(startEvent)
 
       // Mover apenas 2px (threshold default = 5)
-      const smallMove = new MouseEvent('mousemove', { clientX: 202, clientY: 101 })
+      const smallMove = new PointerEvent('pointermove', { clientX: 202, clientY: 101 })
       document.dispatchEvent(smallMove)
 
       expect(drag.hasMovedPastThreshold.value).toBe(false)
@@ -253,12 +253,12 @@ describe('useWindowDrag', () => {
         clientX: 200,
         clientY: 100,
         target
-      } as unknown as MouseEvent
+      } as unknown as PointerEvent
 
       drag.startDrag(startEvent)
 
       // Mover 10px (acima do threshold de 5)
-      const bigMove = new MouseEvent('mousemove', { clientX: 210, clientY: 100 })
+      const bigMove = new PointerEvent('pointermove', { clientX: 210, clientY: 100 })
       document.dispatchEvent(bigMove)
 
       expect(drag.hasMovedPastThreshold.value).toBe(true)
@@ -310,7 +310,7 @@ describe('useWindowDrag', () => {
         clientX: 200,
         clientY: 100,
         target
-      } as unknown as MouseEvent
+      } as unknown as PointerEvent
 
       drag.startDrag(event)
       expect(drag.isDragging.value).toBe(true)

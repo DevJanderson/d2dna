@@ -22,7 +22,7 @@ export interface UseWindowDragOptions {
   /** Callback quando começar a arrastar */
   onDragStart?: () => void
   /** Callback durante o arrasto */
-  onDrag?: (position: WindowPosition, mouseX: number) => void
+  onDrag?: (position: WindowPosition, mouseX: number, mouseY: number) => void
   /** Callback quando parar de arrastar */
   onDragEnd?: (position: WindowPosition) => void
 }
@@ -73,7 +73,7 @@ export function useWindowDrag(options: UseWindowDragOptions) {
   }
 
   /** Inicia o arrasto */
-  function startDrag(event: MouseEvent) {
+  function startDrag(event: PointerEvent) {
     if (!isEnabled.value) return
 
     // Não iniciar drag se clicar em botões
@@ -97,12 +97,12 @@ export function useWindowDrag(options: UseWindowDragOptions) {
 
     onDragStart?.()
 
-    document.addEventListener('mousemove', handleDrag)
-    document.addEventListener('mouseup', stopDrag)
+    document.addEventListener('pointermove', handleDrag)
+    document.addEventListener('pointerup', stopDrag)
   }
 
   /** Processa o movimento durante o arrasto (envolvido em rAF) */
-  function handleDrag(event: MouseEvent) {
+  function handleDrag(event: PointerEvent) {
     if (!isDragging.value) return
 
     // Verificar threshold antes do rAF (leitura leve, sem layout)
@@ -140,7 +140,8 @@ export function useWindowDrag(options: UseWindowDragOptions) {
 
       // Callback com posição do mouse para detecção de snap
       const mouseX = event.clientX - parentRect.left
-      onDrag?.(newPosition, mouseX)
+      const mouseY = event.clientY - parentRect.top
+      onDrag?.(newPosition, mouseX, mouseY)
     })
   }
 
@@ -156,12 +157,12 @@ export function useWindowDrag(options: UseWindowDragOptions) {
       onDragEnd?.(position.value)
     }
 
-    document.removeEventListener('mousemove', handleDrag)
-    document.removeEventListener('mouseup', stopDrag)
+    document.removeEventListener('pointermove', handleDrag)
+    document.removeEventListener('pointerup', stopDrag)
   }
 
   /** Atualiza o offset do drag (usado quando restaura do snap) */
-  function updateDragOffset(event: MouseEvent) {
+  function updateDragOffset(event: PointerEvent) {
     const parentRect = getParentRect(windowEl)
     if (!parentRect) return
 
@@ -189,8 +190,8 @@ export function useWindowDrag(options: UseWindowDragOptions) {
       cancelAnimationFrame(rafId)
       rafId = null
     }
-    document.removeEventListener('mousemove', handleDrag)
-    document.removeEventListener('mouseup', stopDrag)
+    document.removeEventListener('pointermove', handleDrag)
+    document.removeEventListener('pointerup', stopDrag)
   })
 
   return {

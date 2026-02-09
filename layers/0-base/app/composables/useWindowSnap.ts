@@ -40,24 +40,39 @@ export function useWindowSnap(options: UseWindowSnapOptions) {
   const preSnapState = ref<WindowGeometry | null>(null)
 
   /** Detecta zona de snap baseado na posição do mouse */
-  function detectSnapZone(mouseX: number, containerWidth: number): SnapZone {
-    if (mouseX <= config.snapZone) {
-      return 'left'
-    } else if (mouseX >= containerWidth - config.snapZone) {
-      return 'right'
-    }
+  function detectSnapZone(
+    mouseX: number,
+    mouseY: number,
+    containerWidth: number,
+    containerHeight: number
+  ): SnapZone {
+    const inLeft = mouseX <= config.snapZone
+    const inRight = mouseX >= containerWidth - config.snapZone
+    const inTop = mouseY <= config.snapZone
+    const inBottom = mouseY >= containerHeight - config.snapZone
+
+    // Cantos (prioridade sobre bordas)
+    if (inTop && inLeft) return 'top-left'
+    if (inTop && inRight) return 'top-right'
+    if (inBottom && inLeft) return 'bottom-left'
+    if (inBottom && inRight) return 'bottom-right'
+
+    // Bordas
+    if (inTop) return 'top'
+    if (inLeft) return 'left'
+    if (inRight) return 'right'
     return null
   }
 
   /** Atualiza a zona de snap durante o arrasto */
-  function updateSnapZone(mouseX: number) {
+  function updateSnapZone(mouseX: number, mouseY: number) {
     const parentRect = getParentRect(windowEl)
     if (!parentRect) {
       snapZone.value = null
       return
     }
 
-    snapZone.value = detectSnapZone(mouseX, parentRect.width)
+    snapZone.value = detectSnapZone(mouseX, mouseY, parentRect.width, parentRect.height)
   }
 
   /** Limpa a zona de snap */
@@ -66,20 +81,42 @@ export function useWindowSnap(options: UseWindowSnapOptions) {
   }
 
   /** Calcula as dimensões do snap */
-  function calculateSnapDimensions(zone: 'left' | 'right', parentRect: DOMRect): WindowGeometry {
-    const snapWidth = Math.floor((parentRect.width - config.padding * 3) / 2)
-    const snapHeight = parentRect.height - config.padding * 2
+  function calculateSnapDimensions(
+    zone: NonNullable<SnapZone>,
+    parentRect: DOMRect
+  ): WindowGeometry {
+    const p = config.padding
+    const halfW = Math.floor((parentRect.width - p * 3) / 2)
+    const halfH = Math.floor((parentRect.height - p * 3) / 2)
+    const fullW = parentRect.width - p * 2
+    const fullH = parentRect.height - p * 2
 
-    const snapX = zone === 'left' ? config.padding : parentRect.width - snapWidth - config.padding
-
-    return {
-      position: { x: snapX, y: config.padding },
-      size: { width: snapWidth, height: snapHeight }
+    const map: Record<NonNullable<SnapZone>, WindowGeometry> = {
+      left: { position: { x: p, y: p }, size: { width: halfW, height: fullH } },
+      right: {
+        position: { x: parentRect.width - halfW - p, y: p },
+        size: { width: halfW, height: fullH }
+      },
+      top: { position: { x: p, y: p }, size: { width: fullW, height: fullH } },
+      'top-left': { position: { x: p, y: p }, size: { width: halfW, height: halfH } },
+      'top-right': {
+        position: { x: parentRect.width - halfW - p, y: p },
+        size: { width: halfW, height: halfH }
+      },
+      'bottom-left': {
+        position: { x: p, y: parentRect.height - halfH - p },
+        size: { width: halfW, height: halfH }
+      },
+      'bottom-right': {
+        position: { x: parentRect.width - halfW - p, y: parentRect.height - halfH - p },
+        size: { width: halfW, height: halfH }
+      }
     }
+    return map[zone]
   }
 
   /** Aplica o snap para a zona especificada */
-  function applySnap(zone: 'left' | 'right') {
+  function applySnap(zone: NonNullable<SnapZone>) {
     const parentRect = getParentRect(windowEl)
     if (!parentRect) return
 
@@ -111,7 +148,7 @@ export function useWindowSnap(options: UseWindowSnapOptions) {
   }
 
   /** Restaura do snap para o estado anterior */
-  function restoreFromSnap(event: MouseEvent): boolean {
+  function restoreFromSnap(event: PointerEvent): boolean {
     if (!isSnapped.value || !preSnapState.value) {
       return false
     }

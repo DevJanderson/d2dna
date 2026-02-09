@@ -37,17 +37,42 @@ describe('useWindowSnap', () => {
   describe('detectSnapZone', () => {
     it('should detect left snap zone', () => {
       const snap = useWindowSnap({ windowEl, position, size })
-      expect(snap.detectSnapZone(10, 1200)).toBe('left')
+      expect(snap.detectSnapZone(10, 400, 1200, 800)).toBe('left')
     })
 
     it('should detect right snap zone', () => {
       const snap = useWindowSnap({ windowEl, position, size })
-      expect(snap.detectSnapZone(1190, 1200)).toBe('right')
+      expect(snap.detectSnapZone(1190, 400, 1200, 800)).toBe('right')
+    })
+
+    it('should detect top snap zone', () => {
+      const snap = useWindowSnap({ windowEl, position, size })
+      expect(snap.detectSnapZone(600, 5, 1200, 800)).toBe('top')
+    })
+
+    it('should detect top-left snap zone', () => {
+      const snap = useWindowSnap({ windowEl, position, size })
+      expect(snap.detectSnapZone(5, 5, 1200, 800)).toBe('top-left')
+    })
+
+    it('should detect top-right snap zone', () => {
+      const snap = useWindowSnap({ windowEl, position, size })
+      expect(snap.detectSnapZone(1195, 5, 1200, 800)).toBe('top-right')
+    })
+
+    it('should detect bottom-left snap zone', () => {
+      const snap = useWindowSnap({ windowEl, position, size })
+      expect(snap.detectSnapZone(5, 795, 1200, 800)).toBe('bottom-left')
+    })
+
+    it('should detect bottom-right snap zone', () => {
+      const snap = useWindowSnap({ windowEl, position, size })
+      expect(snap.detectSnapZone(1195, 795, 1200, 800)).toBe('bottom-right')
     })
 
     it('should return null when not in snap zone', () => {
       const snap = useWindowSnap({ windowEl, position, size })
-      expect(snap.detectSnapZone(600, 1200)).toBeNull()
+      expect(snap.detectSnapZone(600, 400, 1200, 800)).toBeNull()
     })
 
     it('should respect custom config snapZone', () => {
@@ -57,8 +82,8 @@ describe('useWindowSnap', () => {
         size,
         config: { snapZone: 50 }
       })
-      expect(snap.detectSnapZone(40, 1200)).toBe('left')
-      expect(snap.detectSnapZone(1170, 1200)).toBe('right')
+      expect(snap.detectSnapZone(40, 400, 1200, 800)).toBe('left')
+      expect(snap.detectSnapZone(1170, 400, 1200, 800)).toBe('right')
     })
   })
 
@@ -66,13 +91,13 @@ describe('useWindowSnap', () => {
     it('should update snapZone based on mouse position', () => {
       const snap = useWindowSnap({ windowEl, position, size })
 
-      snap.updateSnapZone(5)
+      snap.updateSnapZone(5, 400)
       expect(snap.snapZone.value).toBe('left')
 
-      snap.updateSnapZone(1195)
+      snap.updateSnapZone(1195, 400)
       expect(snap.snapZone.value).toBe('right')
 
-      snap.updateSnapZone(600)
+      snap.updateSnapZone(600, 400)
       expect(snap.snapZone.value).toBeNull()
     })
   })
@@ -81,7 +106,7 @@ describe('useWindowSnap', () => {
     it('should set snapZone to null', () => {
       const snap = useWindowSnap({ windowEl, position, size })
 
-      snap.updateSnapZone(5)
+      snap.updateSnapZone(5, 400)
       expect(snap.snapZone.value).toBe('left')
 
       snap.clearSnapZone()
@@ -179,7 +204,7 @@ describe('useWindowSnap', () => {
     it('should apply snap when in snap zone and return true', () => {
       const snap = useWindowSnap({ windowEl, position, size })
 
-      snap.updateSnapZone(5) // left zone
+      snap.updateSnapZone(5, 400) // left zone
       const result = snap.tryApplySnap()
 
       expect(result).toBe(true)
@@ -189,7 +214,7 @@ describe('useWindowSnap', () => {
     it('should return false when not in snap zone', () => {
       const snap = useWindowSnap({ windowEl, position, size })
 
-      snap.updateSnapZone(600) // no zone
+      snap.updateSnapZone(600, 400) // no zone
       const result = snap.tryApplySnap()
 
       expect(result).toBe(false)
@@ -199,7 +224,7 @@ describe('useWindowSnap', () => {
     it('should clear snap zone after applying', () => {
       const snap = useWindowSnap({ windowEl, position, size })
 
-      snap.updateSnapZone(5)
+      snap.updateSnapZone(5, 400)
       snap.tryApplySnap()
 
       expect(snap.snapZone.value).toBeNull()

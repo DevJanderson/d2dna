@@ -73,7 +73,7 @@ export function useWindowResize(options: UseWindowResizeOptions) {
   })
 
   /** Inicia o redimensionamento */
-  function startResize(event: MouseEvent, direction: ResizeDirection) {
+  function startResize(event: PointerEvent, direction: ResizeDirection) {
     if (!isEnabled.value || !direction) return
 
     event.preventDefault()
@@ -90,12 +90,12 @@ export function useWindowResize(options: UseWindowResizeOptions) {
       posY: position.value.y
     }
 
-    document.addEventListener('mousemove', handleResize)
-    document.addEventListener('mouseup', stopResize)
+    document.addEventListener('pointermove', handleResize)
+    document.addEventListener('pointerup', stopResize)
   }
 
   /** Processa o redimensionamento (envolvido em rAF) */
-  function handleResize(event: MouseEvent) {
+  function handleResize(event: PointerEvent) {
     if (!isResizing.value || !resizeDirection.value) return
 
     if (rafId !== null) cancelAnimationFrame(rafId)
@@ -184,8 +184,8 @@ export function useWindowResize(options: UseWindowResizeOptions) {
       }
     }
 
-    document.removeEventListener('mousemove', handleResize)
-    document.removeEventListener('mouseup', stopResize)
+    document.removeEventListener('pointermove', handleResize)
+    document.removeEventListener('pointerup', stopResize)
   }
 
   // Cleanup
@@ -194,8 +194,8 @@ export function useWindowResize(options: UseWindowResizeOptions) {
       cancelAnimationFrame(rafId)
       rafId = null
     }
-    document.removeEventListener('mousemove', handleResize)
-    document.removeEventListener('mouseup', stopResize)
+    document.removeEventListener('pointermove', handleResize)
+    document.removeEventListener('pointerup', stopResize)
   })
 
   return {

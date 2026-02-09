@@ -34,6 +34,9 @@ export interface OpenWindowConfig {
 
 const BASE_Z_INDEX = 10
 const Z_INDEX_INCREMENT = 1
+const Z_INDEX_NORMALIZE_THRESHOLD = 100
+const STORAGE_KEY = 'tucuxi-window-state'
+const SAVE_DEBOUNCE_MS = 500
 
 export function useWindowManager() {
   // Estado reativo das janelas
@@ -108,7 +111,22 @@ export function useWindowManager() {
           activeWindowId.value = null
         }
       }
+
+      saveState()
     }
+  }
+
+  /** Normaliza z-indexes para evitar crescimento infinito */
+  function normalizeZIndexes() {
+    if (windows.value.length === 0) return
+    const max = Math.max(...windows.value.map(w => w.zIndex))
+    if (max <= BASE_Z_INDEX + Z_INDEX_NORMALIZE_THRESHOLD) return
+
+    const sorted = [...windows.value].sort((a, b) => a.zIndex - b.zIndex)
+    sorted.forEach((w, i) => {
+      const win = windows.value.find(x => x.id === w.id)
+      if (win) win.zIndex = BASE_Z_INDEX + (i + 1) * Z_INDEX_INCREMENT
+    })
   }
 
   // Focar janela (trazer para frente)
@@ -118,6 +136,8 @@ export function useWindowManager() {
       window.zIndex = maxZIndex.value + Z_INDEX_INCREMENT
       window.minimized = false
       activeWindowId.value = id
+      normalizeZIndexes()
+      saveState()
     }
   }
 
@@ -139,6 +159,8 @@ export function useWindowManager() {
           activeWindowId.value = null
         }
       }
+
+      saveState()
     }
   }
 
@@ -157,6 +179,7 @@ export function useWindowManager() {
         // Size será controlado pelo CSS (100% da área)
       }
       focus(id)
+      saveState()
     }
   }
 
@@ -168,6 +191,7 @@ export function useWindowManager() {
       window.size = { ...window.preMaximizeState.size }
       window.maximized = false
       window.preMaximizeState = undefined
+      saveState()
     }
   }
 
@@ -188,6 +212,7 @@ export function useWindowManager() {
     const window = windows.value.find(w => w.id === id)
     if (window && !window.maximized) {
       window.position = position
+      saveState()
     }
   }
 
@@ -196,6 +221,7 @@ export function useWindowManager() {
     const window = windows.value.find(w => w.id === id)
     if (window && !window.maximized) {
       window.size = size
+      saveState()
     }
   }
 
@@ -229,6 +255,59 @@ export function useWindowManager() {
     activeWindowId.value = null
   }
 
+  // ============ PERSISTÊNCIA ============
+
+  let saveTimeout: ReturnType<typeof setTimeout> | null = null
+
+  /** Salva geometria das janelas no localStorage (com debounce) */
+  function saveState() {
+    if (!import.meta.client) return
+
+    if (saveTimeout) clearTimeout(saveTimeout)
+    saveTimeout = setTimeout(() => {
+      const data = windows.value.map(w => ({
+        id: w.id,
+        title: w.title,
+        position: w.position,
+        size: w.size,
+        minimized: w.minimized,
+        maximized: w.maximized
+      }))
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+    }, SAVE_DEBOUNCE_MS)
+  }
+
+  /** Restaura geometria das janelas existentes a partir do localStorage */
+  function restoreState() {
+    if (!import.meta.client) return
+
+    const raw = localStorage.getItem(STORAGE_KEY)
+    if (!raw) return
+
+    try {
+      const data = JSON.parse(raw) as Array<{
+        id: string
+        position: { x: number; y: number }
+        size: { width: number; height: number }
+        minimized: boolean
+        maximized: boolean
+      }>
+
+      // Restaurar apenas geometria de janelas que ainda existem
+      for (const saved of data) {
+        const win = windows.value.find(w => w.id === saved.id)
+        if (win) {
+          win.position = saved.position
+          win.size = saved.size
+          win.minimized = saved.minimized
+          win.maximized = saved.maximized
+        }
+      }
+    } catch {
+      /* ignore corrupt data */
+    }
+  }
+
   // Janelas não minimizadas
   const visibleWindows = computed(() => {
     return windows.value.filter(w => !w.minimized)
@@ -259,6 +338,8 @@ export function useWindowManager() {
     updateSize,
     updateWindow,
     closeAll,
-    minimizeAll
+    minimizeAll,
+    saveState,
+    restoreState
   }
 }

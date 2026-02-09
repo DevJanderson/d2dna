@@ -22,7 +22,15 @@ export interface WindowGeometry {
 }
 
 /** Zonas de snap disponíveis */
-export type SnapZone = 'left' | 'right' | null
+export type SnapZone =
+  | 'left'
+  | 'right'
+  | 'top'
+  | 'top-left'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-right'
+  | null
 
 /** Direções de redimensionamento */
 export type ResizeDirection = 'n' | 's' | 'e' | 'w' | 'ne' | 'nw' | 'se' | 'sw' | null

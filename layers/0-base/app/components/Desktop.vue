@@ -6,11 +6,12 @@
  * Suporta:
  * - Navegação de arquivos via dropdown no título
  * - Abertura automática de janelas de conteúdo markdown
- * - Animações de entrada/saída de janelas
+ * - Animações de entrada/saída com Motion Vue (AnimatePresence)
  *
  * Nota: Wallpaper é aplicado no layout (desktop.vue)
  * Nota: Não usar v-auto-animate aqui pois interfere com drag de janelas
  */
+import { Motion, AnimatePresence } from 'motion-v'
 
 const windowManager = useWindowManager()
 
@@ -55,32 +56,40 @@ function openContentWindow(file: { id: string; title: string; path: string }) {
       <slot name="background" />
 
       <!-- Janelas visíveis com animação de entrada/saída -->
-      <TransitionGroup name="window">
-        <AppWindow
+      <AnimatePresence>
+        <Motion
           v-for="window in windowManager.visibleWindows.value"
           :key="window.id"
-          :window-id="window.id"
-          :title="window.title"
-          :initial-x="window.position.x"
-          :initial-y="window.position.y"
-          :initial-width="window.size.width"
-          :initial-height="window.size.height"
-          :z-index="window.zIndex"
-          :maximized="window.maximized"
-          managed
-          @file:select="openContentWindow"
+          :initial="{ opacity: 0, scale: 0.95 }"
+          :animate="{ opacity: 1, scale: 1 }"
+          :exit="{ opacity: 0, scale: 0.95 }"
+          :transition="{ duration: 0.15 }"
+          as-child
         >
-          <!-- Renderiza componente dinâmico se especificado -->
-          <component :is="window.component" v-if="window.component" v-bind="window.props" />
-          <!-- Se tem contentPath nas props, renderiza AppWindowContent -->
-          <AppWindowContent
-            v-else-if="window.props?.contentPath"
-            :path="String(window.props.contentPath)"
-          />
-          <!-- Ou usa slot nomeado pelo ID da janela -->
-          <slot v-else :name="window.id" :window="window" />
-        </AppWindow>
-      </TransitionGroup>
+          <AppWindow
+            :window-id="window.id"
+            :title="window.title"
+            :initial-x="window.position.x"
+            :initial-y="window.position.y"
+            :initial-width="window.size.width"
+            :initial-height="window.size.height"
+            :z-index="window.zIndex"
+            :maximized="window.maximized"
+            managed
+            @file:select="openContentWindow"
+          >
+            <!-- Renderiza componente dinâmico se especificado -->
+            <component :is="window.component" v-if="window.component" v-bind="window.props" />
+            <!-- Se tem contentPath nas props, renderiza AppWindowContent -->
+            <AppWindowContent
+              v-else-if="window.props?.contentPath"
+              :path="String(window.props.contentPath)"
+            />
+            <!-- Ou usa slot nomeado pelo ID da janela -->
+            <slot v-else :name="window.id" :window="window" />
+          </AppWindow>
+        </Motion>
+      </AnimatePresence>
     </div>
 
     <!-- Slot para taskbar ou outros elementos fixos -->
@@ -90,37 +99,3 @@ function openContentWindow(file: { id: string; title: string; path: string }) {
     <slot />
   </div>
 </template>
-
-<style>
-/* Animação de entrada de janela */
-.window-enter-active {
-  animation: window-open 0.15s ease-out;
-}
-
-/* Animação de saída de janela */
-.window-leave-active {
-  animation: window-close 0.12s ease-in forwards;
-}
-
-@keyframes window-open {
-  0% {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-@keyframes window-close {
-  0% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  100% {
-    opacity: 0;
-    transform: scale(0.95);
-  }
-}
-</style>
