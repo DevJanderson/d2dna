@@ -30,7 +30,16 @@ const colorClasses = {
       class="w-20 h-20 rounded-full overflow-hidden ring-2 ring-offset-2 ring-offset-background mb-4 transition-shadow duration-300 group-hover:ring-4"
       :class="colorClasses[color]"
     >
-      <img :src="image" :alt="name" class="w-full h-full object-cover" />
+      <NuxtImg
+        :src="image"
+        :alt="`Foto de ${name}, ${role}`"
+        loading="lazy"
+        format="webp"
+        quality="80"
+        width="80"
+        height="80"
+        class="w-full h-full object-cover"
+      />
     </div>
 
     <!-- Info -->

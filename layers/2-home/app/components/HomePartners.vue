@@ -42,7 +42,7 @@ const partners = [
     <p class="text-center text-muted-foreground mb-8 text-sm">De hospitais de referência a universidades de ponta — nossa tecnologia opera onde erro não é opção.</p>
 
     <!-- Grid de logos — 3x3 perfeito -->
-    <div class="grid grid-cols-3 gap-px bg-border/20 border border-border/20 max-w-4xl mx-auto">
+    <div id="partners" class="grid grid-cols-2 gap-px bg-border/20 border border-border/20 max-w-4xl mx-auto md:grid-cols-3">
       <div
         v-for="partner in partners"
         :key="partner.name"

@@ -31,7 +31,7 @@ describe('HomeTeamMember', () => {
     const img = wrapper.find('img')
     expect(img.exists()).toBe(true)
     expect(img.attributes('src')).toBe('https://example.com/photo.png')
-    expect(img.attributes('alt')).toBe('Dr. Deney Araújo')
+    expect(img.attributes('alt')).toBe('Foto de Dr. Deney Araújo, CEO & Dev')
   })
 
   it('should apply correct ring color class for green', () => {

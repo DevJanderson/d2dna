@@ -27,7 +27,7 @@ const features = [
 </script>
 
 <template>
-  <div>
+  <div id="features">
     <div
       class="mx-auto max-w-7xl hero-entrance hero-entrance-delay-4"
       :class="[
@@ -57,21 +57,3 @@ const features = [
     </div>
   </div>
 </template>
-
-<style scoped>
-.hero-entrance {
-  transition:
-    opacity 1s ease-out,
-    transform 1s ease-out;
-}
-
-.hero-entrance-delay-4 {
-  transition-delay: 800ms;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-entrance {
-    transition: none;
-  }
-}
-</style>

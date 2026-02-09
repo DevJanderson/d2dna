@@ -49,7 +49,7 @@ describe('HomeTeam', () => {
   it('should apply visible classes when intersection triggers', () => {
     const wrapper = mount(HomeTeam)
 
-    const container = wrapper.find('div')
+    const container = wrapper.find('section')
     expect(container.classes()).toContain('opacity-100')
   })
 })

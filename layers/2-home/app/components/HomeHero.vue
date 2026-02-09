@@ -222,25 +222,6 @@ onUnmounted(() => {
 </template>
 
 <style scoped>
-/* Animação de entrada */
-.hero-entrance {
-  transition:
-    opacity 1s ease-out,
-    transform 1s ease-out;
-}
-
-.hero-entrance-delay-1 {
-  transition-delay: 200ms;
-}
-
-.hero-entrance-delay-2 {
-  transition-delay: 400ms;
-}
-
-.hero-entrance-delay-3 {
-  transition-delay: 600ms;
-}
-
 /* Stack container — padding-bottom acomoda os ghost cards */
 .terminal-stack {
   position: relative;

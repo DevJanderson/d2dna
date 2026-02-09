@@ -59,12 +59,14 @@ const teamMembers = [
 </script>
 
 <template>
-  <div
+  <section
+    id="team"
     ref="sectionRef"
+    aria-labelledby="team-heading"
     class="max-w-5xl mx-auto px-6 py-12 md:py-20 transition-all duration-700 ease-out"
     :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
   >
-    <h2 class="text-2xl font-bold text-foreground mb-4 text-center">Quem Está por Trás</h2>
+    <h2 id="team-heading" class="text-2xl font-bold text-foreground mb-4 text-center">Quem Está por Trás</h2>
     <p class="text-center text-muted-foreground mb-10 text-sm">Quem fez ciência, constrói a tecnologia.</p>
 
     <!-- Grid de membros -->
@@ -78,5 +80,5 @@ const teamMembers = [
         :color="member.color"
       />
     </div>
-  </div>
+  </section>
 </template>

@@ -140,7 +140,7 @@ onUnmounted(() => {
   >
     <h2 id="stats-heading" class="sr-only">Estatísticas</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+    <dl class="grid grid-cols-1 md:grid-cols-3 gap-3">
       <div
         v-for="(stat, index) in stats"
         :key="stat.label"
@@ -163,20 +163,20 @@ onUnmounted(() => {
         </span>
 
         <!-- Número animado -->
-        <div class="text-4xl md:text-5xl font-bold text-foreground mb-1">
+        <dd class="text-4xl md:text-5xl font-bold text-foreground mb-1">
           {{ stat.prefix }}{{ displayValues[index] }}{{ stat.suffix }}
-        </div>
+        </dd>
 
         <!-- Label -->
-        <div class="text-sm font-medium text-foreground/80 mb-3">
+        <dt class="text-sm font-medium text-foreground/80 mb-3">
           {{ stat.label }}
-        </div>
+        </dt>
 
         <!-- Contexto -->
         <p class="text-xs text-muted-foreground leading-relaxed">
           {{ stat.context }}
         </p>
       </div>
-    </div>
+    </dl>
   </section>
 </template>

@@ -81,17 +81,3 @@ function scrollTo(href: string) {
     </header>
   </div>
 </template>
-
-<style scoped>
-.hero-entrance {
-  transition:
-    opacity 1s ease-out,
-    transform 1s ease-out;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .hero-entrance {
-    transition: none;
-  }
-}
-</style>
