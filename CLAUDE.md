@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Sobre o Projeto
+
+**Tucuxi** (codinome MedBlast) — plataforma de Record Linkage para dados médicos. Usa algoritmo proprietário DNA (Digital Numeric Algorithm) da D2DNA para identificar e unificar registros de pacientes duplicados entre diferentes sistemas de saúde. Webapp é o frontend + BFF que consome a API REST em `api.d2dna.com`.
+
 ## Idioma
 
 Sempre responda em Português Brasileiro (pt-BR).
