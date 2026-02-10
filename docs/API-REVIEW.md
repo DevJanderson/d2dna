@@ -1,108 +1,171 @@
 # Revisao da Spec OpenAPI — Tucuxi API v1.0.0
 
-Ao integrar a spec atualizada no frontend (Kubb + Zod), identificamos alguns pontos que impactam a geracao automatica de tipos, validacao e documentacao. Segue o levantamento completo.
+**Status:** Verificado contra `openapi/tucuxi-api.json` e codigo gerado pelo Kubb
+**Data:** 2025-02-10
+**Origem:** Integracao frontend (Kubb + Zod)
+
+Ao integrar a spec atualizada no frontend, identificamos problemas que impactam a geracao automatica de tipos, validacao e documentacao. Todos os itens abaixo foram **verificados contra a spec e o codigo gerado**.
 
 ---
 
-## 1. POSTs sem `requestBody` que recebem dados (13 endpoints)
+## 1. POSTs sem `requestBody` (13 endpoints)
 
-Segundo a especificacao OpenAPI, **todo endpoint que recebe dados no body deve declarar `requestBody`**. Sem isso, ferramentas (Swagger UI, Kubb, Postman, clientes gerados) nao sabem o que enviar.
+Segundo a especificacao OpenAPI, **todo endpoint que recebe dados no body deve declarar `requestBody`**. Sem isso, ferramentas como Swagger UI, Kubb, Postman e clientes gerados nao sabem o que enviar.
+
+O Kubb gera `MutationRequest` apenas quando `requestBody` existe. Nos 13 endpoints abaixo, nenhum `MutationRequest` foi gerado.
 
 ### Criticos (usados diretamente no frontend)
 
-| Endpoint                              | Descricao     | O que recebe                            |
-| ------------------------------------- | ------------- | --------------------------------------- |
-| `POST /api/v1/usuarios/login`         | Login         | `email`, `password` (JSON)              |
-| `POST /api/v1/usuarios/refresh-token` | Refresh token | `refresh_token` (esta como query param) |
-| `POST /api/v1/usuarios/reset-password`| Reset senha   | `email` (esta como query param)         |
+| Endpoint | O que recebe | Parametros na spec |
+| --- | --- | --- |
+| `POST /api/v1/usuarios/login` | `email`, `password` (JSON) | **Nenhum** (nem query, nem body) |
+| `POST /api/v1/usuarios/refresh-token` | `refresh_token` | query param (deveria ser body) |
+| `POST /api/v1/usuarios/reset-password` | `email` | query param (deveria ser body) |
 
-> **Nota:** O `LoginSchema` existia na spec anterior e foi removido. Isso quebrou a geracao automatica do schema Zod de validacao no BFF.
+> **Impacto direto:** O `LoginSchema` existia na spec anterior e foi removido. Isso quebrou a geracao automatica do schema Zod de validacao no BFF. Tivemos que criar o schema manualmente em `layers/3-auth/app/composables/types.ts`.
 
 ### Operacoes administrativas/internas
 
-| Endpoint                                                   | Descricao                          |
-| ---------------------------------------------------------- | ---------------------------------- |
-| `POST /api/v1/review/reverter/{id_revisao}`                | Reverter revisao                   |
-| `POST /api/v1/review/cns/definir-master-auto`              | Definir CNS principal (todos)      |
-| `POST /api/v1/review/cns/definir-master/{uuid_cliente}`    | Definir CNS principal (cliente)    |
-| `POST /api/v1/linkage/resolve-homonyms`                    | Resolver homonimos (501)           |
-| `POST /api/v1/linkage/validation/cpf`                      | Validar CPF                        |
-| `POST /api/v1/linkage/validation/cns`                      | Validar CNS                        |
-| `POST /api/v1/metrics/fasta/reset-metrics`                 | Reset metricas                     |
-| `POST /api/v1/v2/cache/clear`                              | Limpar cache                       |
-| `POST /api/v1/v2/circuit-breaker/reset`                    | Reset circuit breakers             |
-| `POST /api/v1/v2/circuit-breaker/{circuit_name}/reset`     | Reset circuit breaker especifico   |
+| Endpoint | Parametros na spec |
+| --- | --- |
+| `POST /api/v1/review/reverter/{id_revisao}` | path: `id_revisao` (integer) |
+| `POST /api/v1/review/cns/definir-master-auto` | **Nenhum** |
+| `POST /api/v1/review/cns/definir-master/{uuid_cliente}` | path: `uuid_cliente` (uuid) |
+| `POST /api/v1/linkage/resolve-homonyms` | **Nenhum** (retorna 501) |
+| `POST /api/v1/linkage/validation/cpf` | query: `cpf` (deveria ser body) |
+| `POST /api/v1/linkage/validation/cns` | query: `cns` (deveria ser body) |
+| `POST /api/v1/metrics/fasta/reset-metrics` | **Nenhum** |
+| `POST /api/v1/v2/cache/clear` | **Nenhum** |
+| `POST /api/v1/v2/circuit-breaker/reset` | **Nenhum** |
+| `POST /api/v1/v2/circuit-breaker/{circuit_name}/reset` | path: `circuit_name` (string) |
 
 ---
 
-## 2. Dados sensiveis passados como Query Params (antipadrao)
+## 2. Dados sensiveis em Query Params (4 endpoints)
 
-Alguns POSTs recebem dados via **query params** em vez de **requestBody**. Isso e um antipadrao porque:
+Estes POSTs recebem dados via **query params** em vez de **requestBody**. Isso e um problema de seguranca e conformidade LGPD:
 
-- Query params ficam nos logs do servidor, historico do navegador e proxies
-- Dados sensiveis (tokens, emails, senhas) nunca devem ir na URL
-- Ferramentas de geracao de codigo tratam query params como filtros, nao como corpo da requisicao
+- Query params ficam em **logs do servidor**, historico do navegador e proxies
+- Dados sensiveis (tokens, emails, CPF, CNS) **nunca devem trafegar na URL**
+- Ferramentas de geracao de codigo tratam query params como filtros, nao como corpo
 
-| Endpoint                               | Param na query  | Deveria estar no body  |
-| -------------------------------------- | --------------- | ---------------------- |
-| `POST /api/v1/usuarios/refresh-token`  | `refresh_token` | Sim (dado sensivel)    |
-| `POST /api/v1/usuarios/reset-password` | `email`         | Sim (dado pessoal)     |
-| `POST /api/v1/linkage/validation/cpf`  | `cpf`           | Sim (dado sensivel/PII)|
-| `POST /api/v1/linkage/validation/cns`  | `cns`           | Sim (dado sensivel/PII)|
+| Endpoint | Param na query | Tipo de dado | Risco |
+| --- | --- | --- | --- |
+| `POST /api/v1/usuarios/refresh-token` | `refresh_token` | Token de sessao | **Critico** — permite hijack de sessao via logs |
+| `POST /api/v1/usuarios/reset-password` | `email` | Dado pessoal (PII) | **Alto** — exposicao de email em logs |
+| `POST /api/v1/linkage/validation/cpf` | `cpf` | Dado sensivel (LGPD) | **Critico** — CPF em URL viola LGPD |
+| `POST /api/v1/linkage/validation/cns` | `cns` | Dado de saude (LGPD) | **Critico** — CNS em URL viola LGPD |
+
+### Correcao sugerida (FastAPI)
+
+```python
+# ANTES — dados sensiveis na URL
+@router.post("/refresh-token")
+async def refresh_token(refresh_token: str = Query(...)):
+
+# DEPOIS — dados no body (seguro)
+@router.post("/refresh-token")
+async def refresh_token(body: RefreshTokenRequest):
+```
 
 ---
 
-## 3. Responses sem schema definido (39 endpoints)
+## 3. Responses sem schema definido (39 de 73 endpoints)
 
-**39 de 73 endpoints** retornam `"schema": {}` (vazio) na response 200/201. Sem o schema de resposta, o Kubb nao gera os tipos TypeScript de retorno, e o Swagger UI nao mostra exemplo de resposta.
+**39 de 73 endpoints (53%)** retornam `"schema": {}` na response 200/201/204. O Kubb gera `type Response = any` e `z.any()` para esses endpoints, eliminando tipagem e validacao.
 
-### Endpoints de autenticacao (todos sem response schema)
+### Usuarios (10 endpoints sem schema de resposta)
 
-- `POST /api/v1/usuarios/login` — deveria retornar `{ access_token, refresh_token, token_type }`
-- `POST /api/v1/usuarios/refresh-token` — deveria retornar `{ access_token, ... }`
-- `GET /api/v1/usuarios/verify-token` — deveria retornar status da verificacao
-- `POST /api/v1/usuarios/reset-password` — deveria retornar confirmacao
-- `POST /api/v1/usuarios/logout` — deveria retornar confirmacao
-- `POST /api/v1/usuarios/change-password` — deveria retornar confirmacao
-- `DELETE /api/v1/usuarios/{usuario_id}` — deveria retornar confirmacao
+| Metodo | Endpoint | Status |
+| --- | --- | --- |
+| POST | `/api/v1/usuarios/login` | 200 |
+| POST | `/api/v1/usuarios/refresh-token` | 200 |
+| GET | `/api/v1/usuarios/verify-token` | 200 |
+| POST | `/api/v1/usuarios/reset-password` | 200 |
+| POST | `/api/v1/usuarios/logout` | 200 |
+| POST | `/api/v1/usuarios/change-password` | 200 |
+| DELETE | `/api/v1/usuarios/{usuario_id}` | 200 |
+| POST | `/api/v1/usuarios/{usuario_id}/change-password` | 200 |
+| DELETE | `/api/v1/usuarios/{usuario_id}/foto-perfil` | 200 |
+| POST | `/api/v1/usuarios/{usuario_id}/foto-perfil` | 200 |
 
-### Endpoints de clientes
+### Clientes (3 endpoints)
 
-- `POST /api/v1/clientes/` (201) — deveria retornar o cliente criado
-- `GET /api/v1/clientes/` (200) — deveria retornar lista paginada
+| Metodo | Endpoint | Status |
+| --- | --- | --- |
+| POST | `/api/v1/clientes/` | 201 |
+| GET | `/api/v1/clientes/` | 200 |
+| PUT | `/api/v1/clientes/{uuid_cliente}/detalhes/{detalhe_id}` | 200 |
 
-### Endpoints de review
+### Historico de Clientes (2 endpoints)
 
-- `GET /api/v1/review/estatisticas` — deveria retornar estatisticas
-- `POST /api/v1/review/reverter/{id_revisao}` — deveria retornar revisao revertida
-- `GET /api/v1/review/cns/analise-qualidade` — deveria retornar analise
+| Metodo | Endpoint | Status |
+| --- | --- | --- |
+| GET | `/api/v1/historico-cliente/{uuid_cliente}` | 200 |
+| DELETE | `/api/v1/historico-cliente/{registro_historico_id}` | 204 |
 
-### Endpoints de linkage
+### Linkage (12 endpoints)
 
-- `POST /api/v1/linkage/tucuxi` — deveria retornar resultado do match
-- `POST /api/v1/linkage/batch` — deveria retornar resultados em lote
-- `POST /api/v1/linkage/check-duplicates` — deveria retornar duplicatas encontradas
-- `POST /api/v1/linkage/validation/cpf` — deveria retornar resultado da validacao
-- `POST /api/v1/linkage/validation/cns` — deveria retornar resultado da validacao
-- `POST /api/v1/linkage/explain` — deveria retornar explicacao
+| Metodo | Endpoint | Status |
+| --- | --- | --- |
+| POST | `/api/v1/linkage/tucuxi` | 200 |
+| POST | `/api/v1/linkage/batch` | 200 |
+| POST | `/api/v1/linkage/check-duplicates` | 200 |
+| POST | `/api/v1/linkage/explain` | 200 |
+| GET | `/api/v1/linkage/deterministic/cliente/{uuid_cliente}/cns` | 200 |
+| GET | `/api/v1/linkage/statistics/field-quality` | 200 |
+| GET | `/api/v1/linkage/metrics` | 200 |
+| GET | `/api/v1/linkage/strategies` | 200 |
+| POST | `/api/v1/linkage/deterministic/multi-cns` | 200 |
+| POST | `/api/v1/linkage/validation/batch` | 200 |
+| POST | `/api/v1/linkage/validation/cns` | 200 |
+| POST | `/api/v1/linkage/validation/cpf` | 200 |
 
-### Endpoints v2
+### Review & Qualidade de Dados (5 endpoints)
 
-- `GET /api/v1/v2/health` — deveria retornar status
-- `GET /api/v1/v2/strategies` — deveria retornar estrategias
-- `GET /api/v1/v2/cache/stats` — deveria retornar estatisticas
+| Metodo | Endpoint | Status |
+| --- | --- | --- |
+| POST | `/api/v1/review/cns/definir-master-auto` | 200 |
+| POST | `/api/v1/review/cns/definir-master/{uuid_cliente}` | 200 |
+| GET | `/api/v1/review/estatisticas` | 200 |
+| POST | `/api/v1/review/reverter/{id_revisao}` | 200 |
+| GET | `/api/v1/review/cns/analise-qualidade` | 200 |
 
-*(e mais 18 endpoints com o mesmo problema)*
+### Tucuxi v2 (7 endpoints)
+
+| Metodo | Endpoint | Status |
+| --- | --- | --- |
+| GET | `/api/v1/v2/cache/stats` | 200 |
+| GET | `/api/v1/v2/circuit-breaker/stats` | 200 |
+| POST | `/api/v1/v2/cache/clear` | 200 |
+| GET | `/api/v1/v2/health` | 200 |
+| GET | `/api/v1/v2/strategies` | 200 |
+| POST | `/api/v1/v2/circuit-breaker/reset` | 200 |
+| POST | `/api/v1/v2/circuit-breaker/{circuit_name}/reset` | 200 |
+
+### Correcao sugerida (FastAPI)
+
+```python
+# ANTES — response sem schema (gera "schema": {} no OpenAPI)
+@router.post("/login")
+async def login(...):
+    return {"access_token": token, "refresh_token": refresh}
+
+# DEPOIS — response com schema (gera tipos automaticamente)
+@router.post("/login", response_model=TokenResponse)
+async def login(...) -> TokenResponse:
+    return TokenResponse(access_token=token, refresh_token=refresh)
+```
 
 ---
 
 ## 4. Schemas removidos/renomeados
 
-| Antes                | Agora                    | Observacao                                  |
-| -------------------- | ------------------------ | ------------------------------------------- |
-| `LoginSchema`        | *(removido)*             | Precisa voltar como `requestBody` do login  |
-| `ClienteSchemaDelete`| `DeleteClienteResponse`  | OK, renomeacao valida                       |
-| `ClienteSearchGeral` | *(removido)*             | OK, ja estava deprecado                     |
+| Antes | Agora | Status |
+| --- | --- | --- |
+| `LoginSchema` | *(removido)* | **Precisa voltar** como `requestBody` do login |
+| `ClienteSchemaDelete` | `DeleteClienteResponse` | OK — renomeacao valida (`message` + `uuid_cliente`) |
+| `ClienteSearchGeral` | *(removido)* | OK — unificado com `ClienteSearch` |
 
 ---
 
@@ -110,64 +173,84 @@ Alguns POSTs recebem dados via **query params** em vez de **requestBody**. Isso 
 
 ### `ChangePasswordRequest`
 
-- `minLength` da senha: **6 → 8** (tanto senha atual quanto nova)
+- `minLength` da senha: **6 → 8** (tanto `active_password` quanto `new_password`)
+- **Acao no frontend:** atualizar validacao nos forms de troca de senha
 
 ### `ClienteSchemaBaseGeral`
 
-- Campo `cns`: era `string`, agora e `string[]` (array)
-- Novo campo: **`cns_invalidos`** (`string[] | null`) — CNS invalidos removidos na validacao (auditoria)
+- Campo `cns`: era `string`, agora e **`string[] | null`** (array)
+- Novo campo: **`cns_invalidos`** (`string[] | null`) — CNS invalidos removidos na validacao
 
 ### `ClienteSchemaUpdate`
 
-- Campo `cns`: removeu opcao `string` avulsa, manteve so `array`
+- Campo `cns`: removeu opcao `string` avulsa, manteve so **`string[] | null`**
 - Novo campo: **`cns_invalidos`** (`string[] | null`)
 
 ### `ClienteSearch`
 
-- Campo `cns`: removeu opcao `string` avulsa, manteve so `array`
+- Campo `cns`: removeu opcao `string` avulsa, manteve so **`string[] | null`**
 - Novo campo: **`cns_invalidos`** (`string[] | null`)
-- Campo `data_nascimento`: adicionou `format: "date"`
+- Campo `data_nascimento`: adicionou `format: "date"` (YYYY-MM-DD)
 - Descricoes: removeram acentuacao (normalizacao)
 
 ### `TucuxiV2Request`
 
-- Campo `cns`: era `array | string`, agora e `array | null` (removeu string avulsa)
+- Campo `cns`: era `array | string`, agora e **`array | null`** (removeu string avulsa)
 - Novo campo: **`cns_invalidos`** (`string[] | null`) — auditoria
 - Descricoes: removeram acentuacao
 
 ### Novo schema: `DeleteClienteResponse`
 
-- Campos: `message` (string) + `uuid_cliente` (uuid)
-- Substitui o antigo `ClienteSchemaDelete` (mesma estrutura, nome diferente)
+- Campos: `message` (string, required) + `uuid_cliente` (uuid, required)
+- Substitui o antigo `ClienteSchemaDelete`
 
 ---
 
-## Resumo dos numeros
+## Resumo
 
-| Metrica                              | Valor    |
-| ------------------------------------ | -------- |
-| Total de endpoints                   | 73       |
-| Com `requestBody` definido           | 27 (37%) |
-| POST/PUT/PATCH **sem** `requestBody` | 13 (18%) |
-| Responses **sem** schema             | 39 (53%) |
-| Query params com dados sensiveis     | 4        |
+| Metrica | Valor |
+| --- | --- |
+| Total de endpoints | 73 |
+| Com `requestBody` definido | 60 (82%) |
+| POST/PUT/PATCH **sem** `requestBody` | **13 (18%)** |
+| Responses **sem** schema | **39 (53%)** |
+| Query params com dados sensiveis | **4** |
 
 ---
 
-## Recomendacao
+## Plano de acao sugerido
 
-1. **Prioridade alta**: Adicionar `requestBody` nos 3 endpoints de auth (login, refresh, reset-password) + mover dados sensiveis de query params para body
-2. **Prioridade media**: Definir response schemas dos endpoints que o frontend consome (clientes, review, linkage)
-3. **Prioridade normal**: Completar responses dos endpoints internos/admin
+### Prioridade 1 — Seguranca (LGPD)
 
-Se o framework for **FastAPI**, a maioria desses schemas pode ser gerada automaticamente com Pydantic models nos parametros das rotas:
+Mover dados sensiveis de query params para requestBody:
 
-```python
-# Antes (sem requestBody na spec)
-@router.post("/login")
-async def login(email: str = Query(...), password: str = Query(...)):
+| Endpoint | Param | Acao |
+| --- | --- | --- |
+| `POST /usuarios/refresh-token` | `refresh_token` | Criar `RefreshTokenRequest` model |
+| `POST /usuarios/reset-password` | `email` | Criar `ResetPasswordRequest` model |
+| `POST /linkage/validation/cpf` | `cpf` | Criar `ValidateCpfRequest` model |
+| `POST /linkage/validation/cns` | `cns` | Criar `ValidateCnsRequest` model |
 
-# Depois (com requestBody gerado automaticamente)
-@router.post("/login")
-async def login(credentials: LoginSchema):
-```
+### Prioridade 2 — Autenticacao
+
+Restaurar schemas dos endpoints de auth usados pelo frontend:
+
+| Endpoint | Acao |
+| --- | --- |
+| `POST /usuarios/login` | Adicionar `requestBody` (LoginSchema) + `response_model` (TokenResponse) |
+| `POST /usuarios/refresh-token` | Adicionar `response_model` (TokenResponse) |
+| `GET /usuarios/verify-token` | Adicionar `response_model` |
+| `POST /usuarios/change-password` | Adicionar `response_model` |
+
+### Prioridade 3 — Endpoints consumidos pelo frontend
+
+Adicionar `response_model` nos endpoints que o frontend consome:
+
+- `POST /api/v1/clientes/` (201) — retornar cliente criado
+- `GET /api/v1/clientes/` (200) — retornar lista paginada
+- `GET /api/v1/review/estatisticas` (200) — retornar estatisticas
+- `POST /api/v1/linkage/tucuxi` (200) — retornar resultado do match
+
+### Prioridade 4 — Completar spec
+
+Adicionar `response_model` nos 25 endpoints restantes (admin/internos).
