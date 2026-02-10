@@ -2,19 +2,19 @@
   "properties": {
     "nome": { "type": "string", "title": "Nome" },
     "data_nascimento": {
-      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "anyOf": [{ "type": "string", "format": "date" }, { "type": "null" }],
       "title": "Data Nascimento"
     },
     "sexo": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Sexo" },
     "nome_mae": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Nome Mae" },
     "cpf": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Cpf" },
     "cns": {
-      "anyOf": [
-        { "items": { "type": "string" }, "type": "array" },
-        { "type": "string" },
-        { "type": "null" }
-      ],
+      "anyOf": [{ "items": { "type": "string" }, "type": "array" }, { "type": "null" }],
       "title": "Cns"
+    },
+    "cns_invalidos": {
+      "anyOf": [{ "items": { "type": "string" }, "type": "array" }, { "type": "null" }],
+      "title": "Cns Invalidos"
     },
     "cns_list": {
       "anyOf": [{ "items": { "type": "string" }, "type": "array" }, { "type": "null" }],
@@ -60,12 +60,12 @@
     "descricao": {
       "anyOf": [{ "type": "string" }, { "type": "null" }],
       "title": "Descricao",
-      "description": "Descrição do atendimento."
+      "description": "Descricao do atendimento."
     },
     "data_atendimento": {
       "anyOf": [{ "type": "string", "format": "date-time" }, { "type": "null" }],
       "title": "Data Atendimento",
-      "description": "Data do histórico. Se não informada, será usada a data atual."
+      "description": "Data do historico. Se nao informada, sera usada a data atual."
     }
   },
   "type": "object",

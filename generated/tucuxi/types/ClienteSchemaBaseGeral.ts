@@ -17,7 +17,11 @@ export type ClienteSchemaBaseGeral = {
   sexo?: string | null
   nome_mae?: string | null
   cpf?: string | null
-  cns?: string | null
+  cns?: string[] | null
+  /**
+   * @description CNS invalidos removidos na validacao (auditoria)
+   */
+  cns_invalidos?: string[] | null
   /**
    * @default 1
    */

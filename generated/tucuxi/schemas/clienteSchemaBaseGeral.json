@@ -27,9 +27,14 @@
       "example": "12345678901"
     },
     "cns": {
-      "anyOf": [{ "type": "string" }, { "type": "null" }],
+      "anyOf": [{ "items": { "type": "string" }, "type": "array" }, { "type": "null" }],
       "title": "Cns",
-      "example": "000012345678901"
+      "example": ["000012345678901"]
+    },
+    "cns_invalidos": {
+      "anyOf": [{ "items": { "type": "string" }, "type": "array" }, { "type": "null" }],
+      "title": "Cns Invalidos",
+      "description": "CNS invalidos removidos na validacao (auditoria)"
     },
     "origem": {
       "anyOf": [{ "type": "integer" }, { "type": "null" }],

@@ -4,9 +4,7 @@ export { changePasswordRequestSchema } from './changePasswordRequestSchema'
 export { clienteCNSSchemaSchema } from './clienteCNSSchemaSchema'
 export { clienteDetalheSchemaSchema } from './clienteDetalheSchemaSchema'
 export { clienteSchemaBaseGeralSchema } from './clienteSchemaBaseGeralSchema'
-export { clienteSchemaDeleteSchema } from './clienteSchemaDeleteSchema'
 export { clienteSchemaUpdateSchema } from './clienteSchemaUpdateSchema'
-export { clienteSearchGeralSchema } from './clienteSearchGeralSchema'
 export { clienteSearchSchema } from './clienteSearchSchema'
 export {
   addClienteCnsApiV1ClientesUuidClienteCnsPostPathParamsSchema,
@@ -82,6 +80,7 @@ export { dateErrorPatternSchema } from './dateErrorPatternSchema'
 export { dateToleranceResponseSchema } from './dateToleranceResponseSchema'
 export { dateToleranceResultSchema } from './dateToleranceResultSchema'
 export { dateToleranceSearchRequestSchema } from './dateToleranceSearchRequestSchema'
+export { deleteClienteResponseSchema } from './deleteClienteResponseSchema'
 export {
   createHistoricoApiV1HistoricoClientePost201Schema,
   createHistoricoApiV1HistoricoClientePost422Schema,
@@ -250,7 +249,6 @@ export {
   validateCpfApiV1LinkageValidationCpfPost422Schema,
   validateCpfApiV1LinkageValidationCpfPostMutationResponseSchema
 } from './LinkageSchemas/validateCpfApiV1LinkageValidationCpfPostSchema'
-export { loginSchemaSchema } from './loginSchemaSchema'
 export { logoutRequestSchema } from './logoutRequestSchema'
 export {
   getFastaMetricsApiV1MetricsFastaMetricsGet200Schema,
@@ -428,11 +426,9 @@ export {
   getUsuariosApiV1UsuariosGetQueryResponseSchema
 } from './Usu\u00E1riosSchemas/getUsuariosApiV1UsuariosGetSchema'
 export {
-  loginJsonApiV1UsuariosLoginPost200Schema,
-  loginJsonApiV1UsuariosLoginPost422Schema,
-  loginJsonApiV1UsuariosLoginPostMutationRequestSchema,
-  loginJsonApiV1UsuariosLoginPostMutationResponseSchema
-} from './Usu\u00E1riosSchemas/loginJsonApiV1UsuariosLoginPostSchema'
+  loginApiV1UsuariosLoginPost200Schema,
+  loginApiV1UsuariosLoginPostMutationResponseSchema
+} from './Usu\u00E1riosSchemas/loginApiV1UsuariosLoginPostSchema'
 export {
   logoutApiV1UsuariosLogoutPost200Schema,
   logoutApiV1UsuariosLogoutPost422Schema,

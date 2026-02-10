@@ -55,12 +55,10 @@ export type {
   GetUsuariosApiV1UsuariosGetQuery
 } from './GetUsuariosApiV1UsuariosGet'
 export type {
-  LoginJsonApiV1UsuariosLoginPost200,
-  LoginJsonApiV1UsuariosLoginPost422,
-  LoginJsonApiV1UsuariosLoginPostMutationRequest,
-  LoginJsonApiV1UsuariosLoginPostMutationResponse,
-  LoginJsonApiV1UsuariosLoginPostMutation
-} from './LoginJsonApiV1UsuariosLoginPost'
+  LoginApiV1UsuariosLoginPost200,
+  LoginApiV1UsuariosLoginPostMutationResponse,
+  LoginApiV1UsuariosLoginPostMutation
+} from './LoginApiV1UsuariosLoginPost'
 export type {
   LogoutApiV1UsuariosLogoutPost200,
   LogoutApiV1UsuariosLogoutPost422,

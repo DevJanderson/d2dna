@@ -14,21 +14,22 @@
     "nome_mae": {
       "anyOf": [{ "type": "string" }, { "type": "null" }],
       "title": "Nome Mae",
-      "description": "Nome da mãe"
+      "description": "Nome da mae"
     },
     "cpf": {
       "anyOf": [{ "type": "string" }, { "type": "null" }],
       "title": "Cpf",
-      "description": "CPF (apenas números)"
+      "description": "CPF (apenas numeros)"
     },
     "cns": {
-      "anyOf": [
-        { "items": { "type": "string" }, "type": "array" },
-        { "type": "string" },
-        { "type": "null" }
-      ],
+      "anyOf": [{ "items": { "type": "string" }, "type": "array" }, { "type": "null" }],
       "title": "Cns",
-      "description": "Lista de CNS ou string separada por ;"
+      "description": "Lista de CNS validos"
+    },
+    "cns_invalidos": {
+      "anyOf": [{ "items": { "type": "string" }, "type": "array" }, { "type": "null" }],
+      "title": "Cns Invalidos",
+      "description": "CNS invalidos removidos na validacao (auditoria)"
     },
     "sexo": {
       "anyOf": [{ "type": "string" }, { "type": "null" }],

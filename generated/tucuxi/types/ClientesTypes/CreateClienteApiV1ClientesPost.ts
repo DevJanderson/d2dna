@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { ClienteSearchGeral } from '../ClienteSearchGeral'
+import type { ClienteSearch } from '../ClienteSearch'
 import type { HTTPValidationError } from '../HTTPValidationError'
 
 export type CreateClienteApiV1ClientesPostQueryParams = {
@@ -23,7 +23,7 @@ export type CreateClienteApiV1ClientesPost201 = any
  */
 export type CreateClienteApiV1ClientesPost422 = HTTPValidationError
 
-export type CreateClienteApiV1ClientesPostMutationRequest = ClienteSearchGeral
+export type CreateClienteApiV1ClientesPostMutationRequest = ClienteSearch
 
 export type CreateClienteApiV1ClientesPostMutationResponse = CreateClienteApiV1ClientesPost201
 

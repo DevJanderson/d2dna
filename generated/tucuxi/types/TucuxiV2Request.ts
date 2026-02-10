@@ -18,17 +18,21 @@ export type TucuxiV2Request = {
    */
   data_nascimento?: string | null
   /**
-   * @description Nome da mãe
+   * @description Nome da mae
    */
   nome_mae?: string | null
   /**
-   * @description CPF (apenas números)
+   * @description CPF (apenas numeros)
    */
   cpf?: string | null
   /**
-   * @description Lista de CNS ou string separada por ;
+   * @description Lista de CNS validos
    */
-  cns?: string[] | string | null
+  cns?: string[] | null
+  /**
+   * @description CNS invalidos removidos na validacao (auditoria)
+   */
+  cns_invalidos?: string[] | null
   /**
    * @description Sexo (M/F)
    */

@@ -6,6 +6,6 @@
 import { z } from 'zod'
 
 export const changePasswordRequestSchema = z.object({
-  active_password: z.string().min(6).describe('Senha atual do usuário'),
-  new_password: z.string().min(6).describe('Nova senha que será definida')
+  active_password: z.string().min(8).describe('Senha atual do usuário'),
+  new_password: z.string().min(8).describe('Nova senha que será definida')
 })

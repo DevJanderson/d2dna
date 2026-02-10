@@ -11,11 +11,12 @@ import { z } from 'zod'
 export const clienteSearchSchema = z
   .object({
     nome: z.string(),
-    data_nascimento: z.optional(z.union([z.string(), z.null()])),
+    data_nascimento: z.optional(z.union([z.string().date(), z.null()])),
     sexo: z.optional(z.union([z.string(), z.null()])),
     nome_mae: z.optional(z.union([z.string(), z.null()])),
     cpf: z.optional(z.union([z.string(), z.null()])),
-    cns: z.optional(z.union([z.array(z.string()), z.string(), z.null()])),
+    cns: z.optional(z.union([z.array(z.string()), z.null()])),
+    cns_invalidos: z.optional(z.union([z.array(z.string()), z.null()])),
     cns_list: z.optional(z.union([z.array(z.string()), z.null()])),
     origem: z.optional(z.number().int().default(1).describe('Origem do registro (1=padrão)')),
     id_origem: z.optional(z.union([z.string(), z.null()])),
@@ -37,11 +38,11 @@ export const clienteSearchSchema = z
     logradouro: z.optional(z.union([z.string(), z.null()])),
     numero: z.optional(z.union([z.string(), z.null()])),
     complemento: z.optional(z.union([z.string(), z.null()])),
-    descricao: z.optional(z.union([z.string(), z.null()]).describe('Descrição do atendimento.')),
+    descricao: z.optional(z.union([z.string(), z.null()]).describe('Descricao do atendimento.')),
     data_atendimento: z.optional(
       z
         .union([z.string().datetime(), z.null()])
-        .describe('Data do histórico. Se não informada, será usada a data atual.')
+        .describe('Data do historico. Se nao informada, sera usada a data atual.')
     )
   })
   .describe(

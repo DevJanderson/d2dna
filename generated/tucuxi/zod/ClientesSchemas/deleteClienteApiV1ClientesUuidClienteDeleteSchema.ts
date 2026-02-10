@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { clienteSchemaDeleteSchema } from '../clienteSchemaDeleteSchema'
+import { deleteClienteResponseSchema } from '../deleteClienteResponseSchema'
 import { HTTPValidationErrorSchema } from '../HTTPValidationErrorSchema'
 import { z } from 'zod'
 
@@ -15,7 +15,7 @@ export const deleteClienteApiV1ClientesUuidClienteDeletePathParamsSchema = z.obj
  * @description Cliente deletado com sucesso.
  */
 export const deleteClienteApiV1ClientesUuidClienteDelete200Schema = z.lazy(
-  () => clienteSchemaDeleteSchema
+  () => deleteClienteResponseSchema
 )
 
 /**

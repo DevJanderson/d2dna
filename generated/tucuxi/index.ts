@@ -4,10 +4,8 @@ export type { ChangePasswordRequest } from './types/ChangePasswordRequest'
 export type { ClienteCNSSchema } from './types/ClienteCNSSchema'
 export type { ClienteDetalheSchema } from './types/ClienteDetalheSchema'
 export type { ClienteSchemaBaseGeral } from './types/ClienteSchemaBaseGeral'
-export type { ClienteSchemaDelete } from './types/ClienteSchemaDelete'
 export type { ClienteSchemaUpdate } from './types/ClienteSchemaUpdate'
 export type { ClienteSearch } from './types/ClienteSearch'
-export type { ClienteSearchGeral } from './types/ClienteSearchGeral'
 export type {
   AddClienteCnsApiV1ClientesUuidClienteCnsPostPathParams,
   AddClienteCnsApiV1ClientesUuidClienteCnsPost201,
@@ -92,6 +90,7 @@ export type { DateErrorPattern } from './types/DateErrorPattern'
 export type { DateToleranceResponse } from './types/DateToleranceResponse'
 export type { DateToleranceResult } from './types/DateToleranceResult'
 export type { DateToleranceSearchRequest } from './types/DateToleranceSearchRequest'
+export type { DeleteClienteResponse } from './types/DeleteClienteResponse'
 export type {
   CreateHistoricoApiV1HistoricoClientePost201,
   CreateHistoricoApiV1HistoricoClientePost422,
@@ -286,7 +285,6 @@ export type {
   ValidateCpfApiV1LinkageValidationCpfPostMutationResponse,
   ValidateCpfApiV1LinkageValidationCpfPostMutation
 } from './types/LinkageTypes/ValidateCpfApiV1LinkageValidationCpfPost'
-export type { LoginSchema } from './types/LoginSchema'
 export type { LogoutRequest } from './types/LogoutRequest'
 export type {
   GetFastaMetricsApiV1MetricsFastaMetricsGet200,
@@ -494,12 +492,10 @@ export type {
   GetUsuariosApiV1UsuariosGetQuery
 } from './types/Usu\u00E1riosTypes/GetUsuariosApiV1UsuariosGet'
 export type {
-  LoginJsonApiV1UsuariosLoginPost200,
-  LoginJsonApiV1UsuariosLoginPost422,
-  LoginJsonApiV1UsuariosLoginPostMutationRequest,
-  LoginJsonApiV1UsuariosLoginPostMutationResponse,
-  LoginJsonApiV1UsuariosLoginPostMutation
-} from './types/Usu\u00E1riosTypes/LoginJsonApiV1UsuariosLoginPost'
+  LoginApiV1UsuariosLoginPost200,
+  LoginApiV1UsuariosLoginPostMutationResponse,
+  LoginApiV1UsuariosLoginPostMutation
+} from './types/Usu\u00E1riosTypes/LoginApiV1UsuariosLoginPost'
 export type {
   LogoutApiV1UsuariosLogoutPost200,
   LogoutApiV1UsuariosLogoutPost422,
@@ -559,9 +555,7 @@ export { changePasswordRequestSchema } from './zod/changePasswordRequestSchema'
 export { clienteCNSSchemaSchema } from './zod/clienteCNSSchemaSchema'
 export { clienteDetalheSchemaSchema } from './zod/clienteDetalheSchemaSchema'
 export { clienteSchemaBaseGeralSchema } from './zod/clienteSchemaBaseGeralSchema'
-export { clienteSchemaDeleteSchema } from './zod/clienteSchemaDeleteSchema'
 export { clienteSchemaUpdateSchema } from './zod/clienteSchemaUpdateSchema'
-export { clienteSearchGeralSchema } from './zod/clienteSearchGeralSchema'
 export { clienteSearchSchema } from './zod/clienteSearchSchema'
 export {
   addClienteCnsApiV1ClientesUuidClienteCnsPostPathParamsSchema,
@@ -637,6 +631,7 @@ export { dateErrorPatternSchema } from './zod/dateErrorPatternSchema'
 export { dateToleranceResponseSchema } from './zod/dateToleranceResponseSchema'
 export { dateToleranceResultSchema } from './zod/dateToleranceResultSchema'
 export { dateToleranceSearchRequestSchema } from './zod/dateToleranceSearchRequestSchema'
+export { deleteClienteResponseSchema } from './zod/deleteClienteResponseSchema'
 export {
   createHistoricoApiV1HistoricoClientePost201Schema,
   createHistoricoApiV1HistoricoClientePost422Schema,
@@ -805,7 +800,6 @@ export {
   validateCpfApiV1LinkageValidationCpfPost422Schema,
   validateCpfApiV1LinkageValidationCpfPostMutationResponseSchema
 } from './zod/LinkageSchemas/validateCpfApiV1LinkageValidationCpfPostSchema'
-export { loginSchemaSchema } from './zod/loginSchemaSchema'
 export { logoutRequestSchema } from './zod/logoutRequestSchema'
 export {
   getFastaMetricsApiV1MetricsFastaMetricsGet200Schema,
@@ -983,11 +977,9 @@ export {
   getUsuariosApiV1UsuariosGetQueryResponseSchema
 } from './zod/Usu\u00E1riosSchemas/getUsuariosApiV1UsuariosGetSchema'
 export {
-  loginJsonApiV1UsuariosLoginPost200Schema,
-  loginJsonApiV1UsuariosLoginPost422Schema,
-  loginJsonApiV1UsuariosLoginPostMutationRequestSchema,
-  loginJsonApiV1UsuariosLoginPostMutationResponseSchema
-} from './zod/Usu\u00E1riosSchemas/loginJsonApiV1UsuariosLoginPostSchema'
+  loginApiV1UsuariosLoginPost200Schema,
+  loginApiV1UsuariosLoginPostMutationResponseSchema
+} from './zod/Usu\u00E1riosSchemas/loginApiV1UsuariosLoginPostSchema'
 export {
   logoutApiV1UsuariosLogoutPost200Schema,
   logoutApiV1UsuariosLogoutPost422Schema,

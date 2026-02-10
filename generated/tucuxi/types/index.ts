@@ -4,10 +4,8 @@ export type { ChangePasswordRequest } from './ChangePasswordRequest'
 export type { ClienteCNSSchema } from './ClienteCNSSchema'
 export type { ClienteDetalheSchema } from './ClienteDetalheSchema'
 export type { ClienteSchemaBaseGeral } from './ClienteSchemaBaseGeral'
-export type { ClienteSchemaDelete } from './ClienteSchemaDelete'
 export type { ClienteSchemaUpdate } from './ClienteSchemaUpdate'
 export type { ClienteSearch } from './ClienteSearch'
-export type { ClienteSearchGeral } from './ClienteSearchGeral'
 export type {
   AddClienteCnsApiV1ClientesUuidClienteCnsPostPathParams,
   AddClienteCnsApiV1ClientesUuidClienteCnsPost201,
@@ -92,6 +90,7 @@ export type { DateErrorPattern } from './DateErrorPattern'
 export type { DateToleranceResponse } from './DateToleranceResponse'
 export type { DateToleranceResult } from './DateToleranceResult'
 export type { DateToleranceSearchRequest } from './DateToleranceSearchRequest'
+export type { DeleteClienteResponse } from './DeleteClienteResponse'
 export type {
   CreateHistoricoApiV1HistoricoClientePost201,
   CreateHistoricoApiV1HistoricoClientePost422,
@@ -286,7 +285,6 @@ export type {
   ValidateCpfApiV1LinkageValidationCpfPostMutationResponse,
   ValidateCpfApiV1LinkageValidationCpfPostMutation
 } from './LinkageTypes/ValidateCpfApiV1LinkageValidationCpfPost'
-export type { LoginSchema } from './LoginSchema'
 export type { LogoutRequest } from './LogoutRequest'
 export type {
   GetFastaMetricsApiV1MetricsFastaMetricsGet200,
@@ -494,12 +492,10 @@ export type {
   GetUsuariosApiV1UsuariosGetQuery
 } from './Usu\u00E1riosTypes/GetUsuariosApiV1UsuariosGet'
 export type {
-  LoginJsonApiV1UsuariosLoginPost200,
-  LoginJsonApiV1UsuariosLoginPost422,
-  LoginJsonApiV1UsuariosLoginPostMutationRequest,
-  LoginJsonApiV1UsuariosLoginPostMutationResponse,
-  LoginJsonApiV1UsuariosLoginPostMutation
-} from './Usu\u00E1riosTypes/LoginJsonApiV1UsuariosLoginPost'
+  LoginApiV1UsuariosLoginPost200,
+  LoginApiV1UsuariosLoginPostMutationResponse,
+  LoginApiV1UsuariosLoginPostMutation
+} from './Usu\u00E1riosTypes/LoginApiV1UsuariosLoginPost'
 export type {
   LogoutApiV1UsuariosLogoutPost200,
   LogoutApiV1UsuariosLogoutPost422,

@@ -1,9 +1,16 @@
+import { z } from 'zod'
+
 /**
  * Re-exporta tipos do Kubb para uso na layer
  */
-export type { LoginSchema, UsuarioLogadoSchema } from '~/generated/tucuxi/types'
+export type { UsuarioLogadoSchema } from '~/generated/tucuxi/types'
 
 /**
- * Re-exporta schemas Zod para validação
+ * Schema de login (removido da spec OpenAPI, definido localmente)
  */
-export { loginSchemaSchema } from '~/generated/tucuxi/zod'
+export const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8)
+})
+
+export type LoginSchema = z.infer<typeof loginSchema>

@@ -5,6 +5,6 @@
   },
   "type": "object",
   "required": ["message", "uuid_cliente"],
-  "title": "ClienteSchemaDelete",
-  "x-readme-ref-name": "ClienteSchemaDelete"
+  "title": "DeleteClienteResponse",
+  "x-readme-ref-name": "DeleteClienteResponse"
 }

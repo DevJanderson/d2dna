@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import type { ClienteSchemaDelete } from '../ClienteSchemaDelete'
+import type { DeleteClienteResponse } from '../DeleteClienteResponse'
 import type { HTTPValidationError } from '../HTTPValidationError'
 
 export type DeleteClienteApiV1ClientesUuidClienteDeletePathParams = {
@@ -16,7 +16,7 @@ export type DeleteClienteApiV1ClientesUuidClienteDeletePathParams = {
 /**
  * @description Cliente deletado com sucesso.
  */
-export type DeleteClienteApiV1ClientesUuidClienteDelete200 = ClienteSchemaDelete
+export type DeleteClienteApiV1ClientesUuidClienteDelete200 = DeleteClienteResponse
 
 /**
  * @description Validation Error

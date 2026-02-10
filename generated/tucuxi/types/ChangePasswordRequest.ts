@@ -6,13 +6,13 @@
 export type ChangePasswordRequest = {
   /**
    * @description Senha atual do usuário
-   * @minLength 6
+   * @minLength 8
    * @type string
    */
   active_password: string
   /**
    * @description Nova senha que será definida
-   * @minLength 6
+   * @minLength 8
    * @type string
    */
   new_password: string

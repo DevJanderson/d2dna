@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-import { clienteSearchGeralSchema } from '../clienteSearchGeralSchema'
+import { clienteSearchSchema } from '../clienteSearchSchema'
 import { HTTPValidationErrorSchema } from '../HTTPValidationErrorSchema'
 import { z } from 'zod'
 
@@ -28,9 +28,9 @@ export const createClienteApiV1ClientesPost201Schema = z.any()
 export const createClienteApiV1ClientesPost422Schema = z.lazy(() => HTTPValidationErrorSchema)
 
 export const createClienteApiV1ClientesPostMutationRequestSchema = z
-  .lazy(() => clienteSearchGeralSchema)
+  .lazy(() => clienteSearchSchema)
   .describe(
-    'DEPRECATED: Use ClienteSearch diretamente.\nMantido temporariamente para compatibilidade.'
+    'Schema unificado para busca e criação de clientes.\nOtimizado para 27M+ registros - contém apenas campos essenciais.\nCampos de endereço e histórico movidos para schemas separados.'
   )
 
 export const createClienteApiV1ClientesPostMutationResponseSchema = z.lazy(

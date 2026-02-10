@@ -15,7 +15,12 @@ export const clienteSchemaBaseGeralSchema = z.object({
   sexo: z.optional(z.union([z.string(), z.null()])),
   nome_mae: z.optional(z.union([z.string(), z.null()])),
   cpf: z.optional(z.union([z.string(), z.null()])),
-  cns: z.optional(z.union([z.string(), z.null()])),
+  cns: z.optional(z.union([z.array(z.string()), z.null()])),
+  cns_invalidos: z.optional(
+    z
+      .union([z.array(z.string()), z.null()])
+      .describe('CNS invalidos removidos na validacao (auditoria)')
+  ),
   origem: z.optional(z.union([z.number().int(), z.null()]).default(1)),
   id_origem: z.optional(z.union([z.string(), z.null()])),
   cns_list: z.optional(z.union([z.array(z.lazy(() => clienteCNSSchemaSchema)), z.null()])),

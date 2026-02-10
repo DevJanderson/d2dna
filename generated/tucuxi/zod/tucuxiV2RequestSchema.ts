@@ -14,12 +14,13 @@ export const tucuxiV2RequestSchema = z
     data_nascimento: z.optional(
       z.union([z.string(), z.null()]).describe('Data de nascimento (YYYY-MM-DD)')
     ),
-    nome_mae: z.optional(z.union([z.string(), z.null()]).describe('Nome da mãe')),
-    cpf: z.optional(z.union([z.string(), z.null()]).describe('CPF (apenas números)')),
-    cns: z.optional(
+    nome_mae: z.optional(z.union([z.string(), z.null()]).describe('Nome da mae')),
+    cpf: z.optional(z.union([z.string(), z.null()]).describe('CPF (apenas numeros)')),
+    cns: z.optional(z.union([z.array(z.string()), z.null()]).describe('Lista de CNS validos')),
+    cns_invalidos: z.optional(
       z
-        .union([z.array(z.string()), z.string(), z.null()])
-        .describe('Lista de CNS ou string separada por ;')
+        .union([z.array(z.string()), z.null()])
+        .describe('CNS invalidos removidos na validacao (auditoria)')
     ),
     sexo: z.optional(z.union([z.string(), z.null()]).describe('Sexo (M/F)')),
     origem: z.optional(z.number().int().default(1).describe('Sistema de origem')),

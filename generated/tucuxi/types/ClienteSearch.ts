@@ -15,7 +15,8 @@ export type ClienteSearch = {
   sexo?: string | null
   nome_mae?: string | null
   cpf?: string | null
-  cns?: string[] | string | null
+  cns?: string[] | null
+  cns_invalidos?: string[] | null
   cns_list?: string[] | null
   /**
    * @description Origem do registro (1=padrão)
@@ -46,11 +47,11 @@ export type ClienteSearch = {
   numero?: string | null
   complemento?: string | null
   /**
-   * @description Descrição do atendimento.
+   * @description Descricao do atendimento.
    */
   descricao?: string | null
   /**
-   * @description Data do histórico. Se não informada, será usada a data atual.
+   * @description Data do historico. Se nao informada, sera usada a data atual.
    */
   data_atendimento?: string | null
 }

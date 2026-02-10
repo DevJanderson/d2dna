@@ -13,12 +13,12 @@
     "nome_mae": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Nome Mae" },
     "cpf": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Cpf" },
     "cns": {
-      "anyOf": [
-        { "items": { "type": "string" }, "type": "array" },
-        { "type": "string" },
-        { "type": "null" }
-      ],
+      "anyOf": [{ "items": { "type": "string" }, "type": "array" }, { "type": "null" }],
       "title": "Cns"
+    },
+    "cns_invalidos": {
+      "anyOf": [{ "items": { "type": "string" }, "type": "array" }, { "type": "null" }],
+      "title": "Cns Invalidos"
     },
     "origem": { "anyOf": [{ "type": "integer" }, { "type": "null" }], "title": "Origem" },
     "id_origem": { "anyOf": [{ "type": "string" }, { "type": "null" }], "title": "Id Origem" },

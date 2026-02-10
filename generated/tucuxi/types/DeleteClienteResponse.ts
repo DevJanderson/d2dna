@@ -3,7 +3,7 @@
  * Do not edit manually.
  */
 
-export type ClienteSchemaDelete = {
+export type DeleteClienteResponse = {
   /**
    * @type string
    */

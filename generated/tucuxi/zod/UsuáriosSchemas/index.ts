@@ -47,11 +47,9 @@ export {
   getUsuariosApiV1UsuariosGetQueryResponseSchema
 } from './getUsuariosApiV1UsuariosGetSchema'
 export {
-  loginJsonApiV1UsuariosLoginPost200Schema,
-  loginJsonApiV1UsuariosLoginPost422Schema,
-  loginJsonApiV1UsuariosLoginPostMutationRequestSchema,
-  loginJsonApiV1UsuariosLoginPostMutationResponseSchema
-} from './loginJsonApiV1UsuariosLoginPostSchema'
+  loginApiV1UsuariosLoginPost200Schema,
+  loginApiV1UsuariosLoginPostMutationResponseSchema
+} from './loginApiV1UsuariosLoginPostSchema'
 export {
   logoutApiV1UsuariosLogoutPost200Schema,
   logoutApiV1UsuariosLogoutPost422Schema,

@@ -5,7 +5,7 @@
 
 import { z } from 'zod'
 
-export const clienteSchemaDeleteSchema = z.object({
+export const deleteClienteResponseSchema = z.object({
   message: z.string(),
   uuid_cliente: z.string().uuid()
 })

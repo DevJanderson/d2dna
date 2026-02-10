@@ -10,7 +10,8 @@ export type ClienteSchemaUpdate = {
   sexo?: string | null
   nome_mae?: string | null
   cpf?: string | null
-  cns?: string[] | string | null
+  cns?: string[] | null
+  cns_invalidos?: string[] | null
   origem?: number | null
   id_origem?: string | null
   telefone?: string | null
