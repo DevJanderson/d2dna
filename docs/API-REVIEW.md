@@ -2,17 +2,135 @@
 
 **Status:** Verificado contra `openapi/tucuxi-api.json` e codigo gerado pelo Kubb
 **Data:** 2025-02-10
-**Origem:** Integracao frontend (Kubb + Zod)
 
-Ao integrar a spec atualizada no frontend, identificamos problemas que impactam a geracao automatica de tipos, validacao e documentacao. Todos os itens abaixo foram **verificados contra a spec e o codigo gerado**.
+Este documento esta dividido em duas partes:
+
+- **Parte A** — O que precisamos resolver no Tucuxi (workarounds internos)
+- **Parte B** — O que a API D2DNA precisa corrigir (report para o backend externo)
 
 ---
 
-## 1. POSTs sem `requestBody` (13 endpoints)
+# Parte A — Tucuxi (workarounds internos)
 
-Segundo a especificacao OpenAPI, **todo endpoint que recebe dados no body deve declarar `requestBody`**. Sem isso, ferramentas como Swagger UI, Kubb, Postman e clientes gerados nao sabem o que enviar.
+Tarefas que precisamos resolver no nosso lado por causa de limitacoes na spec da API externa.
 
-O Kubb gera `MutationRequest` apenas quando `requestBody` existe. Nos 13 endpoints abaixo, nenhum `MutationRequest` foi gerado.
+## A1. LoginSchema removido da spec (ja resolvido)
+
+O `LoginSchema` foi removido da spec OpenAPI. O Kubb nao gera mais o schema Zod de validacao.
+
+**Workaround aplicado:** Schema criado manualmente em `layers/3-auth/app/composables/types.ts`:
+
+```typescript
+export const loginSchema = z.object({
+  email: z.string().email(),
+  password: z.string().min(8)
+})
+```
+
+> Nota: o `minLength` ja esta em 8 (alinhado com o novo `ChangePasswordRequest`).
+
+**Pendencia:** Atualizar o `CLAUDE.md` da layer `3-auth` que ainda referencia `loginSchemaSchema` do Kubb como se existisse.
+
+## A2. Campo `cns` mudou de `string` para `string[]`
+
+A API agora retorna `cns` como array de strings (`string[] | null`) em vez de string unica. Componentes que exibem CNS precisam ser revisados:
+
+| Arquivo | Uso atual | Acao |
+| --- | --- | --- |
+| `ReviewTimeline.vue:73` | `review.cns \|\| '—'` | Verificar se renderiza array corretamente |
+| `ReviewCardList.vue:69` | `review.cns` (exibe direto) | Pode precisar de `.join(', ')` ou exibir lista |
+| `ReviewFilters.vue:60` | Input texto para filtro CNS | OK — filtro envia string, API aceita |
+| `reviews/[uuid].vue:98` | `review.cns \|\| '—'` | Verificar se renderiza array corretamente |
+
+**Acao:** Testar com dados reais da API. Se a API ja retornava array antes e so a spec que mudou, pode estar OK. Se o dado realmente mudou, ajustar os componentes.
+
+## A3. Novo campo `cns_invalidos` (nao usado)
+
+A API adicionou `cns_invalidos` (`string[] | null`) em varios schemas (BaseGeral, Update, Search, TucuxiV2Request). O campo contem CNS invalidos removidos na validacao (auditoria).
+
+**Acao:** Decidir se exibimos essa informacao na UI de reviews. Nao e bloqueante — o campo e opcional e nao quebra nada.
+
+## A4. Refresh token enviado como query param
+
+O BFF envia `refresh_token` como query param porque e assim que a API espera:
+
+```typescript
+// layers/3-auth/server/api/auth/refresh.post.ts
+const response = await $fetch(`${getApiBaseUrl()}/api/v1/usuarios/refresh-token`, {
+  method: 'POST',
+  query: { refresh_token: refreshToken }
+})
+```
+
+**Risco mitigado:** A chamada e server-to-server (BFF → API), nao sai do browser. O token nao aparece na URL do usuario, mas pode aparecer em logs do servidor Nuxt e da API.
+
+**Acao:** Quando a API D2DNA mover o `refresh_token` para requestBody, atualizar de `query` para `body` nesse arquivo.
+
+## A5. Tipos `any` nos endpoints consumidos
+
+O Kubb gera `type Response = any` para 39 endpoints. Os que consumimos no frontend nao tem tipagem automatica.
+
+**Workaround atual:** Usamos tipos manuais onde necessario (ex: `LoginResponse` em `login.post.ts`).
+
+**Acao futura:** Quando a API D2DNA adicionar `response_model`, regenerar com `npm run api:generate` e remover tipos manuais.
+
+## A6. `minLength` da senha mudou de 6 para 8
+
+O `ChangePasswordRequest` agora exige `minLength: 8` para `active_password` e `new_password`.
+
+**Workaround atual:** O `loginSchema` manual ja usa `min(8)`.
+
+**Acao:** Verificar se existe form de troca de senha no frontend. Se sim, garantir que a validacao client-side use `min(8)`.
+
+---
+
+## Resumo Tucuxi
+
+| Item | Status | Prioridade |
+| --- | --- | --- |
+| A1. LoginSchema manual | Feito | — |
+| A2. `cns` como array | Testar com dados reais | Media |
+| A3. Campo `cns_invalidos` | Decidir se exibe na UI | Baixa |
+| A4. Refresh token query param | Mitigado (server-to-server) | Aguardar API |
+| A5. Tipos `any` | Workaround parcial | Aguardar API |
+| A6. minLength 8 | Login OK, verificar troca de senha | Media |
+
+---
+---
+
+# Parte B — API D2DNA (report para o backend externo)
+
+Issues identificadas na spec OpenAPI que precisam ser corrigidas no backend FastAPI.
+
+## B1. Dados sensiveis em Query Params (4 endpoints) — LGPD
+
+Estes POSTs recebem dados via **query params** em vez de **requestBody**. Query params ficam em logs do servidor, historico do navegador e proxies.
+
+| Endpoint | Param na query | Tipo de dado | Risco |
+| --- | --- | --- | --- |
+| `POST /api/v1/usuarios/refresh-token` | `refresh_token` | Token de sessao | **Critico** — permite hijack de sessao via logs |
+| `POST /api/v1/usuarios/reset-password` | `email` | Dado pessoal (PII) | **Alto** — exposicao de email em logs |
+| `POST /api/v1/linkage/validation/cpf` | `cpf` | Dado sensivel (LGPD) | **Critico** — CPF em URL viola LGPD |
+| `POST /api/v1/linkage/validation/cns` | `cns` | Dado de saude (LGPD) | **Critico** — CNS em URL viola LGPD |
+
+**Correcao sugerida:**
+
+```python
+# ANTES — dados sensiveis na URL
+@router.post("/refresh-token")
+async def refresh_token(refresh_token: str = Query(...)):
+
+# DEPOIS — dados no body (seguro)
+class RefreshTokenRequest(BaseModel):
+    refresh_token: str
+
+@router.post("/refresh-token")
+async def refresh_token(body: RefreshTokenRequest):
+```
+
+## B2. POSTs sem `requestBody` (13 endpoints)
+
+Todo endpoint que recebe dados no body deve declarar `requestBody` na spec OpenAPI. Sem isso, ferramentas como Swagger UI, Kubb e Postman nao sabem o que enviar. O Kubb nao gera tipos de request para esses endpoints.
 
 ### Criticos (usados diretamente no frontend)
 
@@ -22,7 +140,7 @@ O Kubb gera `MutationRequest` apenas quando `requestBody` existe. Nos 13 endpoin
 | `POST /api/v1/usuarios/refresh-token` | `refresh_token` | query param (deveria ser body) |
 | `POST /api/v1/usuarios/reset-password` | `email` | query param (deveria ser body) |
 
-> **Impacto direto:** O `LoginSchema` existia na spec anterior e foi removido. Isso quebrou a geracao automatica do schema Zod de validacao no BFF. Tivemos que criar o schema manualmente em `layers/3-auth/app/composables/types.ts`.
+> **Nota:** O `LoginSchema` existia na spec anterior e foi removido. Precisamos que volte como `requestBody` do endpoint de login.
 
 ### Operacoes administrativas/internas
 
@@ -39,42 +157,11 @@ O Kubb gera `MutationRequest` apenas quando `requestBody` existe. Nos 13 endpoin
 | `POST /api/v1/v2/circuit-breaker/reset` | **Nenhum** |
 | `POST /api/v1/v2/circuit-breaker/{circuit_name}/reset` | path: `circuit_name` (string) |
 
----
+## B3. Responses sem schema definido (39 de 73 endpoints)
 
-## 2. Dados sensiveis em Query Params (4 endpoints)
+**39 de 73 endpoints (53%)** retornam `"schema": {}` na response 200/201/204. Isso impede a geracao automatica de tipos TypeScript e schemas de validacao no frontend.
 
-Estes POSTs recebem dados via **query params** em vez de **requestBody**. Isso e um problema de seguranca e conformidade LGPD:
-
-- Query params ficam em **logs do servidor**, historico do navegador e proxies
-- Dados sensiveis (tokens, emails, CPF, CNS) **nunca devem trafegar na URL**
-- Ferramentas de geracao de codigo tratam query params como filtros, nao como corpo
-
-| Endpoint | Param na query | Tipo de dado | Risco |
-| --- | --- | --- | --- |
-| `POST /api/v1/usuarios/refresh-token` | `refresh_token` | Token de sessao | **Critico** — permite hijack de sessao via logs |
-| `POST /api/v1/usuarios/reset-password` | `email` | Dado pessoal (PII) | **Alto** — exposicao de email em logs |
-| `POST /api/v1/linkage/validation/cpf` | `cpf` | Dado sensivel (LGPD) | **Critico** — CPF em URL viola LGPD |
-| `POST /api/v1/linkage/validation/cns` | `cns` | Dado de saude (LGPD) | **Critico** — CNS em URL viola LGPD |
-
-### Correcao sugerida (FastAPI)
-
-```python
-# ANTES — dados sensiveis na URL
-@router.post("/refresh-token")
-async def refresh_token(refresh_token: str = Query(...)):
-
-# DEPOIS — dados no body (seguro)
-@router.post("/refresh-token")
-async def refresh_token(body: RefreshTokenRequest):
-```
-
----
-
-## 3. Responses sem schema definido (39 de 73 endpoints)
-
-**39 de 73 endpoints (53%)** retornam `"schema": {}` na response 200/201/204. O Kubb gera `type Response = any` e `z.any()` para esses endpoints, eliminando tipagem e validacao.
-
-### Usuarios (10 endpoints sem schema de resposta)
+### Usuarios (10 endpoints)
 
 | Metodo | Endpoint | Status |
 | --- | --- | --- |
@@ -143,7 +230,7 @@ async def refresh_token(body: RefreshTokenRequest):
 | POST | `/api/v1/v2/circuit-breaker/reset` | 200 |
 | POST | `/api/v1/v2/circuit-breaker/{circuit_name}/reset` | 200 |
 
-### Correcao sugerida (FastAPI)
+**Correcao sugerida (FastAPI):**
 
 ```python
 # ANTES — response sem schema (gera "schema": {} no OpenAPI)
@@ -157,56 +244,30 @@ async def login(...) -> TokenResponse:
     return TokenResponse(access_token=token, refresh_token=refresh)
 ```
 
----
+## B4. Schemas removidos
 
-## 4. Schemas removidos/renomeados
-
-| Antes | Agora | Status |
+| Antes | Agora | Acao necessaria |
 | --- | --- | --- |
-| `LoginSchema` | *(removido)* | **Precisa voltar** como `requestBody` do login |
-| `ClienteSchemaDelete` | `DeleteClienteResponse` | OK — renomeacao valida (`message` + `uuid_cliente`) |
+| `LoginSchema` | *(removido)* | Restaurar como `requestBody` do endpoint de login |
+| `ClienteSchemaDelete` | `DeleteClienteResponse` | OK — renomeacao valida |
 | `ClienteSearchGeral` | *(removido)* | OK — unificado com `ClienteSearch` |
 
----
+## B5. Schemas modificados (informativo)
 
-## 5. Schemas modificados
+Mudancas que ja foram absorvidas pelo frontend via regeneracao do Kubb. Listadas aqui para registro.
 
-### `ChangePasswordRequest`
-
-- `minLength` da senha: **6 → 8** (tanto `active_password` quanto `new_password`)
-- **Acao no frontend:** atualizar validacao nos forms de troca de senha
-
-### `ClienteSchemaBaseGeral`
-
-- Campo `cns`: era `string`, agora e **`string[] | null`** (array)
-- Novo campo: **`cns_invalidos`** (`string[] | null`) — CNS invalidos removidos na validacao
-
-### `ClienteSchemaUpdate`
-
-- Campo `cns`: removeu opcao `string` avulsa, manteve so **`string[] | null`**
-- Novo campo: **`cns_invalidos`** (`string[] | null`)
-
-### `ClienteSearch`
-
-- Campo `cns`: removeu opcao `string` avulsa, manteve so **`string[] | null`**
-- Novo campo: **`cns_invalidos`** (`string[] | null`)
-- Campo `data_nascimento`: adicionou `format: "date"` (YYYY-MM-DD)
-- Descricoes: removeram acentuacao (normalizacao)
-
-### `TucuxiV2Request`
-
-- Campo `cns`: era `array | string`, agora e **`array | null`** (removeu string avulsa)
-- Novo campo: **`cns_invalidos`** (`string[] | null`) — auditoria
-- Descricoes: removeram acentuacao
-
-### Novo schema: `DeleteClienteResponse`
-
-- Campos: `message` (string, required) + `uuid_cliente` (uuid, required)
-- Substitui o antigo `ClienteSchemaDelete`
+| Schema | Mudanca |
+| --- | --- |
+| `ChangePasswordRequest` | `minLength` da senha: 6 → **8** |
+| `ClienteSchemaBaseGeral` | `cns`: `string` → `string[]`, novo campo `cns_invalidos` |
+| `ClienteSchemaUpdate` | `cns`: removeu `string` avulsa, manteve `string[]`, novo campo `cns_invalidos` |
+| `ClienteSearch` | `cns`: `string[]` only, novo campo `cns_invalidos`, `data_nascimento` com `format: "date"` |
+| `TucuxiV2Request` | `cns`: `array \| null` (removeu string), novo campo `cns_invalidos` |
+| *(novo)* `DeleteClienteResponse` | `message` + `uuid_cliente` (substitui `ClienteSchemaDelete`) |
 
 ---
 
-## Resumo
+## Resumo numerico
 
 | Metrica | Valor |
 | --- | --- |
@@ -216,9 +277,7 @@ async def login(...) -> TokenResponse:
 | Responses **sem** schema | **39 (53%)** |
 | Query params com dados sensiveis | **4** |
 
----
-
-## Plano de acao sugerido
+## Plano de acao sugerido para API D2DNA
 
 ### Prioridade 1 — Seguranca (LGPD)
 
@@ -233,7 +292,7 @@ Mover dados sensiveis de query params para requestBody:
 
 ### Prioridade 2 — Autenticacao
 
-Restaurar schemas dos endpoints de auth usados pelo frontend:
+Restaurar schemas dos endpoints de auth:
 
 | Endpoint | Acao |
 | --- | --- |
