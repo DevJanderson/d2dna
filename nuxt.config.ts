@@ -14,6 +14,15 @@ export default defineNuxtConfig({
     './layers/5-docs'
   ],
 
+  // SEO - configuração do site
+  site: {
+    url: process.env.NUXT_SITE_URL || 'https://tucuxi.d2dna.com',
+    name: 'Tucuxi',
+    description:
+      'Plataforma de Record Linkage que usa técnicas genômicas para integrar bases de dados com 98%+ de acurácia',
+    defaultLocale: 'pt-BR'
+  },
+
   // Performance - Experimental features
   experimental: {
     crossOriginPrefetch: true
@@ -28,7 +37,14 @@ export default defineNuxtConfig({
   routeRules: {
     // Rotas do @nuxt/content não precisam de CSRF
     '/__nuxt_content/**': { security: { rateLimiter: false } },
-    '/api/_content/**': { security: { rateLimiter: false } }
+    '/api/_content/**': { security: { rateLimiter: false } },
+    // OG Image rendering precisa de headers relaxados
+    '/__og-image__/**': {
+      security: {
+        headers: { contentSecurityPolicy: false, crossOriginEmbedderPolicy: false },
+        rateLimiter: false
+      }
+    }
   },
 
   // SEO - Meta tags globais
@@ -39,7 +55,6 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-        { name: 'description', content: 'Sistema de Record Linkage e Gestão de Dados' },
         { name: 'theme-color', content: '#000000' }
       ],
       link: [
@@ -72,8 +87,39 @@ export default defineNuxtConfig({
     '@nuxt/icon',
     '@nuxtjs/color-mode',
     'nuxt-security',
+    '@nuxtjs/seo',
     '@nuxt/content'
   ],
+
+  // SEO - Robots
+  robots: {
+    disallow: ['/app/', '/api/']
+  },
+
+  // SEO - Sitemap
+  sitemap: {
+    exclude: ['/app/**', '/login', '/forgot-password']
+  },
+
+  // SEO - Schema.org
+  schemaOrg: {
+    identity: {
+      type: 'Organization',
+      name: 'D2DNA',
+      url: 'https://d2dna.com',
+      logo: 'https://d2dna.com/wp-content/uploads/2024/04/og-tucuxi.png'
+    }
+  },
+
+  // SEO - OG Image
+  ogImage: {
+    defaults: {
+      component: 'OgImageDefault',
+      width: 1200,
+      height: 630
+    },
+    fonts: ['Space+Grotesk:700', 'Space+Mono:400']
+  },
 
   // Nuxt Content - syntax highlight com Shiki
   content: {

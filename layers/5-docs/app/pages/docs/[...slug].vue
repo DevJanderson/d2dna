@@ -19,8 +19,15 @@ if (!page.value) {
   throw createError({ statusCode: 404, statusMessage: 'Página não encontrada' })
 }
 
-useHead({
-  title: page.value?.title ? `${page.value.title} - Tucuxi Docs` : 'Tucuxi Docs'
+useSeoMeta({
+  title: page.value?.title ? `${page.value.title} - Tucuxi Docs` : 'Tucuxi Docs',
+  description: page.value?.description
+})
+
+defineOgImage({
+  component: 'OgImageDefault',
+  title: page.value?.title || 'Tucuxi Docs',
+  description: page.value?.description || ''
 })
 
 const tocLinks = computed(() => {

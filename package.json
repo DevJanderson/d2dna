@@ -43,6 +43,7 @@
     "@nuxt/icon": "^2.2.1",
     "@nuxt/image": "^2.0.0",
     "@nuxtjs/color-mode": "^4.0.0",
+    "@nuxtjs/seo": "^3.4.0",
     "@pinia/nuxt": "^0.11.3",
     "@tailwindcss/typography": "^0.5.19",
     "@vee-validate/nuxt": "^4.15.1",

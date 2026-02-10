@@ -49,15 +49,9 @@ O `vitest.config.ts` define dois projetos com ambientes diferentes:
 - **`tests/nuxt/`**: Ambiente Nuxt com happy-dom (mais lento) — composables, stores, componentes
 - **`tests/e2e/`**: Playwright (separado, não passa pelo Vitest)
 
-## Antes de iniciar o servidor
+## Servidor de desenvolvimento
 
-Sempre verificar se já há servidor rodando na porta 3000 antes de iniciar um novo:
-
-```bash
-lsof -i :3000  # Se retornar algo, matar o processo primeiro
-```
-
-Isso evita múltiplos servidores rodando em background, que podem travar o computador.
+**NUNCA inicie o servidor dev (`npm run dev`) diretamente.** Sempre peça ao usuário para iniciar manualmente. Caso precise validar algo no servidor, solicite que o usuário rode `npm run dev` e reporte o resultado.
 
 ## Componentes shadcn-vue
 
