@@ -51,8 +51,9 @@ cp .env.example .env
 Edite o `.env` com as credenciais do seu ambiente. As variáveis principais são:
 
 ```env
-NUXT_API_BASE_URL=https://api.d2dna.com
-NUXT_SESSION_SECRET=sua-chave-secreta
+NUXT_API_EXTERNAL_BASE_URL=https://api.d2dna.com
+NUXT_SITE_URL=https://tucuxi.d2dna.com
+NUXT_SITE_INDEXABLE=true
 ```
 
 Consulte o `.env.example` para a lista completa de variáveis.

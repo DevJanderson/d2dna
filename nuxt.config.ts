@@ -210,12 +210,12 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    // Server-only (não exposto ao client)
-    apiExternalBaseUrl: 'https://api.d2dna.com',
+    // Server-only — override via NUXT_API_EXTERNAL_BASE_URL
+    apiExternalBaseUrl: '',
 
-    // Public (exposed to client)
+    // Public — override via NUXT_PUBLIC_API_BASE_URL
     public: {
-      apiBaseUrl: import.meta.env.API_BASE_URL || '/api'
+      apiBaseUrl: '/api'
     }
   },
 

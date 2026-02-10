@@ -106,7 +106,7 @@ layers/                 # TUDO fica aqui (inclusive server/)
   5-docs/               # Site de documentação
 content/docs/           # Conteúdo markdown (Nuxt Content v3, collection definida em content.config.ts)
 generated/              # Código gerado pelo Kubb (tipos, schemas)
-tests/                  # unit/, integration/, e2e/
+tests/                  # unit/, nuxt/, e2e/
 ```
 
 > **Server dentro das layers:** Cada layer pode conter seu próprio `server/` com endpoints específicos.
@@ -114,6 +114,8 @@ tests/                  # unit/, integration/, e2e/
 > Use hífen (`-`) no nome das layers, não ponto. Layers em `~/layers` são auto-registradas.
 
 **Caminhos em layers:** Use `~/layers/...` (alias da raiz) para referenciar arquivos em `nuxt.config.ts` de layers. Caminhos relativos como `./app/...` não funcionam.
+
+**Alias `#shared`:** Aponta para `layers/0-base/shared/` — tipos compartilhados entre app e server (ex: `import type { X } from '#shared/types/...'`).
 
 ### Ordem de Prioridade (Layers)
 
@@ -179,6 +181,36 @@ export const useExampleStore = defineStore('example', () => {
 | `useFetch` | Carregamento inicial (páginas) | Sim |
 | `$fetch`   | Eventos do usuário (cliques)   | Não |
 
+### SSR Cookie Forwarding
+
+Composables que chamam o BFF precisam encaminhar cookies durante SSR (senão o server não recebe o token de auth):
+
+```typescript
+export function useFeatureApi() {
+  const headers = import.meta.server ? useRequestHeaders(['cookie']) : {}
+
+  async function getAll() {
+    return $fetch('/api/feature', { headers })
+  }
+  return { getAll }
+}
+```
+
+### Server BFF Helper
+
+Layers com endpoints BFF autenticados reutilizam helpers do `3-auth`:
+
+```typescript
+// layers/{N}/server/utils/feature-api.ts
+import { getAccessToken, getApiBaseUrl } from '~/layers/3-auth/server/utils/auth-api'
+
+export async function featureFetch<T>(event: H3Event, endpoint: string, options?: RequestInit) {
+  const token = getAccessToken(event)
+  const baseUrl = getApiBaseUrl()
+  // ... fetch com Bearer token
+}
+```
+
 ### Utils vs Composables
 
 - **Utils** (`layers/0-base/app/utils/`): Funções puras, sem estado Vue
@@ -195,6 +227,17 @@ mockNuxtImport('navigateTo', () => mockNavigateTo)
 ```
 
 `vi.stubGlobal` funciona para utils auto-importados de layers (ex: `getInitials`).
+
+## Variáveis de Ambiente
+
+Padrão Nuxt: `runtimeConfig` define defaults vazios/sensatos, env vars com prefixo `NUXT_` (server-only) e `NUXT_PUBLIC_` (client) fazem override automático. **Nunca usar `import.meta.env` manual no `nuxt.config.ts`.**
+
+```bash
+NUXT_API_EXTERNAL_BASE_URL=https://api.d2dna.com  # API externa (server-only, obrigatório)
+NUXT_SITE_URL=https://tucuxi.d2dna.com            # URL do site (SEO)
+NUXT_SITE_INDEXABLE=true                           # Permitir indexação (SEO)
+# NUXT_PUBLIC_API_BASE_URL=/api                    # Override se necessário (default: /api)
+```
 
 ## Segurança
 

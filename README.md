@@ -245,8 +245,9 @@ cp .env.example .env
 ```
 
 ```env
-API_BASE_URL=/api
-JWT_SECRET=sua-chave-secreta
+NUXT_API_EXTERNAL_BASE_URL=https://api.d2dna.com
+NUXT_SITE_URL=https://tucuxi.d2dna.com
+NUXT_SITE_INDEXABLE=true
 ```
 
 ## Documentação
