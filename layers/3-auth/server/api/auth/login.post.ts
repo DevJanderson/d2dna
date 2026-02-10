@@ -1,4 +1,4 @@
-import { loginSchemaSchema } from '~/generated/tucuxi/zod'
+import { loginSchema } from '../../../app/composables/types'
 import type { UsuarioLogadoSchema } from '~/generated/tucuxi/types'
 import { setAccessToken, setRefreshToken, getApiBaseUrl } from '../../utils/auth-api'
 
@@ -12,7 +12,7 @@ export default defineEventHandler(async event => {
   const body = await readBody(event)
 
   // Validação com Zod
-  const result = loginSchemaSchema.safeParse(body)
+  const result = loginSchema.safeParse(body)
   if (!result.success) {
     throw createError({
       statusCode: 400,

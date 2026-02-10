@@ -1,7 +1,5 @@
 import type { H3Event } from 'h3'
 
-const API_BASE_URL = 'https://api.d2dna.com'
-
 /**
  * Salva access token em cookie httpOnly (SEGURO)
  */
@@ -74,7 +72,7 @@ export async function authFetch<T>(
     requestHeaders['Authorization'] = `Bearer ${token}`
   }
 
-  const response = await $fetch(`${API_BASE_URL}${endpoint}`, {
+  const response = await $fetch(`${getApiBaseUrl()}${endpoint}`, {
     method,
     body,
     headers: requestHeaders
@@ -87,5 +85,6 @@ export async function authFetch<T>(
  * URL base da API externa
  */
 export function getApiBaseUrl(): string {
-  return API_BASE_URL
+  const config = useRuntimeConfig()
+  return config.apiExternalBaseUrl as string
 }

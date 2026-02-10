@@ -32,7 +32,7 @@ describe('useWindowManager', () => {
       const id = wm.open({ title: 'Test Window' })
 
       expect(wm.windows.value).toHaveLength(1)
-      expect(wm.windows.value[0].title).toBe('Test Window')
+      expect(wm.windows.value[0]!.title).toBe('Test Window')
       expect(id).toBeTruthy()
     })
 
@@ -41,7 +41,7 @@ describe('useWindowManager', () => {
       const id = wm.open({ id: 'my-window', title: 'Test' })
 
       expect(id).toBe('my-window')
-      expect(wm.windows.value[0].id).toBe('my-window')
+      expect(wm.windows.value[0]!.id).toBe('my-window')
     })
 
     it('should set opened window as active', () => {
@@ -56,7 +56,7 @@ describe('useWindowManager', () => {
       const wm = useWindowManager()
       wm.open({ title: 'Test' })
 
-      const win = wm.windows.value[0]
+      const win = wm.windows.value[0]!
       expect(win.position).toEqual({ x: 100, y: 50 })
       expect(win.size).toEqual({ width: 600, height: 400 })
     })
@@ -69,7 +69,7 @@ describe('useWindowManager', () => {
         size: { width: 800, height: 600 }
       })
 
-      const win = wm.windows.value[0]
+      const win = wm.windows.value[0]!
       expect(win.position).toEqual({ x: 200, y: 100 })
       expect(win.size).toEqual({ width: 800, height: 600 })
     })
@@ -79,8 +79,8 @@ describe('useWindowManager', () => {
       wm.open({ title: 'Win 1' })
       wm.open({ title: 'Win 2' })
 
-      const win1 = wm.windows.value[0]
-      const win2 = wm.windows.value[1]
+      const win1 = wm.windows.value[0]!
+      const win2 = wm.windows.value[1]!
       expect(win2.position.x).toBeGreaterThan(win1.position.x)
       expect(win2.position.y).toBeGreaterThan(win1.position.y)
     })
@@ -102,7 +102,7 @@ describe('useWindowManager', () => {
       const wm = useWindowManager()
       wm.open({ title: 'Test' })
 
-      const win = wm.windows.value[0]
+      const win = wm.windows.value[0]!
       expect(win.minimized).toBe(false)
       expect(win.maximized).toBe(false)
     })
@@ -176,11 +176,11 @@ describe('useWindowManager', () => {
       wm.open({ id: 'win-1', title: 'Win 1' })
       wm.minimize('win-1')
 
-      expect(wm.windows.value[0].minimized).toBe(true)
+      expect(wm.windows.value[0]!.minimized).toBe(true)
 
       wm.focus('win-1')
 
-      expect(wm.windows.value[0].minimized).toBe(false)
+      expect(wm.windows.value[0]!.minimized).toBe(false)
     })
   })
 
@@ -191,7 +191,7 @@ describe('useWindowManager', () => {
 
       wm.minimize('win-1')
 
-      expect(wm.windows.value[0].minimized).toBe(true)
+      expect(wm.windows.value[0]!.minimized).toBe(true)
     })
 
     it('should activate next window after minimizing active', () => {
@@ -231,7 +231,7 @@ describe('useWindowManager', () => {
 
       wm.maximize('win-1')
 
-      expect(wm.windows.value[0].maximized).toBe(true)
+      expect(wm.windows.value[0]!.maximized).toBe(true)
     })
 
     it('should save pre-maximize state', () => {
@@ -245,7 +245,7 @@ describe('useWindowManager', () => {
 
       wm.maximize('win-1')
 
-      const win = wm.windows.value[0]
+      const win = wm.windows.value[0]!
       expect(win.preMaximizeState).toBeDefined()
       expect(win.preMaximizeState!.position).toEqual({ x: 100, y: 50 })
       expect(win.preMaximizeState!.size).toEqual({ width: 600, height: 400 })
@@ -257,7 +257,7 @@ describe('useWindowManager', () => {
 
       wm.maximize('win-1')
 
-      expect(wm.windows.value[0].position).toEqual({ x: 0, y: 0 })
+      expect(wm.windows.value[0]!.position).toEqual({ x: 0, y: 0 })
     })
   })
 
@@ -274,7 +274,7 @@ describe('useWindowManager', () => {
       wm.maximize('win-1')
       wm.restore('win-1')
 
-      const win = wm.windows.value[0]
+      const win = wm.windows.value[0]!
       expect(win.maximized).toBe(false)
       expect(win.position).toEqual({ x: 100, y: 50 })
       expect(win.size).toEqual({ width: 600, height: 400 })
@@ -291,7 +291,7 @@ describe('useWindowManager', () => {
 
       wm.restore('win-1')
 
-      expect(wm.windows.value[0].position).toEqual({ x: 100, y: 50 })
+      expect(wm.windows.value[0]!.position).toEqual({ x: 100, y: 50 })
     })
   })
 
@@ -302,7 +302,7 @@ describe('useWindowManager', () => {
 
       wm.toggleMaximize('win-1')
 
-      expect(wm.windows.value[0].maximized).toBe(true)
+      expect(wm.windows.value[0]!.maximized).toBe(true)
     })
 
     it('should restore if maximized', () => {
@@ -316,8 +316,8 @@ describe('useWindowManager', () => {
       wm.toggleMaximize('win-1') // maximize
       wm.toggleMaximize('win-1') // restore
 
-      expect(wm.windows.value[0].maximized).toBe(false)
-      expect(wm.windows.value[0].position).toEqual({ x: 100, y: 50 })
+      expect(wm.windows.value[0]!.maximized).toBe(false)
+      expect(wm.windows.value[0]!.position).toEqual({ x: 100, y: 50 })
     })
   })
 
@@ -328,7 +328,7 @@ describe('useWindowManager', () => {
 
       wm.updatePosition('win-1', { x: 300, y: 200 })
 
-      expect(wm.windows.value[0].position).toEqual({ x: 300, y: 200 })
+      expect(wm.windows.value[0]!.position).toEqual({ x: 300, y: 200 })
     })
 
     it('should not update position when maximized', () => {
@@ -338,7 +338,7 @@ describe('useWindowManager', () => {
       wm.maximize('win-1')
       wm.updatePosition('win-1', { x: 300, y: 200 })
 
-      expect(wm.windows.value[0].position).toEqual({ x: 0, y: 0 })
+      expect(wm.windows.value[0]!.position).toEqual({ x: 0, y: 0 })
     })
   })
 
@@ -349,7 +349,7 @@ describe('useWindowManager', () => {
 
       wm.updateSize('win-1', { width: 800, height: 600 })
 
-      expect(wm.windows.value[0].size).toEqual({ width: 800, height: 600 })
+      expect(wm.windows.value[0]!.size).toEqual({ width: 800, height: 600 })
     })
 
     it('should not update size when maximized', () => {
@@ -364,7 +364,7 @@ describe('useWindowManager', () => {
       wm.updateSize('win-1', { width: 800, height: 600 })
 
       // Size does not change when maximized
-      const win = wm.windows.value[0]
+      const win = wm.windows.value[0]!
       expect(win.preMaximizeState!.size).toEqual({ width: 600, height: 400 })
     })
   })
@@ -376,7 +376,7 @@ describe('useWindowManager', () => {
 
       wm.updateWindow('win-1', { title: 'New Title' })
 
-      expect(wm.windows.value[0].title).toBe('New Title')
+      expect(wm.windows.value[0]!.title).toBe('New Title')
     })
 
     it('should merge props', () => {
@@ -385,7 +385,7 @@ describe('useWindowManager', () => {
 
       wm.updateWindow('win-1', { props: { baz: 'qux' } })
 
-      expect(wm.windows.value[0].props).toEqual({ foo: 'bar', baz: 'qux' })
+      expect(wm.windows.value[0]!.props).toEqual({ foo: 'bar', baz: 'qux' })
     })
   })
 
@@ -426,7 +426,7 @@ describe('useWindowManager', () => {
       wm.minimize('win-2')
 
       expect(wm.visibleWindows.value).toHaveLength(1)
-      expect(wm.visibleWindows.value[0].id).toBe('win-1')
+      expect(wm.visibleWindows.value[0]!.id).toBe('win-1')
     })
 
     it('minimizedWindows should only include minimized', () => {
@@ -436,7 +436,7 @@ describe('useWindowManager', () => {
       wm.minimize('win-2')
 
       expect(wm.minimizedWindows.value).toHaveLength(1)
-      expect(wm.minimizedWindows.value[0].id).toBe('win-2')
+      expect(wm.minimizedWindows.value[0]!.id).toBe('win-2')
     })
   })
 })

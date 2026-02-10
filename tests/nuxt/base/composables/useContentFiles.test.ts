@@ -64,11 +64,11 @@ describe('useContentFiles', () => {
       const { contentTree } = useContentFiles()
 
       expect(contentTree.value.files).toHaveLength(1)
-      expect(contentTree.value.files[0].title).toBe('About')
+      expect(contentTree.value.files[0]!.title).toBe('About')
 
       expect(contentTree.value.folders).toHaveLength(1)
-      expect(contentTree.value.folders[0].name).toBe('docs')
-      expect(contentTree.value.folders[0].files).toHaveLength(2)
+      expect(contentTree.value.folders[0]!.name).toBe('docs')
+      expect(contentTree.value.folders[0]!.files).toHaveLength(2)
     })
 
     it('should sort files and folders alphabetically', () => {
@@ -85,10 +85,10 @@ describe('useContentFiles', () => {
 
       const { contentTree } = useContentFiles()
 
-      expect(contentTree.value.files[0].title).toBe('Alpha')
-      expect(contentTree.value.files[1].title).toBe('Zebra')
-      expect(contentTree.value.folders[0].name).toBe('docs-a')
-      expect(contentTree.value.folders[1].name).toBe('docs-b')
+      expect(contentTree.value.files[0]!.title).toBe('Alpha')
+      expect(contentTree.value.files[1]!.title).toBe('Zebra')
+      expect(contentTree.value.folders[0]!.name).toBe('docs-a')
+      expect(contentTree.value.folders[1]!.name).toBe('docs-b')
     })
 
     it('should use fallback title when title is missing', () => {
@@ -104,8 +104,8 @@ describe('useContentFiles', () => {
       const { contentTree } = useContentFiles()
 
       // Após ordenação alfabética: 'Sem título' < 'test'
-      expect(contentTree.value.files[0].title).toBe('Sem título')
-      expect(contentTree.value.files[1].title).toBe('test')
+      expect(contentTree.value.files[0]!.title).toBe('Sem título')
+      expect(contentTree.value.files[1]!.title).toBe('test')
     })
   })
 
@@ -134,8 +134,8 @@ describe('useContentFiles', () => {
       const { flatFiles } = useContentFiles()
 
       expect(flatFiles.value).toHaveLength(2)
-      expect(flatFiles.value[0].id).toBe('1')
-      expect(flatFiles.value[1].id).toBe('2')
+      expect(flatFiles.value[0]!.id).toBe('1')
+      expect(flatFiles.value[1]!.id).toBe('2')
     })
 
     it('should use path as id fallback', () => {
@@ -146,7 +146,7 @@ describe('useContentFiles', () => {
       })
 
       const { flatFiles } = useContentFiles()
-      expect(flatFiles.value[0].id).toBe('/no-id')
+      expect(flatFiles.value[0]!.id).toBe('/no-id')
     })
   })
 

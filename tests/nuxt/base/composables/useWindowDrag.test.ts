@@ -1,4 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
+import type { Ref } from 'vue'
 import { ref } from 'vue'
 import { useWindowDrag } from '~/layers/0-base/app/composables/useWindowDrag'
 
@@ -23,9 +24,9 @@ function createMockWindowEl(parentWidth = 1200, parentHeight = 800) {
 }
 
 describe('useWindowDrag', () => {
-  let position: ReturnType<typeof ref<{ x: number; y: number }>>
-  let size: ReturnType<typeof ref<{ width: number; height: number }>>
-  let windowEl: ReturnType<typeof createMockWindowEl>
+  let position: Ref<{ x: number; y: number }>
+  let size: Ref<{ width: number; height: number }>
+  let windowEl: Ref<HTMLElement | null>
 
   beforeEach(() => {
     position = ref({ x: 100, y: 50 })

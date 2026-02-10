@@ -28,7 +28,7 @@ defineOgImage({
   component: 'OgImageDefault',
   title: page.value?.title || 'Tucuxi Docs',
   description: page.value?.description || ''
-})
+} as Record<string, unknown>)
 
 const tocLinks = computed(() => {
   if (!page.value?.body?.toc?.links) return []

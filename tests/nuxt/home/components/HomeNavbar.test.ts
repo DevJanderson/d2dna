@@ -72,9 +72,9 @@ describe('HomeNavbar', () => {
 
     const links = wrapper.findAll('a[href^="#"]')
     expect(links).toHaveLength(3)
-    expect(links[0].attributes('href')).toBe('#features')
-    expect(links[1].attributes('href')).toBe('#how-it-works')
-    expect(links[2].attributes('href')).toBe('#team')
+    expect(links[0]!.attributes('href')).toBe('#features')
+    expect(links[1]!.attributes('href')).toBe('#how-it-works')
+    expect(links[2]!.attributes('href')).toBe('#team')
   })
 
   it('should apply opacity-0 when not visible and no reduced motion', () => {
