@@ -23,9 +23,9 @@ function scrollTo(href: string) {
 </script>
 
 <template>
-  <div class="sticky top-2 z-20">
+  <div class="sticky top-2 z-30">
     <header
-      class="mx-auto max-w-340 rounded-2xl border border-border/50 bg-background/95 backdrop-blur-sm shadow-[0_2px_16px_-2px_rgba(0,0,0,0.15),0_1px_4px_-1px_rgba(0,0,0,0.1)] dark:shadow-[0_2px_16px_-2px_rgba(0,0,0,0.6),0_0_0_1px_rgba(255,255,255,0.05)] hero-entrance"
+      class="mx-auto max-w-7xl rounded-2xl border border-border/50 bg-background/95 backdrop-blur-md shadow-[0_4px_24px_-4px_rgba(0,0,0,0.2),0_8px_40px_-8px_rgba(0,0,0,0.12),0_0_0_1px_rgba(0,0,0,0.04)] dark:shadow-[0_4px_24px_-4px_rgba(0,0,0,0.7),0_8px_40px_-8px_rgba(0,0,0,0.5),0_0_0_1px_rgba(255,255,255,0.06)] hero-entrance"
       :class="[
         prefersReducedMotion
           ? 'opacity-100'

@@ -67,15 +67,19 @@ useSchemaOrg([
       class="h-px bg-(--pattern-fg)/7 transition-opacity duration-700 ease-out delay-500"
       :class="prefersReducedMotion || isVisible ? 'opacity-100' : 'opacity-0'"
     />
+    <HomeSocialProof :prefers-reduced-motion="prefersReducedMotion" :is-visible="isVisible" />
+    <div class="h-px bg-(--pattern-fg)/7" />
+    <LazyHomeStats />
+    <div class="h-px bg-(--pattern-fg)/7" />
     <HomeFeatures :prefers-reduced-motion="prefersReducedMotion" :is-visible="isVisible" />
     <div class="h-px bg-(--pattern-fg)/7" />
     <HomeHowItWorks />
     <div class="h-px bg-(--pattern-fg)/7" />
-    <LazyHomeStats />
-    <div class="h-px bg-(--pattern-fg)/7" />
-    <LazyHomePartners />
+    <LazyHomeSecurity />
     <div class="h-px bg-(--pattern-fg)/7" />
     <LazyHomeTeam />
+    <div class="h-px bg-(--pattern-fg)/7" />
+    <LazyHomeCTA />
     <div class="h-px bg-(--pattern-fg)/7" />
     <HomeFooter />
   </main>

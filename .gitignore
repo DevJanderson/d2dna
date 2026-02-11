@@ -52,6 +52,9 @@ coverage
 .claude/skills/
 .agents/
 
+# Temp files
+tmp/
+
 # Misc
 *.tsbuildinfo
 
