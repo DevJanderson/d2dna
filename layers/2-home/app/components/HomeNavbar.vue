@@ -65,7 +65,7 @@ function scrollTo(href: string) {
           <NuxtLink v-if="auth.isAuthenticated" to="/app">
             <Button
               size="sm"
-              class="bg-foreground px-5 text-xs text-background hover:bg-foreground/90"
+              class="bg-foreground px-5 text-sm text-background hover:bg-foreground/90"
             >
               Workspace
             </Button>
@@ -73,7 +73,7 @@ function scrollTo(href: string) {
           <NuxtLink v-else to="/login">
             <Button
               size="sm"
-              class="bg-foreground px-5 text-xs text-background hover:bg-foreground/90"
+              class="bg-foreground px-5 text-sm text-background hover:bg-foreground/90"
             >
               Começar agora
             </Button>

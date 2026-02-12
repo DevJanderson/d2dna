@@ -4,8 +4,6 @@
  * Cards de tamanhos variados com ASCII decorativo e parágrafo de contexto
  * Respeita prefers-reduced-motion: exibe valores finais sem animação
  */
-import { useIntersectionObserver } from '@vueuse/core'
-
 interface Stat {
   value: number
   suffix: string
@@ -58,77 +56,12 @@ const stats: Stat[] = [
   }
 ]
 
-const DURATION = 1500
-
-const sectionRef = ref<HTMLElement | null>(null)
-const hasAnimated = ref(false)
-const displayValues = ref<string[]>(stats.map(() => '0'))
-
-function easeOut(t: number): number {
-  return 1 - (1 - t) ** 3
-}
-
-function formatValue(current: number, stat: Stat): string {
-  if (stat.decimals && stat.decimals > 0) {
-    return current.toFixed(stat.decimals)
-  }
-  return Math.round(current).toString()
-}
-
+const { sectionRef, isVisible } = useSectionVisibility({ threshold: 0.2 })
+const { displayValues, hasAnimated, start } = useCountUp(stats)
 const { prefersReducedMotion: reducedMotionRef } = usePrefersReducedMotion()
 
-function showFinalValues() {
-  displayValues.value = stats.map(stat => formatValue(stat.value, stat))
-}
-
-let animationFrameId: number | null = null
-
-function startCountUp() {
-  if (hasAnimated.value) return
-  hasAnimated.value = true
-
-  if (reducedMotionRef.value) {
-    showFinalValues()
-    return
-  }
-
-  const startTime = performance.now()
-
-  function animate(now: number) {
-    const elapsed = now - startTime
-    const progress = Math.min(elapsed / DURATION, 1)
-    const eased = easeOut(progress)
-
-    displayValues.value = stats.map(stat => {
-      const current = eased * stat.value
-      return formatValue(current, stat)
-    })
-
-    if (progress < 1) {
-      animationFrameId = requestAnimationFrame(animate)
-    } else {
-      animationFrameId = null
-    }
-  }
-
-  animationFrameId = requestAnimationFrame(animate)
-}
-
-const { stop } = useIntersectionObserver(
-  sectionRef,
-  ([entry]) => {
-    if (entry?.isIntersecting && !hasAnimated.value) {
-      startCountUp()
-      stop()
-    }
-  },
-  { threshold: 0.2 }
-)
-
-onUnmounted(() => {
-  if (animationFrameId !== null) {
-    cancelAnimationFrame(animationFrameId)
-  }
+watch(isVisible, (visible) => {
+  if (visible) start(reducedMotionRef.value)
 })
 </script>
 
@@ -136,7 +69,7 @@ onUnmounted(() => {
   <section
     ref="sectionRef"
     aria-labelledby="stats-heading"
-    class="py-12 md:py-20 max-w-5xl mx-auto px-6"
+    class="py-12 md:py-20 w-full max-w-7xl mx-auto px-6"
   >
     <h2 id="stats-heading" class="sr-only">Estatísticas</h2>
 
@@ -159,17 +92,17 @@ onUnmounted(() => {
         </span>
 
         <!-- Número animado -->
-        <dd class="text-4xl md:text-5xl font-bold text-foreground mb-1">
+        <dd class="font-mono text-4xl md:text-5xl font-bold text-foreground mb-1">
           {{ stat.prefix }}{{ displayValues[index] }}{{ stat.suffix }}
         </dd>
 
         <!-- Label -->
-        <dt class="text-sm font-medium text-foreground/80 mb-3">
+        <dt class="text-base font-medium text-foreground/80 mb-3">
           {{ stat.label }}
         </dt>
 
         <!-- Contexto -->
-        <p class="text-xs text-muted-foreground leading-relaxed">
+        <p class="text-base text-muted-foreground leading-relaxed">
           {{ stat.context }}
         </p>
       </div>

@@ -34,14 +34,14 @@ const socials = [
 </script>
 
 <template>
-  <footer class="relative z-20 border-t border-border/40">
-    <div class="mx-auto max-w-5xl px-6 py-10 md:py-14">
+  <footer class="relative z-20 border-t border-border/40 font-mono">
+    <div class="w-full max-w-7xl mx-auto px-6 py-10 md:py-14">
       <!-- Topo: Logo + colunas -->
       <div class="grid grid-cols-2 gap-8 md:grid-cols-4">
         <!-- Logo e descrição -->
         <div class="col-span-2 md:col-span-1">
           <p class="mb-2 font-mono text-sm font-bold text-foreground">D2DNA</p>
-          <p class="text-xs text-muted-foreground leading-relaxed">
+          <p class="text-sm text-muted-foreground leading-relaxed">
             Bioinformática aplicada a record linkage. Unificando registros com a precisão do DNA.
           </p>
           <!-- Redes -->
@@ -55,7 +55,7 @@ const socials = [
               rel="noopener noreferrer"
               class="text-muted-foreground/50 transition-colors hover:text-foreground"
             >
-              <component :is="social.icon" :size="16" :stroke-width="1.5" />
+              <component :is="social.icon" :size="20" :stroke-width="1.5" />
             </a>
           </div>
         </div>
@@ -69,7 +69,7 @@ const socials = [
             <li v-for="link in links.produto" :key="link.label">
               <NuxtLink
                 :to="link.href"
-                class="text-xs text-muted-foreground transition-colors hover:text-foreground"
+                class="text-sm text-muted-foreground transition-colors hover:text-foreground"
               >
                 {{ link.label }}
               </NuxtLink>
@@ -85,7 +85,7 @@ const socials = [
             <li v-for="link in links.recursos" :key="link.label">
               <NuxtLink
                 :to="link.href"
-                class="text-xs text-muted-foreground transition-colors hover:text-foreground"
+                class="text-sm text-muted-foreground transition-colors hover:text-foreground"
               >
                 {{ link.label }}
               </NuxtLink>
@@ -101,7 +101,7 @@ const socials = [
             <li v-for="link in links.empresa" :key="link.label">
               <NuxtLink
                 :to="link.href"
-                class="text-xs text-muted-foreground transition-colors hover:text-foreground"
+                class="text-sm text-muted-foreground transition-colors hover:text-foreground"
               >
                 {{ link.label }}
               </NuxtLink>

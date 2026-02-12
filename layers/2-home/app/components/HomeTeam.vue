@@ -3,20 +3,7 @@
  * Seção de equipe D2DNA
  * Grid com membros da equipe
  */
-import { useIntersectionObserver } from '@vueuse/core'
-
-const sectionRef = ref<HTMLElement | null>(null)
-const isVisible = ref(false)
-
-useIntersectionObserver(
-  sectionRef,
-  entries => {
-    if (entries[0]?.isIntersecting) {
-      isVisible.value = true
-    }
-  },
-  { threshold: 0.1 }
-)
+const { sectionRef, isVisible } = useSectionVisibility({ threshold: 0.1 })
 
 const teamMembers = [
   {
@@ -63,13 +50,13 @@ const teamMembers = [
     id="team"
     ref="sectionRef"
     aria-labelledby="team-heading"
-    class="max-w-5xl mx-auto px-6 py-12 md:py-20 transition-all duration-700 ease-out"
+    class="w-full max-w-7xl mx-auto px-6 py-12 md:py-20 transition-all duration-700 ease-out"
     :class="isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
   >
-    <h2 id="team-heading" class="text-2xl font-bold text-foreground mb-4 text-center">
+    <h2 id="team-heading" class="font-mono text-3xl font-bold text-foreground mb-4 text-center">
       Quem Está por Trás
     </h2>
-    <p class="text-center text-muted-foreground mb-10 text-sm">
+    <p class="text-center text-muted-foreground mb-10 text-base">
       Quem fez ciência, constrói a tecnologia.
     </p>
 

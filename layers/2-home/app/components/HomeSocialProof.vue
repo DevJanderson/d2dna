@@ -50,7 +50,7 @@ const logos: LogoItemImage[] = [
     ]"
   >
     <p
-      class="mb-8 text-center font-mono text-xs tracking-widest text-muted-foreground/50 uppercase"
+      class="mb-8 text-center font-mono text-sm tracking-widest text-muted-foreground/50 uppercase"
     >
       Utilizado por instituições de referência
     </p>

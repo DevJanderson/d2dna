@@ -112,12 +112,12 @@ onUnmounted(() => {
           ]"
         >
           <h1
-            class="font-sans text-3xl font-bold tracking-tight text-foreground leading-[1.15] sm:text-4xl lg:text-5xl"
+            class="text-4xl font-bold tracking-tight text-foreground leading-[1.15] sm:text-5xl lg:text-6xl"
           >
             Registros duplicados custam milhões.<br />
             <span class="text-sky-500 dark:text-sky-400">Bioinformática resolve.</span>
           </h1>
-          <p class="mt-6 max-w-lg font-sans text-lg text-muted-foreground leading-relaxed">
+          <p class="mt-6 max-w-lg text-lg text-muted-foreground leading-relaxed">
             O Tucuxi deduplica bases nacionais em horas — não meses.
           </p>
           <div
@@ -132,7 +132,7 @@ onUnmounted(() => {
           >
             <a
               href="#how-it-works-heading"
-              class="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              class="inline-flex items-center gap-2 text-base font-medium text-muted-foreground hover:text-foreground transition-colors"
             >
               Como Funciona &darr;
             </a>

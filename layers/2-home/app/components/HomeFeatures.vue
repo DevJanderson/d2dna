@@ -59,7 +59,7 @@ const features: Feature[] = [
 <template>
   <div id="features" class="relative z-20">
     <div
-      class="mx-auto max-w-7xl hero-entrance hero-entrance-delay-4"
+      class="w-full max-w-7xl mx-auto hero-entrance hero-entrance-delay-4"
       :class="[
         prefersReducedMotion
           ? 'opacity-100'
@@ -83,10 +83,10 @@ const features: Feature[] = [
             :stroke-width="1.5"
             class="mb-3 text-muted-foreground"
           />
-          <h3 class="mb-2 text-lg font-bold text-foreground">
+          <h3 class="mb-2 text-xl font-bold text-foreground">
             {{ feature.title }}
           </h3>
-          <p class="text-sm leading-relaxed text-muted-foreground">
+          <p class="text-base leading-relaxed text-muted-foreground">
             {{ feature.description }}
           </p>
         </div>
@@ -109,10 +109,10 @@ const features: Feature[] = [
             :stroke-width="1.5"
             class="mb-3 text-muted-foreground"
           />
-          <h3 class="mb-2 text-lg font-bold text-foreground">
+          <h3 class="mb-2 text-xl font-bold text-foreground">
             {{ feature.title }}
           </h3>
-          <p class="text-sm leading-relaxed text-muted-foreground">
+          <p class="text-base leading-relaxed text-muted-foreground">
             {{ feature.description }}
           </p>
         </div>

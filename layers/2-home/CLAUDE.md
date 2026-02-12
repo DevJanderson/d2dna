@@ -8,6 +8,9 @@ Página inicial da aplicação. Design MX (Machine Experience) com ASCII art, es
 layers/2-home/
 ├── nuxt.config.ts
 ├── app/
+│   ├── composables/
+│   │   ├── useSectionVisibility.ts # Fade-in via IntersectionObserver (dispara 1x)
+│   │   └── useCountUp.ts           # Animação count-up com easing cubic + RAF cleanup
 │   ├── components/
 │   │   ├── HomeNavbar.vue          # Logo ASCII + botão auth (sticky, z-30)
 │   │   ├── HomeHero.vue            # Headline + terminal interativo

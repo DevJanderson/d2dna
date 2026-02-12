@@ -3,21 +3,9 @@
  * Seção "Enterprise-ready" — segurança e compliance
  * Inspirada na Pinecone, adaptada para contexto LGPD/saúde
  */
-import { useIntersectionObserver } from '@vueuse/core'
 import { Scale, Shield } from 'lucide-vue-next'
 
-const sectionRef = ref<HTMLElement | null>(null)
-const isVisible = ref(false)
-
-useIntersectionObserver(
-  sectionRef,
-  (entries) => {
-    if (entries[0]?.isIntersecting) {
-      isVisible.value = true
-    }
-  },
-  { threshold: 0.15 }
-)
+const { sectionRef, isVisible } = useSectionVisibility()
 
 const { prefersReducedMotion } = usePrefersReducedMotion()
 
@@ -48,11 +36,11 @@ const blocks = [
     id="security"
     ref="sectionRef"
     aria-labelledby="security-heading"
-    class="relative z-20 mx-auto max-w-5xl px-6 py-12 md:py-20"
+    class="relative z-20 w-full max-w-7xl mx-auto px-6 py-12 md:py-20"
   >
     <h2
       id="security-heading"
-      class="mb-4 text-center text-2xl font-bold text-foreground transition-all duration-700 ease-out"
+      class="mb-4 text-center font-mono text-3xl font-bold text-foreground transition-all duration-700 ease-out"
       :class="
         isVisible || prefersReducedMotion
           ? 'opacity-100 translate-y-0'
@@ -62,7 +50,7 @@ const blocks = [
       Enterprise-Ready
     </h2>
     <p
-      class="mx-auto mb-10 max-w-xl text-center text-sm text-muted-foreground transition-all duration-700 ease-out delay-100"
+      class="mx-auto mb-10 max-w-xl text-center text-base text-muted-foreground transition-all duration-700 ease-out delay-100"
       :class="
         isVisible || prefersReducedMotion
           ? 'opacity-100 translate-y-0'
@@ -91,13 +79,13 @@ const blocks = [
             :stroke-width="1.5"
             class="text-muted-foreground"
           />
-          <h3 class="text-lg font-bold text-foreground">{{ block.title }}</h3>
+          <h3 class="text-xl font-bold text-foreground">{{ block.title }}</h3>
         </div>
         <ul class="space-y-2">
           <li
             v-for="item in block.items"
             :key="item"
-            class="flex items-start gap-2 text-sm text-muted-foreground leading-relaxed"
+            class="flex items-start gap-2 text-base text-muted-foreground leading-relaxed"
           >
             <span class="mt-1.5 block h-1 w-1 shrink-0 rounded-full bg-muted-foreground/40" />
             {{ item }}

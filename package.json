@@ -48,7 +48,7 @@
 		"@tailwindcss/typography": "^0.5.19",
 		"@vee-validate/nuxt": "^4.15.1",
 		"@vee-validate/zod": "^4.15.1",
-		"@vueuse/core": "^14.2.0",
+		"@vueuse/core": "^14.2.1",
 		"better-sqlite3": "^12.6.2",
 		"class-variance-authority": "^0.7.1",
 		"clsx": "^2.1.1",

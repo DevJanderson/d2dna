@@ -40,47 +40,47 @@ useSchemaOrg([
 
 <template>
   <main
-    class="relative min-h-screen bg-background font-mono [--pattern-fg:oklch(0.59_0.19_241.02)]"
+    class="relative min-h-screen bg-background font-sans"
   >
     <!-- Faixas verticais hachuradas -->
     <div
-      class="pointer-events-none fixed inset-y-0 left-1/2 z-5 hidden w-full max-w-340 -translate-x-1/2 transition-opacity duration-1000 ease-out md:block"
+      class="pointer-events-none fixed inset-y-0 left-1/2 z-5 hidden w-full max-w-370 -translate-x-1/2 transition-opacity duration-1000 ease-out md:block"
       :class="prefersReducedMotion || isVisible ? 'opacity-100' : 'opacity-0'"
       aria-hidden="true"
     >
       <div
-        class="absolute inset-y-0 left-0 w-10 -translate-x-px border-x border-x-(--pattern-fg)/5 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] bg-fixed opacity-12"
+        class="absolute inset-y-0 left-0 w-10 -translate-x-px border-x border-foreground/5 bg-[repeating-linear-gradient(315deg,var(--foreground)_0,var(--foreground)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] bg-fixed opacity-12"
       />
       <div
-        class="absolute inset-y-0 right-0 w-10 translate-x-px border-x border-x-(--pattern-fg)/5 bg-[repeating-linear-gradient(315deg,var(--pattern-fg)_0,var(--pattern-fg)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] bg-fixed opacity-12"
+        class="absolute inset-y-0 right-0 w-10 translate-x-px border-x border-foreground/5 bg-[repeating-linear-gradient(315deg,var(--foreground)_0,var(--foreground)_1px,transparent_0,transparent_50%)] bg-size-[10px_10px] bg-fixed opacity-12"
       />
     </div>
 
     <!-- Conteúdo -->
     <HomeNavbar :prefers-reduced-motion="prefersReducedMotion" :is-visible="isVisible" />
     <div
-      class="h-px bg-(--pattern-fg)/7 transition-opacity duration-700 ease-out delay-100"
+      class="h-px bg-foreground/15 transition-opacity duration-700 ease-out delay-100"
       :class="prefersReducedMotion || isVisible ? 'opacity-100' : 'opacity-0'"
     />
     <HomeHero :prefers-reduced-motion="prefersReducedMotion" :is-visible="isVisible" />
     <div
-      class="h-px bg-(--pattern-fg)/7 transition-opacity duration-700 ease-out delay-500"
+      class="h-px bg-foreground/15 transition-opacity duration-700 ease-out delay-500"
       :class="prefersReducedMotion || isVisible ? 'opacity-100' : 'opacity-0'"
     />
     <HomeSocialProof :prefers-reduced-motion="prefersReducedMotion" :is-visible="isVisible" />
-    <div class="h-px bg-(--pattern-fg)/7" />
+    <div class="h-px bg-foreground/15" />
     <LazyHomeStats />
-    <div class="h-px bg-(--pattern-fg)/7" />
+    <div class="h-px bg-foreground/15" />
     <HomeFeatures :prefers-reduced-motion="prefersReducedMotion" :is-visible="isVisible" />
-    <div class="h-px bg-(--pattern-fg)/7" />
+    <div class="h-px bg-foreground/15" />
     <HomeHowItWorks />
-    <div class="h-px bg-(--pattern-fg)/7" />
+    <div class="h-px bg-foreground/15" />
     <LazyHomeSecurity />
-    <div class="h-px bg-(--pattern-fg)/7" />
+    <div class="h-px bg-foreground/15" />
     <LazyHomeTeam />
-    <div class="h-px bg-(--pattern-fg)/7" />
+    <div class="h-px bg-foreground/15" />
     <LazyHomeCTA />
-    <div class="h-px bg-(--pattern-fg)/7" />
+    <div class="h-px bg-foreground/15" />
     <HomeFooter />
   </main>
 </template>

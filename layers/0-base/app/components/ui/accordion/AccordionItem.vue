@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import type { DialogTitleProps } from "reka-ui"
+import type { AccordionItemProps } from "reka-ui"
 import type { HTMLAttributes } from "vue"
 import { reactiveOmit } from "@vueuse/core"
-import { DialogTitle, useForwardProps } from "reka-ui"
+import { AccordionItem, useForwardProps } from "reka-ui"
 import { cn } from '@/layers/0-base/app/utils/utils'
 
-const props = defineProps<DialogTitleProps & { class?: HTMLAttributes["class"] }>()
+const props = defineProps<AccordionItemProps & { class?: HTMLAttributes["class"] }>()
 
 const delegatedProps = reactiveOmit(props, "class")
 
@@ -13,15 +13,10 @@ const forwardedProps = useForwardProps(delegatedProps)
 </script>
 
 <template>
-  <DialogTitle
+  <AccordionItem
     v-bind="forwardedProps"
-    :class="
-      cn(
-        'text-lg font-semibold leading-none tracking-tight',
-        props.class,
-      )
-    "
+    :class="cn('border-b', props.class)"
   >
     <slot />
-  </DialogTitle>
+  </AccordionItem>
 </template>

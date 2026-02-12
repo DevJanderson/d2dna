@@ -3,20 +3,7 @@
  * Seção call-to-action — antes do footer
  * Incentiva o visitante a começar ou explorar a documentação
  */
-import { useIntersectionObserver } from '@vueuse/core'
-
-const sectionRef = ref<HTMLElement | null>(null)
-const isVisible = ref(false)
-
-useIntersectionObserver(
-  sectionRef,
-  (entries) => {
-    if (entries[0]?.isIntersecting) {
-      isVisible.value = true
-    }
-  },
-  { threshold: 0.2 }
-)
+const { sectionRef, isVisible } = useSectionVisibility({ threshold: 0.2 })
 
 const { prefersReducedMotion } = usePrefersReducedMotion()
 </script>
@@ -24,7 +11,7 @@ const { prefersReducedMotion } = usePrefersReducedMotion()
 <template>
   <section
     ref="sectionRef"
-    class="relative z-20 py-16 md:py-24 transition-all duration-700 ease-out"
+    class="relative z-20 w-full max-w-7xl mx-auto px-6 py-16 md:py-24 transition-all duration-700 ease-out"
     :class="isVisible || prefersReducedMotion ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'"
   >
     <div
@@ -38,10 +25,10 @@ const { prefersReducedMotion } = usePrefersReducedMotion()
         ╔══════════════════════╗
       </p>
 
-      <h2 class="mb-3 text-2xl font-bold text-foreground md:text-3xl">
+      <h2 class="mb-3 font-mono text-3xl font-bold text-foreground md:text-4xl">
         Comece a unificar seus dados hoje
       </h2>
-      <p class="mx-auto mb-8 max-w-md text-sm text-muted-foreground leading-relaxed">
+      <p class="mx-auto mb-8 max-w-md text-base text-muted-foreground leading-relaxed">
         De registros fragmentados a um cadastro único e rastreável. Sem cluster, sem cloud — no seu
         servidor.
       </p>

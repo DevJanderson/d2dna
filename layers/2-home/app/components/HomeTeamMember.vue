@@ -43,7 +43,7 @@ const colorClasses = {
     </div>
 
     <!-- Info -->
-    <p class="text-sm font-bold text-foreground mb-0.5">{{ name }}</p>
-    <p class="text-xs text-muted-foreground">{{ role }}</p>
+    <p class="text-base font-bold text-foreground mb-0.5">{{ name }}</p>
+    <p class="text-sm text-muted-foreground">{{ role }}</p>
   </div>
 </template>
