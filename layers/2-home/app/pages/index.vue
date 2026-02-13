@@ -58,10 +58,6 @@ useSchemaOrg([
 
     <!-- Conteúdo -->
     <HomeNavbar :prefers-reduced-motion="prefersReducedMotion" :is-visible="isVisible" />
-    <div
-      class="h-px bg-foreground/15 transition-opacity duration-700 ease-out delay-100"
-      :class="prefersReducedMotion || isVisible ? 'opacity-100' : 'opacity-0'"
-    />
     <HomeHero :prefers-reduced-motion="prefersReducedMotion" :is-visible="isVisible" />
     <div
       class="h-px bg-foreground/15 transition-opacity duration-700 ease-out delay-500"
