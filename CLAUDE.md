@@ -17,6 +17,7 @@ Sempre responda em Português Brasileiro (pt-BR).
 - Branch principal de trabalho: `develop`
 - Fluxo: `feature/*` → `develop` → `staging` → `main`
 - Commitlint: `subject-case: lower-case`, max 72 chars no subject, `body-max-line-length: 100`
+- Tipos permitidos: `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`, `ci`, `build`, `revert`
 
 ## Comandos
 
@@ -35,14 +36,19 @@ npm run format       # Formatar com Prettier
 npm run typecheck    # Verificar tipos
 npm run quality:fix  # Corrigir lint + formatar
 
+# Qualidade (CI)
+npm run format:check       # Verifica formatação (sem alterar)
+
 # Testes (Vitest - dois projetos: unit + nuxt)
 npm run test:run           # Vitest (uma execução)
 npm run test -- path/to/file.test.ts  # Executar teste específico
+npm run test:coverage      # Vitest com cobertura
 npm run test:e2e           # Playwright E2E
 npm run test:e2e:install   # Instala browsers (primeiro uso)
 
 # API (Kubb)
 npm run api:generate       # Gera tipos e schemas do OpenAPI → generated/
+npm run api:watch          # Regenera automaticamente ao alterar OpenAPI spec
 ```
 
 ### Projetos Vitest
@@ -67,7 +73,7 @@ Componentes ficam em `layers/0-base/app/components/ui/` (auto-import).
 
 ## Formatação
 
-Prettier: `semi: false`, `singleQuote: true`, `printWidth: 100`, `trailingComma: 'none'`.
+Prettier: `semi: false`, `singleQuote: true`, `printWidth: 100`, `trailingComma: 'none'`, `arrowParens: 'avoid'`, `vueIndentScriptAndStyle: false`, `endOfLine: 'lf'`.
 
 ESLint: `no-console: warn` (permite `warn`/`error`), `vue/html-self-closing: always` (inclusive HTML normal).
 
@@ -239,6 +245,14 @@ NUXT_SITE_INDEXABLE=true                           # Permitir indexação (SEO)
 # NUXT_PUBLIC_API_BASE_URL=/api                    # Override se necessário (default: /api)
 ```
 
+## Formulários (VeeValidate)
+
+Componentes auto-importados com nomes customizados: `VeeForm`, `VeeField`, `VeeFieldArray`, `VeeErrorMessage`. Validação via `@vee-validate/zod`.
+
+## Color Mode
+
+Preferência padrão: `light`. Classe CSS sem sufixo (`dark`, não `dark-mode`).
+
 ## Segurança
 
 Módulos `nuxt-security` e `nuxt-csurf` já configurados.
@@ -263,6 +277,9 @@ npm run api:generate    # Gera tipos e schemas do OpenAPI
 - **Tipos Kubb**: usar em composables e server
 - **Schemas Zod**: usar para validação no BFF
 - **Cliente HTTP**: NÃO usar (usar $fetch via BFF)
+
+- **OpenAPI Spec**: `openapi/tucuxi-api.json`
+- **Output**: `generated/tucuxi/` (tipos agrupados por tags, schemas Zod)
 
 Conteúdo gerado fica em `generated/` (não editar manualmente, warnings de lint nessa pasta são esperados).
 
