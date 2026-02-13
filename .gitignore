@@ -52,6 +52,9 @@ coverage
 .claude/skills/
 .agents/
 
+# AI Context scaffolding
+.context/
+
 # Temp files
 tmp/
 
